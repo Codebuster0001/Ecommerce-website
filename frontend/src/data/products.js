@@ -1,4 +1,6 @@
 // product.js:
+export const logo = "Shopy";
+
 
 const products = [
   {
