@@ -1,24 +1,27 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import men from '../../assets/men.avif';
 import women from '../../assets/women.jpg';
-import children from '../../assets/children.avif';
+import kids from '../../assets/children.avif';
 
 const collections = [
   {
     title: 'Men',
-    image: men,
-    button: 'Shop Men',
+    image:men,
+      button: 'Shop Men',
+    gender: 'men',
   },
   {
     title: 'Women',
-    image: women,
-    button: 'Shop Women',
+      image:women, 
+      button: 'Shop Women',
+    gender: 'women',
   },
   {
     title: 'Children',
-    image: children,
+    image: kids,
     button: 'Shop Kids',
+    gender: 'kids',
   },
 ];
 
@@ -29,29 +32,30 @@ const GenderCollectionSection = () => {
         <h2 className="text-4xl font-bold text-center text-gray-900 mb-14">
           Shop by Category
         </h2>
-        <div className="flex flex-wrap justify-center md:justify-between gap-6">
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {collections.map((item, index) => (
-            <motion.div
+            <div
               key={index}
-              className="relative w-full md:w-[32%] rounded-2xl overflow-hidden group shadow-lg transition-transform duration-500 hover:scale-[1.03] min-h-[400px] max-h-[500px] flex-grow"
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.3 }}
+              className="relative rounded-2xl overflow-hidden group shadow-xl transition-transform hover:scale-103 min-h-[350px] max-h-[450px]"
             >
               <img
                 src={item.image}
                 alt={item.title}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transform group-hover:scale-105 transition duration-500 ease-in-out"
               />
-              <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black/70 flex flex-col justify-center items-center text-center px-4">
+              <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/40 to-black/70 flex flex-col justify-center items-center text-center px-4">
                 <h3 className="text-white text-3xl font-semibold mb-4">
                   {item.title}
                 </h3>
-                <button className="bg-white text-gray-800 font-semibold py-2 px-6 rounded-full hover:bg-gray-200 transition">
+                <Link
+                  to={`/collections/all?gender=${encodeURIComponent(item.gender)}`}
+                  className="bg-white text-gray-800 font-semibold py-2 px-6 rounded-full hover:bg-gray-200 transition"
+                >
                   {item.button}
-                </button>
+                </Link>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
