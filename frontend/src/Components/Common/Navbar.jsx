@@ -2,35 +2,56 @@ import React, { useState, useEffect, useRef } from "react";
 import { FiUser, FiShoppingBag, FiSearch, FiX } from "react-icons/fi";
 import { HiBars3BottomRight } from "react-icons/hi2";
 import { Link } from "react-router-dom";
-import { logo } from "../../data/products";
+import { logo } from "../../data/products"; // Assuming this path is correct
 import SearchBar from "./SearchBar";
-import CartDrawer from "../Layout/CartDrawer"; // <- Added import
+import CartDrawer from "../Layout/CartDrawer"; // Assuming this path is correct
 
 const Navbar = () => {
   const [showSearch, setShowSearch] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false); // <- Cart state
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const mobileMenuRef = useRef(null);
+  const cartDrawerRef = useRef(null);
 
   const navLinks = ["MEN", "WOMEN", "TOP WEAR", "BOTTOM WEAR"];
 
   const toggleSearch = () => setShowSearch(!showSearch);
   const closeSearch = () => setShowSearch(false);
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
-
-  const toggleCartDrawer = () => setDrawerOpen(!drawerOpen); // <- Cart toggle function
+  const toggleCartDrawer = () => setDrawerOpen(!drawerOpen);
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (isMobileMenuOpen && mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+    const handleClickOutsideMobileMenu = (event) => {
+      if (
+        isMobileMenuOpen &&
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target)
+      ) {
         setIsMobileMenuOpen(false);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutsideMobileMenu);
+    return () =>
+      document.removeEventListener("mousedown", handleClickOutsideMobileMenu);
   }, [isMobileMenuOpen]);
 
-  // Dummy cart items
+  useEffect(() => {
+    const handleClickOutsideCartDrawer = (event) => {
+      if (
+        drawerOpen &&
+        cartDrawerRef.current &&
+        !cartDrawerRef.current.contains(event.target) &&
+        !event.target.closest('button[aria-label="Shopping Bag"]')
+      ) {
+        setDrawerOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutsideCartDrawer);
+    return () =>
+      document.removeEventListener("mousedown", handleClickOutsideCartDrawer);
+  }, [drawerOpen]);
+
+  // Dummy cart items - Replace with your actual cart logic
   const cartItems = [
     { name: "T-Shirt", quantity: 2, price: 19.99 },
     { name: "Jeans", quantity: 1, price: 39.99 },
@@ -40,7 +61,9 @@ const Navbar = () => {
     <nav className="w-full bg-white px-6 py-4 z-50 relative">
       <div className="mx-auto lg:px-12 flex items-center justify-between gap-4">
         {/* Logo */}
-        <Link to="/" className="text-xl font-bold text-black">{logo}</Link>
+        <Link to="/" className="text-xl font-bold text-black">
+          {logo}
+        </Link>
 
         {/* Navigation Links (Desktop) */}
         <div className="hidden md:flex flex-1 justify-center">
@@ -108,7 +131,7 @@ const Navbar = () => {
       {/* Mobile Menu */}
       <div
         ref={mobileMenuRef}
-        className={`fixed top-12 right-0 w-2/3 h-screen bg-white shadow-md transform transition-transform duration-300 ease-in-out z-50 md:hidden ${
+        className={`fixed top-0 right-0 w-2/3 h-screen space-y-32 bg-white shadow-md transform transition-transform duration-300 ease-in-out z-50 md:hidden ${
           isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -135,11 +158,13 @@ const Navbar = () => {
       </div>
 
       {/* Cart Drawer */}
-      <CartDrawer
-        drawerOpen={drawerOpen}
-        toggleCartDrawer={toggleCartDrawer}
-        cartItems={cartItems}
-      />
+      <div ref={cartDrawerRef}>
+        <CartDrawer
+          drawerOpen={drawerOpen}
+          toggleCartDrawer={toggleCartDrawer}
+         
+        />
+      </div>
     </nav>
   );
 };
