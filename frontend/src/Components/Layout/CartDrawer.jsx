@@ -1,45 +1,28 @@
-import React from "react";
-import { FiX } from "react-icons/fi";
 
-const CartDrawer = ({ isOpen, onClose, cartItems }) => {
+import { IoMdClose } from "react-icons/io";
+
+const CartDrawer = ({drawerOpen,toggleCartDrawer}) => {
+
   return (
     <div
-      className={`fixed top-0 right-0 w-80 h-full bg-white shadow-lg z-50 transform transition-transform duration-300 ease-in-out ${
-        isOpen ? "translate-x-0" : "translate-x-full"
+      className={`fixed top-0 right-0 w-80 h-full bg-white shadow-lg transition-transform transform ${
+        drawerOpen ? "translate-x-0" : "translate-x-full"
       }`}
     >
-      <div className="flex items-center justify-between px-4 py-4 border-b">
-        <h2 className="text-lg font-semibold">Your Cart</h2>
-        <button onClick={onClose} aria-label="Close Cart">
-          <FiX className="text-xl text-gray-700" />
-        </button>
-      </div>
 
-      {cartItems.length === 0 ? (
-        <div className="p-4 text-center text-gray-600">Your cart is empty.</div>
-      ) : (
-        <ul className="p-4 space-y-4">
-          {cartItems.map((item, index) => (
-            <li key={index} className="flex justify-between items-center border-b pb-2">
-              <div>
-                <p className="font-medium">{item.name}</p>
-                <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
-              </div>
-              <p className="font-semibold">${(item.price * item.quantity).toFixed(2)}</p>
-            </li>
-          ))}
-        </ul>
-      )}
+      <button
+        onClick={toggleCartDrawer}
+        className="absolute top-4 h-6 w-6 right-4 text-2xl text-gray-800"
+        aria-label="Close Cart"
+      >
+        <IoMdClose/>
+      </button>
+      <div className="p-6">
+        <h2 className="text-xl font-semibold mb-4">Shopping Cart</h2>
 
-      <div className="p-4 border-t">
-        <button
-          onClick={() => alert("Proceeding to checkout...")}
-          className="w-full bg-black text-white py-2 px-4 rounded hover:bg-gray-800 transition"
-        >
-          Checkout
-        </button>
+        </div>
       </div>
-    </div>
+   
   );
 };
 

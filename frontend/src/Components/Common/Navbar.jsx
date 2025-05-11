@@ -9,7 +9,7 @@ import CartDrawer from "../Layout/CartDrawer"; // <- Added import
 const Navbar = () => {
   const [showSearch, setShowSearch] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isCartOpen, setIsCartOpen] = useState(false); // <- Cart state
+  const [drawerOpen, setDrawerOpen] = useState(false); // <- Cart state
   const mobileMenuRef = useRef(null);
 
   const navLinks = ["MEN", "WOMEN", "TOP WEAR", "BOTTOM WEAR"];
@@ -17,6 +17,8 @@ const Navbar = () => {
   const toggleSearch = () => setShowSearch(!showSearch);
   const closeSearch = () => setShowSearch(false);
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
+
+  const toggleCartDrawer = () => setDrawerOpen(!drawerOpen); // <- Cart toggle function
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -85,7 +87,7 @@ const Navbar = () => {
           </Link>
 
           {/* Shopping Bag */}
-          <button onClick={() => setIsCartOpen(true)} className="relative" aria-label="Shopping Bag">
+          <button onClick={toggleCartDrawer} className="relative" aria-label="Shopping Bag">
             <FiShoppingBag className="cursor-pointer hover:text-black transition" />
             <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5">
               {cartItems.length}
@@ -134,8 +136,8 @@ const Navbar = () => {
 
       {/* Cart Drawer */}
       <CartDrawer
-        isOpen={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
+        drawerOpen={drawerOpen}
+        toggleCartDrawer={toggleCartDrawer}
         cartItems={cartItems}
       />
     </nav>
