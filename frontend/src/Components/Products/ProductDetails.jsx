@@ -1,195 +1,197 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import {
-  AiOutlineShoppingCart,
-  AiOutlineTag,
-  AiOutlineBgColors,
-  AiFillCheckCircle,
-} from 'react-icons/ai';
+import { AiOutlineShoppingCart, AiOutlineTag, AiOutlineBgColors } from 'react-icons/ai';
 import { toast } from 'sonner';
+import { FiMinus, FiPlus } from 'react-icons/fi';
 
-const selectedProduct = {
-  name: 'V-Neck Wrap Top',
-  price: 120,
-  originalPrice: 150,
+const mockProduct = {
+  name: 'UrbanEase Slim-Fit Shirt',
+  price: 42.50,
   description:
-    'A stylish V-neck wrap top perfect for any occasion. The wrap design accentuates the waist, and the soft cotton fabric ensures all-day comfort.',
-  brand: 'Zara',
-  material: 'Cotton',
-  size: ['S', 'M', 'L', 'XL', 'XXL'],
-  color: ['Red', 'Blue', 'Green', 'Black', 'White'],
+    'A comfortable and stylish slim-fit shirt, perfect for everyday wear. Crafted from a breathable fabric that stays crisp throughout the day. Features a modern collar, subtle button placket, and a tailored back yoke.',
+  color: ['#4A5568', '#EDF2F7', '#2B6CB0', '#805AD5'], // Darker, muted palette
+  size: ['XS', 'S', 'M', 'L', 'XL'],
+  brand: 'UrbanEase Outfitters',
+  material: 'SoftBlend Cotton',
   images: [
-    { url: 'https://picsum.photos/500/500?random=1', altText: 'Front view' },
-    { url: 'https://picsum.photos/500/500?random=2', altText: 'Side view' },
+    "https://picsum.photos/500/500?random=11",
+    "https://picsum.photos/500/500?random=12",
   ],
 };
 
-const ProductDetails = () => {
-  const [mainImage, setMainImage] = useState(selectedProduct.images[0].url);
-  const [selectedSize, setSelectedSize] = useState(null);
+const ProductDetailsPage = () => {
   const [selectedColor, setSelectedColor] = useState(null);
-  const [isAddToCartLoading, setIsAddToCartLoading] = useState(false);
+  const [selectedSize, setSelectedSize] = useState(null);
+  const [quantity, setQuantity] = useState(1);
+  const [mainImage, setMainImage] = useState(mockProduct.images[0]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleColorSelect = (color) => setSelectedColor(color);
+  const handleSizeSelect = (size) => setSelectedSize(size);
+  const handleQuantityChange = (action) => {
+    if (action === 'increase') {
+      setQuantity((prev) => prev + 1);
+    } else if (action === 'decrease' && quantity > 1) {
+      setQuantity((prev) => prev - 1);
+    }
+  };
 
   const handleAddToCart = () => {
-    if (!selectedSize || !selectedColor) {
-      toast.error('Please select size and color.');
+    if (!selectedColor || !selectedSize) {
+      toast.error('Please select both color and size.');
       return;
     }
 
-    setIsAddToCartLoading(true);
-
+    setIsLoading(true);
     setTimeout(() => {
-      setIsAddToCartLoading(false);
-      toast.success('Product added to cart!');
-    }, 1500);
+      setSelectedColor(null);
+      setSelectedSize(null);
+      setIsLoading(false);
+      toast.success(`${quantity} item(s) added to your cart!`);
+    }, 1000);
   };
 
-  const isDisabled = !selectedSize || !selectedColor || isAddToCartLoading;
+  const handleImageSwitch = (image) => {
+    setMainImage(image);
+  };
 
   return (
-    <div className="p-4 md:p-10 max-w-7xl mx-auto">
-      <div className="flex flex-col md:flex-row gap-8">
-
-        {/* Thumbnail Images (Desktop) */}
-        <div className="hidden md:flex flex-col space-y-4 w-24">
-          {selectedProduct.images.map((img, idx) => (
-            <motion.img
-              key={idx}
-              src={img.url}
-              alt={img.altText}
-              onClick={() => setMainImage(img.url)}
-              className={`w-full h-24 object-cover rounded-lg cursor-pointer border-2 transition ${
-                img.url === mainImage
-                  ? 'border-blue-500 shadow-lg'
-                  : 'border-transparent hover:border-gray-300'
-              }`}
-              whileHover={{ scale: 1.05 }}
-            />
-          ))}
-        </div>
-
-        {/* Main Product Image */}
-        <div className="flex-1 relative">
-          <motion.img
-            src={mainImage}
-            alt="Main Product"
-            className="w-full rounded-xl shadow-xl"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.3 }}
-          />
-
-          {/* Mobile Thumbnails */}
-          <div className="md:hidden flex overflow-x-auto gap-3 mt-4 snap-x">
-            {selectedProduct.images.map((img, idx) => (
-              <motion.img
-                key={idx}
-                src={img.url}
-                alt={img.altText}
-                onClick={() => setMainImage(img.url)}
-                className={`w-24 h-24 object-cover rounded-lg cursor-pointer border-2 snap-start ${
-                  img.url === mainImage
-                    ? 'border-blue-500 shadow-md'
-                    : 'border-transparent hover:border-gray-300'
-                }`}
-                whileHover={{ scale: 1.05 }}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Product Information Section */}
-        <div className="flex-1 space-y-6 text-gray-800">
-          {/* Title */}
-          <h2 className="text-3xl md:text-4xl font-bold">{selectedProduct.name}</h2>
-
-          {/* Pricing */}
-          <div className="flex items-center gap-4">
-            <span className="text-2xl font-bold text-blue-600">${selectedProduct.price}</span>
-            <span className="line-through text-gray-400">${selectedProduct.originalPrice}</span>
-            <span className="bg-green-100 text-green-700 text-sm px-3 py-1 rounded-full">
-              {Math.round(
-                ((selectedProduct.originalPrice - selectedProduct.price) /
-                  selectedProduct.originalPrice) *
-                  100
-              )}
-              % off
-            </span>
-          </div>
-
-          {/* Description */}
-          <p className="leading-relaxed">{selectedProduct.description}</p>
-
-          {/* Brand & Material */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="flex items-center gap-2">
-              <AiOutlineTag className="text-blue-600" />
-              <span className="font-medium">Brand:</span> {selectedProduct.brand}
-            </div>
-            <div className="flex items-center gap-2">
-              <AiOutlineBgColors className="text-blue-600" />
-              <span className="font-medium">Material:</span> {selectedProduct.material}
-            </div>
-          </div>
-
-          {/* Size Selection */}
-          <div>
-            <h3 className="font-semibold mb-2">Size:</h3>
-            <div className="flex gap-3 flex-wrap">
-              {selectedProduct.size.map((size) => (
-                <motion.button
-                  key={size}
-                  onClick={() => setSelectedSize(size)}
-                  className={`px-4 py-2 rounded-full border transition ${
-                    selectedSize === size
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 hover:bg-gray-200'
+    <div className="bg-white">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="flex flex-col md:flex-row gap-10">
+          {/* Image Section */}
+          <div className="md:w-1/2 flex flex-col md:flex-row gap-4">
+            {/* Image thumbnails */}
+            <div className="md:w-1/4 flex flex-row md:flex-col gap-3">
+              {mockProduct.images.map((image, index) => (
+                <div
+                  key={index}
+                  className={`w-16 h-16 rounded-md overflow-hidden cursor-pointer border-2 transition-all border-transparent hover:border-gray-400 ${
+                    mainImage === image ? 'border-indigo-500' : ''
                   }`}
-                  whileTap={{ scale: 0.95 }}
+                  onClick={() => handleImageSwitch(image)}
+                  onMouseEnter={() => handleImageSwitch(image)} // Added for better UX
                 >
-                  {size}
-                  {selectedSize === size && (
-                    <AiFillCheckCircle className="inline ml-2 text-white" />
-                  )}
-                </motion.button>
+                  <img
+                    src={image}
+                    alt={`Product thumbnail ${index + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
               ))}
             </div>
-          </div>
 
-          {/* Color Selection */}
-          <div>
-            <h3 className="font-semibold mb-2">Color:</h3>
-            <div className="flex gap-3 flex-wrap">
-              {selectedProduct.color.map((clr) => (
-                <motion.button
-                  key={clr}
-                  onClick={() => setSelectedColor(clr)}
-                  aria-label={`Select color ${clr}`}
-                  className={`w-10 h-10 rounded-full border-2 ${
-                    selectedColor === clr
-                      ? 'ring-2 ring-blue-500'
-                      : 'border-gray-300 hover:ring-2 hover:ring-gray-400'
-                  }`}
-                  style={{ backgroundColor: clr.toLowerCase() }}
-                  whileTap={{ scale: 0.9 }}
+            {/* Main Image */}
+            <div className="md:w-2/3">
+              <div className="aspect-w-1 aspect-h-1 w-full rounded-lg overflow-hidden border border-gray-300">
+                <img
+                  src={mainImage}
+                  alt={mockProduct.name}
+                  className="w-full h-full object-cover"
                 />
-              ))}
+              </div>
             </div>
           </div>
 
-          {/* Add to Cart */}
-          <div className="pt-2">
-            <button
-              onClick={handleAddToCart}
-              disabled={isDisabled}
-              className={`w-full py-3 rounded-full font-semibold transition ${
-                isDisabled
-                  ? 'bg-gray-400 text-white cursor-not-allowed'
-                  : 'bg-blue-600 text-white hover:bg-blue-700'
-              }`}
-            >
-              {isAddToCartLoading ? 'Adding...' : 'Add to Cart'}
-            </button>
+          {/* Product Details Section */}
+          <div className="md:w-1/2 space-y-6">
+            <div className="space-y-2">
+              <h1 className="text-3xl font-semibold text-gray-900">{mockProduct.name}</h1>
+              <p className="text-xl text-indigo-600 font-semibold">${mockProduct.price.toFixed(2)}</p>
+              <p className="text-gray-700 leading-relaxed">{mockProduct.description}</p>
+            </div>
+
+            {/* Color and Size Selection - Horizontal Layout */}
+            <div className="flex flex-col gap-4">
+              {/* Color Selection */}
+              <div>
+                <h2 className="text-lg font-semibold text-gray-900 mb-3">Color Options:</h2>
+                <div className="flex items-center gap-3">
+                  {mockProduct.color.map((color, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleColorSelect(color)}
+                      className={`w-8 h-8 rounded-full cursor-pointer border-2 transition-all transform hover:scale-110 focus:outline-none ${
+                        selectedColor === color ? 'border-indigo-500 shadow-md' : 'border-gray-300'
+                      }`}
+                      style={{ backgroundColor: color }}
+                      aria-label={`Select color ${color}`}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Size Selection */}
+              <div>
+                <h2 className="text-lg font-semibold text-gray-900 mb-3">Select Size:</h2>
+                <div className="flex items-center gap-3">
+                  {mockProduct.size.map((size, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleSizeSelect(size)}
+                      className={`px-4 py-2 rounded-md font-medium text-gray-800 border border-gray-300 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1 ${
+                        selectedSize === size ? 'bg-indigo-500 text-white border-indigo-500 shadow-sm' : 'bg-white'
+                      }`}
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Quantity and Add to Cart - Horizontal Layout */}
+            <div className="flex items-center gap-6">
+              {/* Quantity Selection */}
+              <div className="flex items-center gap-3">
+                <label htmlFor="quantity" className="text-lg font-semibold text-gray-900">Quantity:</label>
+                <div className="flex items-center border border-gray-300 rounded-md overflow-hidden">
+                  <button
+                    onClick={() => handleQuantityChange('decrease')}
+                    className="px-3 py-2 hover:bg-gray-200 focus:outline-none"
+                    aria-label="Decrease quantity"
+                  >
+                    <FiMinus className="text-sm text-gray-600" />
+                  </button>
+                  <span id="quantity" className="px-4 py-2 text-lg text-gray-900">{quantity}</span>
+                  <button
+                    onClick={() => handleQuantityChange('increase')}
+                    className="px-3 py-2 hover:bg-gray-200 focus:outline-none"
+                    aria-label="Increase quantity"
+                  >
+                    <FiPlus className="text-sm text-gray-600" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Add to Cart Button */}
+              <button
+                onClick={handleAddToCart}
+                className={`flex-grow py-3 bg-indigo-600 text-white rounded-md text-lg font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1 ${
+                  isLoading ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
+                disabled={isLoading}
+              >
+                {isLoading ? 'Adding...' : 'Add to Cart'}
+                <AiOutlineShoppingCart className="inline ml-2" />
+              </button>
+            </div>
+
+            {/* Product Characteristics - Collapsed Presentation */}
+            <details className="border-t border-gray-200 pt-6" open>
+              <summary className="text-lg font-semibold text-gray-900 cursor-pointer ">
+                Product Details
+              </summary>
+              <div className="mt-4 space-y-3 text-gray-700">
+                <div className="flex items-center gap-3">
+                  <AiOutlineTag className="text-gray-500 text-xl" />
+                  <span>Brand: <span className="font-medium">{mockProduct.brand}</span></span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <AiOutlineBgColors className="text-gray-500 text-xl" />
+                  <span>Material: <span className="font-medium">{mockProduct.material}</span></span>
+                </div>
+              </div>
+            </details>
           </div>
         </div>
       </div>
@@ -197,4 +199,4 @@ const ProductDetails = () => {
   );
 };
 
-export default ProductDetails;
+export default ProductDetailsPage;
