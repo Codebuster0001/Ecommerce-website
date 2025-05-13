@@ -1,9 +1,11 @@
+// ProductDetails.jsx
 import React, { useState } from 'react';
 import { AiOutlineShoppingCart, AiOutlineTag, AiOutlineBgColors } from 'react-icons/ai';
 import { toast } from 'sonner';
 import { FiMinus, FiPlus } from 'react-icons/fi';
+import ProductGrid from './ProductGrid';
 
-const mockProduct = {
+const selectedProduct = {
   name: 'UrbanEase Slim-Fit Shirt',
   price: 42.50,
   description:
@@ -17,12 +19,42 @@ const mockProduct = {
     "https://picsum.photos/500/500?random=12",
   ],
 };
+const similarProducts = [
+  {
+    _id: 1,
+    name: 'Similar Product 1',
+    price: 35.00,
+    images: [
+      { url: "https://picsum.photos/500/500?random=13" }],
+  },
+  {
+    _id: 2,
+    name: 'Another Great Shirt',
+    price: 48.00,
+    images: [
+      { url: "https://picsum.photos/500/500?random=14" }],
+  },
+  {
+    _id: 3,
+    name: 'Casual Cotton Tee',
+    price: 22.75,
+    images: [
+      { url: "https://picsum.photos/500/500?random=15" }],
+  },
+  {
+    _id: 4,
+    name: 'Premium Denim Shirt',
+    price: 59.99,
+    images: [
+      { url: "https://picsum.photos/500/500?random=16" }],
+  },
+];
 
-const ProductDetailsPage = () => {
+const ProductDetails = () => {
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const [mainImage, setMainImage] = useState(mockProduct.images[0]);
+  const [mainImage, setMainImage] = useState(selectedProduct.images[0]);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleColorSelect = (color) => setSelectedColor(color);
@@ -59,13 +91,13 @@ const ProductDetailsPage = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="flex flex-col md:flex-row gap-10">
           {/* Image Section */}
-          <div className="md:w-1/2 flex flex-col md:flex-row gap-4">
+          <div className="md:w-1/2 flex flex-col md:flex-row gap-2 lg:gap-3 items-start"> {/* Further reduced gap */}
             {/* Image thumbnails */}
-            <div className="md:w-1/4 flex flex-row md:flex-col gap-3">
-              {mockProduct.images.map((image, index) => (
+            <div className="md:w-1/4 flex flex-row md:flex-col gap-1 lg:items-end "> {/* Further reduced gap */}
+              {selectedProduct.images.map((image, index) => (
                 <div
                   key={index}
-                  className={`w-16 h-16 rounded-md overflow-hidden cursor-pointer border-2 transition-all border-transparent hover:border-gray-400 ${
+                  className={`w-16 h-16 flex items-center justify-center rounded-md overflow-hidden cursor-pointer border-2 transition-all border-transparent hover:border-gray-400 ${
                     mainImage === image ? 'border-indigo-500' : ''
                   }`}
                   onClick={() => handleImageSwitch(image)}
@@ -85,7 +117,7 @@ const ProductDetailsPage = () => {
               <div className="aspect-w-1 aspect-h-1 w-full rounded-lg overflow-hidden border border-gray-300">
                 <img
                   src={mainImage}
-                  alt={mockProduct.name}
+                  alt={selectedProduct.name}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -95,9 +127,9 @@ const ProductDetailsPage = () => {
           {/* Product Details Section */}
           <div className="md:w-1/2 space-y-6">
             <div className="space-y-2">
-              <h1 className="text-3xl font-semibold text-gray-900">{mockProduct.name}</h1>
-              <p className="text-xl text-indigo-600 font-semibold">${mockProduct.price.toFixed(2)}</p>
-              <p className="text-gray-700 leading-relaxed">{mockProduct.description}</p>
+              <h1 className="text-3xl font-semibold text-gray-900">{selectedProduct.name}</h1>
+              <p className="text-xl text-indigo-600 font-semibold">${selectedProduct.price.toFixed(2)}</p>
+              <p className="text-gray-700 leading-relaxed">{selectedProduct.description}</p>
             </div>
 
             {/* Color and Size Selection - Horizontal Layout */}
@@ -106,7 +138,7 @@ const ProductDetailsPage = () => {
               <div>
                 <h2 className="text-lg font-semibold text-gray-900 mb-3">Color Options:</h2>
                 <div className="flex items-center gap-3">
-                  {mockProduct.color.map((color, index) => (
+                  {selectedProduct.color.map((color, index) => (
                     <button
                       key={index}
                       onClick={() => handleColorSelect(color)}
@@ -124,7 +156,7 @@ const ProductDetailsPage = () => {
               <div>
                 <h2 className="text-lg font-semibold text-gray-900 mb-3">Select Size:</h2>
                 <div className="flex items-center gap-3">
-                  {mockProduct.size.map((size, index) => (
+                  {selectedProduct.size.map((size, index) => (
                     <button
                       key={index}
                       onClick={() => handleSizeSelect(size)}
@@ -184,19 +216,25 @@ const ProductDetailsPage = () => {
               <div className="mt-4 space-y-3 text-gray-700">
                 <div className="flex items-center gap-3">
                   <AiOutlineTag className="text-gray-500 text-xl" />
-                  <span>Brand: <span className="font-medium">{mockProduct.brand}</span></span>
+                  <span>Brand: <span className="font-medium">{selectedProduct.brand}</span></span>
                 </div>
                 <div className="flex items-center gap-3">
                   <AiOutlineBgColors className="text-gray-500 text-xl" />
-                  <span>Material: <span className="font-medium">{mockProduct.material}</span></span>
+                  <span>Material: <span className="font-medium">{selectedProduct.material}</span></span>
                 </div>
               </div>
             </details>
           </div>
+        </div>
+        <div className='mt-20'>
+          <h2 className='text-2xl lg:text-3xl  text-center font-medium mb-4'>You May Also Like</h2>
+        <div className=' px-8 lg:px-16 '>
+            <ProductGrid products={similarProducts} />
+        </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default ProductDetailsPage;
+export default ProductDetails;
