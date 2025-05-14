@@ -5,6 +5,7 @@ import Home from "./Pages/Home";
 import { Toaster } from "sonner";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
+import Profile from "./Pages/Profile";
 
 function App() {
   return (
@@ -17,6 +18,8 @@ function App() {
           <Route index element={<Home />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
+          <Route path="profile" element={<Profile />} />
+          {/* Add more routes as needed */}
         </Route>
 
         {/* Admin Layout - placeholder for future */}
