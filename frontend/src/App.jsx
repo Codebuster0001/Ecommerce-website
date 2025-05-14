@@ -4,6 +4,7 @@ import UserLayout from "./Components/Layout/UserLayout";
 import Home from "./Pages/Home";
 import { Toaster } from "sonner";
 import Login from "./Pages/Login";
+import Register from "./Pages/Register";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/" element={<UserLayout />}>
           <Route index element={<Home />} />
           <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
         </Route>
 
         {/* Admin Layout - placeholder for future */}
