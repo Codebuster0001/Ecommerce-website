@@ -7,6 +7,7 @@ import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import Profile from "./Pages/Profile";
 import MyOrders from "./Pages/MyOrders";
+import CollectionPage from "./Pages/CollectionPage";
 
 function App() {
   return (
@@ -20,7 +21,7 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="profile" element={<Profile />} />
-          <Route path="myorders" element={<MyOrders />} />
+          <Route path="collection/:collection" element={<CollectionPage/>}/>
           {/* Add more routes as needed */}
         </Route>
 

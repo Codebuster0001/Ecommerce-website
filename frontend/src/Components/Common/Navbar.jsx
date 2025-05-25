@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { FiUser, FiShoppingBag, FiSearch, FiX } from "react-icons/fi";
 import { HiBars3BottomRight } from "react-icons/hi2";
 import { Link } from "react-router-dom";
-import { logo } from "../../data/products"; // Assuming this path is correct
+import { logo } from "../../data/products"; // Ensure logo is JSX or a string
 import SearchBar from "./SearchBar";
-import CartDrawer from "../Layout/CartDrawer"; // Assuming this path is correct
+import CartDrawer from "../Layout/CartDrawer";
 
 const Navbar = () => {
   const [showSearch, setShowSearch] = useState(false);
@@ -13,7 +13,12 @@ const Navbar = () => {
   const mobileMenuRef = useRef(null);
   const cartDrawerRef = useRef(null);
 
-  const navLinks = ["MEN", "WOMEN", "TOP WEAR", "BOTTOM WEAR"];
+  const navLinks = [
+    { name: "MEN", to: "/collection/all" },
+    { name: "WOMEN", to: "/collection/women" },
+    { name: "TOP WEAR", to: "/collection/topwear" },
+    { name: "BOTTOM WEAR", to: "/collection/bottomwear" },
+  ];
 
   const toggleSearch = () => setShowSearch(!showSearch);
   const closeSearch = () => setShowSearch(false);
@@ -51,30 +56,30 @@ const Navbar = () => {
       document.removeEventListener("mousedown", handleClickOutsideCartDrawer);
   }, [drawerOpen]);
 
-  // Dummy cart items - Replace with your actual cart logic
+  // Dummy cart items - Replace with real logic
   const cartItems = [
     { name: "T-Shirt", quantity: 2, price: 19.99 },
     { name: "Jeans", quantity: 1, price: 39.99 },
   ];
 
   return (
-    <nav className="w-full bg-white px-6 py-4 z-50 relative">
+    <nav className="w-full bg-white px-6 py-4 z-50 relative shadow">
       <div className="mx-auto lg:px-12 flex items-center justify-between gap-4">
         {/* Logo */}
         <Link to="/" className="text-xl font-bold text-black">
           {logo}
         </Link>
 
-        {/* Navigation Links (Desktop) */}
+        {/* Desktop Links */}
         <div className="hidden md:flex flex-1 justify-center">
           <ul className="flex items-center gap-8 font-medium text-sm text-black tracking-wide">
             {navLinks.map((link) => (
-              <li key={link}>
+              <li key={link.name}>
                 <Link
-                  to={`/${link.toLowerCase().replace(/\s+/g, "-")}`}
+                  to={link.to}
                   className="hover:text-gray-700 transition-colors"
                 >
-                  {link}
+                  {link.name}
                 </Link>
               </li>
             ))}
@@ -89,8 +94,8 @@ const Navbar = () => {
               <FiSearch className="cursor-pointer hover:text-black transition" />
             </button>
             {showSearch && (
-              <div className="absolute right-8 w-64 -top-2 z-40 transition-all duration-300 ease-in-out">
-                <div className="relative">
+              <div className="absolute right-8 w-64 -top-2 z-40">
+                <div className="relative bg-white shadow-md rounded p-2">
                   <SearchBar onSearch={closeSearch} />
                   <button
                     onClick={closeSearch}
@@ -109,15 +114,19 @@ const Navbar = () => {
             <FiUser className="cursor-pointer hover:text-black transition" />
           </Link>
 
-          {/* Shopping Bag */}
-          <button onClick={toggleCartDrawer} className="relative" aria-label="Shopping Bag">
+          {/* Cart */}
+          <button
+            onClick={toggleCartDrawer}
+            className="relative"
+            aria-label="Shopping Bag"
+          >
             <FiShoppingBag className="cursor-pointer hover:text-black transition" />
             <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5">
               {cartItems.length}
             </span>
           </button>
 
-          {/* Mobile Menu Toggle */}
+          {/* Mobile Menu Button */}
           <button
             onClick={toggleMobileMenu}
             className="md:hidden text-xl p-1"
@@ -131,7 +140,7 @@ const Navbar = () => {
       {/* Mobile Menu */}
       <div
         ref={mobileMenuRef}
-        className={`fixed top-0 right-0 w-2/3 h-screen space-y-32 bg-white shadow-md transform transition-transform duration-300 ease-in-out z-50 md:hidden ${
+        className={`fixed top-0 right-0 w-2/3 h-screen bg-white shadow-md transform transition-transform duration-300 ease-in-out z-50 md:hidden ${
           isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -142,15 +151,15 @@ const Navbar = () => {
         >
           <FiX />
         </button>
-        <ul className="flex flex-col items-stretch mt-12">
+        <ul className="flex flex-col items-center mt-24 gap-6 text-lg font-medium">
           {navLinks.map((link) => (
-            <li key={link}>
+            <li key={link.name}>
               <Link
-                to={`/${link.toLowerCase().replace(/\s+/g, "-")}`}
-                className="py-4 px-6 block font-semibold text-center"
+                to={link.to}
                 onClick={toggleMobileMenu}
+                className="text-gray-800 hover:text-black"
               >
-                {link}
+                {link.name}
               </Link>
             </li>
           ))}
@@ -159,11 +168,7 @@ const Navbar = () => {
 
       {/* Cart Drawer */}
       <div ref={cartDrawerRef}>
-        <CartDrawer
-          drawerOpen={drawerOpen}
-          toggleCartDrawer={toggleCartDrawer}
-         
-        />
+        <CartDrawer drawerOpen={drawerOpen} toggleCartDrawer={toggleCartDrawer} />
       </div>
     </nav>
   );
