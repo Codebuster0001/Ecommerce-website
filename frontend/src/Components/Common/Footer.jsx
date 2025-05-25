@@ -26,29 +26,32 @@ const Footer = () => {
   ];
 
   return (
-    <footer className=" text-gray-700 py-16 mt-10">
-      {/* Main Flex Container */}
-      <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <footer className="bg-white text-gray-700 py-12 px-4 sm:px-6 lg:px-8 mt-10">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
         
         {/* Newsletter */}
-        <div className="flex flex-col">
+        <div>
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Newsletter</h2>
           <p className="text-sm text-gray-600 mb-2">Stay up to date on new arrivals and exclusive offers.</p>
           <p className="text-sm text-gray-600 mb-4">Sign up and get <strong className="font-semibold">10% off</strong> your first order.</p>
-          <div className="flex rounded-md overflow-hidden max-w-md">
+          
+          <form className="flex flex-col sm:flex-row items-stretch sm:items-center max-w-md w-full space-y-3 sm:space-y-0 sm:space-x-2">
             <input
               type="email"
               placeholder="Your email"
               className="flex-1 px-4 py-2 text-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            <button className="bg-gray-900 text-white px-6 py-2 text-sm hover:bg-gray-800 transition-colors">
+            <button
+              type="submit"
+              className="bg-gray-900 text-white px-6 py-2 text-sm hover:bg-gray-800 transition-colors"
+            >
               Subscribe
             </button>
-          </div>
+          </form>
         </div>
 
         {/* Shop Links */}
-        <div className="flex flex-col">
+        <div>
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Shop</h2>
           <ul className="text-sm space-y-2">
             {shopLinks.map(({ name, to }) => (
@@ -62,7 +65,7 @@ const Footer = () => {
         </div>
 
         {/* Support Links */}
-        <div className="flex flex-col">
+        <div>
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Support</h2>
           <ul className="text-sm space-y-2">
             {supportLinks.map(({ name, to }) => (
@@ -76,14 +79,14 @@ const Footer = () => {
         </div>
 
         {/* Social & Contact */}
-        <div className="flex flex-col">
+        <div>
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Follow Us</h2>
           <div className="flex items-center space-x-4 mb-4">
             {socialLinks.map(({ icon, color, hoverColor, label, to }) => (
               <Link
                 key={label}
                 to={to}
-                className={`${color} ${hoverColor} transition-colors`}
+                className={`${color} ${hoverColor} text-lg transition-colors`}
                 aria-label={label}
               >
                 {icon}
@@ -100,7 +103,7 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Bottom Line */}
+      {/* Bottom Text */}
       <div className="mt-12 border-t border-gray-200 pt-6 text-center text-xs text-gray-500">
         © {currentYear} YourBrand. All rights reserved.
       </div>

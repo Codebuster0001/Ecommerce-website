@@ -32,7 +32,7 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-gradient-to-r from-purple-50 to-white">
+    <div className="min-h-screen py-4 flex items-center justify-center px-4 bg-gradient-to-r from-purple-50 to-white">
       <motion.div
         className="w-full max-w-5xl bg-white shadow-xl rounded-2xl overflow-hidden"
         initial={{ opacity: 0, scale: 0.95 }}
