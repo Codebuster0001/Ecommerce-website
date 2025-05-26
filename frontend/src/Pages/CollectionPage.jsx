@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
 import { FaFilter } from "react-icons/fa";
 import FilterSidebar from "../Components/Products/FilterSidebar";
-import SortOptions from './../Components/Products/SortOptions';
+import SortOptions from "../Components/Products/SortOptions";
 import ProductGrid from "../Components/Products/ProductGrid";
 
 const CollectionPage = () => {
@@ -102,17 +101,22 @@ const CollectionPage = () => {
           ${isFilterOpen ? "translate-x-0" : "-translate-x-full"}
           lg:translate-x-0 lg:static lg:h-auto lg:w-64 lg:shadow-none`}
       >
-        <FilterSidebar isOpen={isFilterOpen} onClose={() => setIsFilterOpen(false)} />
+        <FilterSidebar
+          isOpen={isFilterOpen}
+          onClose={() => setIsFilterOpen(false)}
+        />
       </div>
 
-      {/* Products Grid */}
-      <div className="flex-grow p-4">
-            <h2>Our Products</h2>
+      {/* Main Content */}
+      <div className="flex-grow  p-4">
+        {/* Heading and SortOptions */}
+        <div className="flex  items-center justify-between p-2 ">
+          <h2 className="text-xl lg:text-2xl font-semibold px-8  ">Our Products</h2>
+          <SortOptions />
+        </div>
 
-            <SortOptions />
-            
-            <ProductGrid products={products} />
-
+        {/* Product Grid */}
+        <ProductGrid products={products} />
       </div>
     </div>
   );

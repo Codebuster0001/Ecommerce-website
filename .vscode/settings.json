@@ -1,0 +1,9 @@
+{
+  "editor.scrollbar.scrollByPage": false,
+  "editor.mouseWheelZoom": true,
+  "files.autoSave": "afterDelay",
+  "editor.fontSize": 20,
+  "terminal.integrated.fontLigatures.enabled": true,
+  "terminal.integrated.fontSize": 20,
+  "terminal.integrated.mouseWheelZoom": true
+}
