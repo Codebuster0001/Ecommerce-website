@@ -6,8 +6,10 @@ import { Toaster } from "sonner";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import Profile from "./Pages/Profile";
-import MyOrders from "./Pages/MyOrders";
 import CollectionPage from "./Pages/CollectionPage";
+import ProductDetails from "./Components/Products/ProductDetails";
+import NewArrivals from './Components/Products/NewArrivals';
+import Checkout from "./Components/Cart/Checkout";
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
           <Route path="register" element={<Register />} />
           <Route path="profile" element={<Profile />} />
           <Route path="collection/:collection" element={<CollectionPage/>}/>
+          <Route path="products/:id" element={<ProductDetails />} />
+          <Route path="checkout" element={<Checkout/>} />
           {/* Add more routes as needed */}
         </Route>
 

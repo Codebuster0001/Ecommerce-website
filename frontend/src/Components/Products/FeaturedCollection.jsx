@@ -23,7 +23,7 @@ rounded-3x1"
             fashion and function. Designed to make you look and feel great every
             day.
           </p>
-          <Link to="/collections/all" className="bg-black text-white py-3 text-lg px-6 rounded-lg hover:bg-gray-800 transition duration-300">
+          <Link to="/collection/all" className="bg-black text-white py-3 text-lg px-6 rounded-lg hover:bg-gray-800 transition duration-300">
             Shop
           </Link>
         </div>

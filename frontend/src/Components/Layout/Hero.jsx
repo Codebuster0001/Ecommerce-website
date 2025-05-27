@@ -49,7 +49,7 @@ const Hero = () => {
           </p>
           <div className="flex flex-col items-center w-[35%]">
             <Link
-              to="/products"
+              to="/collection/all"
               className={`${buttonStyle} bg-gray-900 text-white hover:bg-gray-800`}
             >
               Shop Now

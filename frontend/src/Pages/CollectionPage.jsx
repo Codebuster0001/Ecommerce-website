@@ -1,17 +1,16 @@
+// src/pages/CollectionPage.jsx
 import React, { useEffect, useRef, useState } from "react";
 import { FaFilter } from "react-icons/fa";
-import FilterSidebar from "../Components/Products/FilterSidebar";
-import SortOptions from "../Components/Products/SortOptions";
-import ProductGrid from "../Components/Products/ProductGrid";
+import FilterSidebar from "../components/Products/FilterSidebar";
+import ProductGrid from "../components/Products/ProductGrid";
+import SortOptions from './../Components/Products/SortOptions';
 
 const CollectionPage = () => {
   const [products, setProducts] = useState([]);
   const sidebarRef = useRef(null);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-  const toggleFilter = () => {
-    setIsFilterOpen(!isFilterOpen);
-  };
+  const toggleFilter = () => setIsFilterOpen(!isFilterOpen);
 
   const handleOutsideClick = (event) => {
     if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
@@ -84,7 +83,6 @@ const CollectionPage = () => {
 
   return (
     <div className="flex flex-col lg:flex-row px-4 py-8">
-      {/* Filter Button (visible only on small screens) */}
       <button
         className="lg:hidden p-2 mb-4 flex justify-center items-center gap-2 bg-gray-100 rounded"
         onClick={toggleFilter}
@@ -94,28 +92,21 @@ const CollectionPage = () => {
         Filters
       </button>
 
-      {/* Sidebar */}
       <div
         ref={sidebarRef}
         className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-50 transform transition-transform duration-300 ease-in-out
-          ${isFilterOpen ? "translate-x-0" : "-translate-x-full"}
-          lg:translate-x-0 lg:static lg:h-auto lg:w-64 lg:shadow-none`}
+        ${isFilterOpen ? "translate-x-0" : "-translate-x-full"}
+        lg:translate-x-0 lg:static lg:h-auto lg:w-64 lg:shadow-none`}
       >
-        <FilterSidebar
-          isOpen={isFilterOpen}
-          onClose={() => setIsFilterOpen(false)}
-        />
+        <FilterSidebar isOpen={isFilterOpen} onClose={() => setIsFilterOpen(false)} />
       </div>
 
-      {/* Main Content */}
-      <div className="flex-grow  p-4">
-        {/* Heading and SortOptions */}
-        <div className="flex  items-center justify-between p-2 ">
-          <h2 className="text-xl lg:text-2xl font-semibold px-8  ">Our Products</h2>
+      <div className="flex-grow p-4">
+        <div className="flex items-center justify-between p-2">
+          <h2 className="text-xl lg:text-2xl font-semibold px-8">Our Products</h2>
           <SortOptions />
         </div>
 
-        {/* Product Grid */}
         <ProductGrid products={products} />
       </div>
     </div>
