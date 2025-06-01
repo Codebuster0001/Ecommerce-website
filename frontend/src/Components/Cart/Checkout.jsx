@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import StripeButton from "./StripeButton";
+
 
 // Placeholder image for the product, as the original p1 import won't work directly
 const PRODUCT_IMAGE_PLACEHOLDER =
@@ -46,11 +46,12 @@ const Checkout = () => {
 
   // Function to handle payment success
   const handlePaymentSucess = (deatils) => {
-    // Here you would typically handle the payment success logic
-    console.log("Payment Successful with ID:", deatils);
-    navigate("order-confirmation")
+    console.log(deatils);
+    
+    navigate("/order-confirmation")
     
   };
+
 
   return (
     <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 font-sans">
@@ -274,17 +275,14 @@ const Checkout = () => {
                       Continue to Payment
                     </button>
                   ) : (
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-800">
-                        Checkout in Progress...
-                      </h3>
-                      {/**Payment Information */}
-                      <StripeButton amount={cart.totalPrice} 
-                        onSucess={handlePaymentSucess}
-                        onError={(error) => {
-                          console.error("Payment Error:", error);
-                        }}
-                      />
+                    <div className="flex items-center justify-center " >
+                      
+                     <button
+                      onClick={handlePaymentSucess}
+                     className="text-center bg-black text-white  rounded-md w-full py-2 hover:bg-gray-900 hover:text-gray-400 ">
+                          Pay Now
+                     </button>
+                  
                     </div>
                   )}
                 </div>
@@ -310,27 +308,42 @@ const Checkout = () => {
                     e.target.onerror = null;
                     e.target.src =
                       "https://placehold.co/80x80/E0E0E0/333333?text=Error";
-                  }}
-                />
-                <div className="flex-1">
-                  <p className="font-medium text-gray-900 text-lg">
+                    }}
+                  />
+                  <div className="flex-1">
+                    <p className="font-medium text-gray-900 text-lg">
                     {product.name}
-                  </p>
-                  <p className="text-sm text-gray-600">Size: {product.size}</p>
-                  <p className="text-sm text-gray-600">
+                    </p>
+                    <p className="text-sm text-gray-600">Size: {product.size}</p>
+                    <p className="text-sm text-gray-600">
                     Color: {product.color}
+                    </p>
+                  </div>
+                  <p className="font-semibold text-gray-900 text-lg">
+                    &#8377;{product.price.toFixed(2)}
                   </p>
-                </div>
-                <p className="font-semibold text-gray-900 text-lg">
-                  ${product.price.toFixed(2)}
-                </p>
-              </div>
-            ))}
+                  </div>
+                ))}
 
-            {/* Only Total Price */}
+                {/* Subtotal and Shipping */}
+                <div className="flex justify-between text-gray-700 text-base py-2">
+                  <span>Subtotal</span>
+                  <span>
+                  &#8377;
+                  {cart.products
+                    .reduce((sum, p) => sum + p.price, 0)
+                    .toFixed(2)}
+                  </span>
+                </div>
+                <div className="flex justify-between text-gray-700 text-base py-2">
+                  <span>Shipping</span>
+                  <span>Free</span>
+                </div>
+
+                
             <div className="flex justify-between font-bold text-gray-900 text-xl pt-4 border-t border-gray-200 mt-4">
               <span>Total</span>
-              <span>${cart.totalPrice.toFixed(2)}</span>
+              <span>&#8377;{cart.totalPrice.toFixed(2)}</span>
             </div>
           </div>
         </div>

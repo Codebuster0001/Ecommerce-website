@@ -10,30 +10,37 @@ import CollectionPage from "./Pages/CollectionPage";
 import ProductDetails from "./Components/Products/ProductDetails";
 import NewArrivals from './Components/Products/NewArrivals';
 import Checkout from "./Components/Cart/Checkout";
+import OrderConfirmationPage from "./Pages/OrderConfirmationPage";
+import MyOrders from "./Pages/MyOrders";
+import CartContent from './Components/Cart/CartContent';
 
 function App() {
   return (
     <>
       <Toaster position="top-right" richColors />
-      
-      <Routes >
-        {/* User Layout */}
-        <Route path="/" element={<UserLayout />}>
-          <Route index element={<Home />} />
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="collection/:collection" element={<CollectionPage/>}/>
-          <Route path="products/:id" element={<ProductDetails />} />
-          <Route path="checkout" element={<Checkout/>} />
-          {/* Add more routes as needed */}
-        </Route>
 
-        {/* Admin Layout - placeholder for future */}
-        {/* <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<AdminDashboard />} />
-        </Route> */}
-      </Routes>
+      <Routes>
+  <Route path="/" element={<UserLayout />}>
+    <Route index element={<Home />} />
+    <Route path="login" element={<Login />} />
+    <Route path="register" element={<Register />} />
+    <Route path="profile" element={<Profile />} />
+
+    {/* Route for "/collection" with optional query params */}
+    <Route path="collection" element={<CollectionPage />} />
+    
+    {/* Route for "/collection/:collection" if you want to match with param */}
+    <Route path="collection/:collection" element={<CollectionPage />} />
+
+    {/* Route for "/collections/:type" */}
+    <Route path="collections/:type" element={<CollectionPage />} />
+  <Route path="/cart" element={<CartContent />} />
+    <Route path="products/:id" element={<ProductDetails />} />
+    <Route path="checkout" element={<Checkout />} />
+    <Route path="order-confirmation" element={<OrderConfirmationPage />} />
+    <Route path="my-orders" element={<MyOrders />} />
+  </Route>
+</Routes>
     </>
   );
 }

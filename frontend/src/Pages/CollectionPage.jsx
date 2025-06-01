@@ -1,17 +1,77 @@
-// src/pages/CollectionPage.jsx
 import React, { useEffect, useRef, useState } from "react";
 import { FaFilter } from "react-icons/fa";
-import FilterSidebar from "../components/Products/FilterSidebar";
-import ProductGrid from "../components/Products/ProductGrid";
-import SortOptions from './../Components/Products/SortOptions';
+import { useSearchParams } from "react-router-dom";
+import FilterSidebar from "../Components/Products/FilterSidebar";
+import ProductGrid from "../Components/Products/ProductGrid";
+import SortOptions from "../Components/Products/SortOptions";
+import productsData from "../data/products"; // your products data
 
 const CollectionPage = () => {
   const [products, setProducts] = useState([]);
-  const sidebarRef = useRef(null);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const sidebarRef = useRef(null);
+  const [searchParams] = useSearchParams();
 
-  const toggleFilter = () => setIsFilterOpen(!isFilterOpen);
+  // Load products data
+  useEffect(() => {
+    setProducts(productsData);
+  }, []);
 
+  // Apply filtering and sorting based on URL query params
+  useEffect(() => {
+    const filters = Object.fromEntries(searchParams.entries());
+    let result = [...products];
+
+    const parseArrayParam = (param) => {
+      return filters[param] ? filters[param].split(",") : [];
+    };
+
+    const brandFilters = parseArrayParam("brand");
+    const sizeFilters = parseArrayParam("size");
+    const materialFilters = parseArrayParam("material");
+
+    const category = filters.category || "";
+    const gender = filters.gender || "";
+    const color = filters.color || "";
+    const maxPrice = filters.maxPrice ? parseFloat(filters.maxPrice) : 1000;
+    const sort = filters.sort || "default";
+
+    // Filter products
+    result = result.filter((product) => {
+      return (
+        (category ? product.category === category : true) &&
+        (gender ? product.gender?.toLowerCase() === gender.toLowerCase() : true) &&
+        (color ? product.color?.toLowerCase() === color.toLowerCase() : true) &&
+        (sizeFilters.length > 0 ? sizeFilters.includes(product.size) : true) &&
+        (brandFilters.length > 0 ? brandFilters.includes(product.brand) : true) &&
+        (materialFilters.length > 0 ? materialFilters.includes(product.material) : true) &&
+        product.price <= maxPrice
+      );
+    });
+
+    // Sort products
+    switch (sort) {
+      case "priceLowToHigh":
+        result.sort((a, b) => a.price - b.price);
+        break;
+      case "priceHighToLow":
+        result.sort((a, b) => b.price - a.price);
+        break;
+      case "nameAZ":
+        result.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case "nameZA":
+        result.sort((a, b) => b.name.localeCompare(a.name));
+        break;
+      default:
+        break;
+    }
+
+    setFilteredProducts(result);
+  }, [searchParams, products]);
+
+  // Close filter sidebar on outside click
   const handleOutsideClick = (event) => {
     if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
       setIsFilterOpen(false);
@@ -25,89 +85,29 @@ const CollectionPage = () => {
     };
   }, []);
 
-  useEffect(() => {
-    setTimeout(() => {
-      const fetchedProducts = [
-        {
-          _id: 1,
-          name: "Similar Product 1",
-          price: 35.0,
-          images: [{ url: "https://picsum.photos/500/500?random=13" }],
-        },
-        {
-          _id: 2,
-          name: "Another Great Shirt",
-          price: 48.0,
-          images: [{ url: "https://picsum.photos/500/500?random=14" }],
-        },
-        {
-          _id: 3,
-          name: "Casual Cotton Tee",
-          price: 22.75,
-          images: [{ url: "https://picsum.photos/500/500?random=15" }],
-        },
-        {
-          _id: 4,
-          name: "Premium Denim Shirt",
-          price: 59.99,
-          images: [{ url: "https://picsum.photos/500/500?random=16" }],
-        },
-        {
-          _id: 5,
-          name: "Stylish Blouse",
-          price: 45.0,
-          images: [{ url: "https://picsum.photos/500/500?random=17" }],
-        },
-        {
-          _id: 6,
-          name: "Elegant Dress",
-          price: 89.99,
-          images: [{ url: "https://picsum.photos/500/500?random=18" }],
-        },
-        {
-          _id: 7,
-          name: "Trendy Jacket",
-          price: 120.0,
-          images: [{ url: "https://picsum.photos/500/500?random=19" }],
-        },
-        {
-          _id: 8,
-          name: "Classic Trousers",
-          price: 55.0,
-          images: [{ url: "https://picsum.photos/500/500?random=20" }],
-        },
-      ];
-      setProducts(fetchedProducts);
-    }, 1000);
-  }, []);
-
   return (
-    <div className="flex flex-col lg:flex-row px-4 py-8">
-      <button
-        className="lg:hidden p-2 mb-4 flex justify-center items-center gap-2 bg-gray-100 rounded"
-        onClick={toggleFilter}
-        aria-label="Toggle Filter Sidebar"
-      >
-        <FaFilter />
-        Filters
-      </button>
-
-      <div
-        ref={sidebarRef}
-        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-50 transform transition-transform duration-300 ease-in-out
-        ${isFilterOpen ? "translate-x-0" : "-translate-x-full"}
-        lg:translate-x-0 lg:static lg:h-auto lg:w-64 lg:shadow-none`}
-      >
+    <div className="flex relative">
+      {/* Sidebar */}
+      <div ref={sidebarRef} className="z-20">
         <FilterSidebar isOpen={isFilterOpen} onClose={() => setIsFilterOpen(false)} />
       </div>
 
-      <div className="flex-grow p-4">
-        <div className="flex items-center justify-between p-2">
-          <h2 className="text-xl lg:text-2xl font-semibold px-8">Our Products</h2>
-          <SortOptions />
+      {/* Main Content */}
+      <div className="flex-1 px-4 lg:px-8 py-6">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-semibold">All Products</h2>
+          <div className="flex items-center gap-4">
+            <SortOptions />
+            <button
+              onClick={() => setIsFilterOpen(true)}
+              className="lg:hidden p-2 border border-gray-300 rounded-md text-gray-600 hover:text-gray-800"
+            >
+              <FaFilter />
+            </button>
+          </div>
         </div>
 
-        <ProductGrid products={products} />
+        <ProductGrid products={filteredProducts} />
       </div>
     </div>
   );

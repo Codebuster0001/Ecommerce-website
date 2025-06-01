@@ -1,23 +1,29 @@
+// Navbar.jsx
 import React, { useState, useEffect, useRef } from "react";
 import { FiUser, FiShoppingBag, FiSearch, FiX } from "react-icons/fi";
 import { HiBars3BottomRight } from "react-icons/hi2";
-import { Link } from "react-router-dom";
-import { logo } from "../../data/products"; // Ensure logo is JSX or a string
+import { Link, useLocation } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import CartDrawer from "../Layout/CartDrawer";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
+  // Use Redux state for cart
+  const cartItems = useSelector((state) => state.cart.cartItems);
+  const totalQuantity = useSelector((state) => state.cart.totalQuantity);
+
   const [showSearch, setShowSearch] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const mobileMenuRef = useRef(null);
   const cartDrawerRef = useRef(null);
 
+  const logo = "Shopy";
+
   const navLinks = [
-    { name: "MEN", to: "/collection/all" },
-    { name: "WOMEN", to: "/collection/women" },
-    { name: "TOP WEAR", to: "/collection/topwear" },
-    { name: "BOTTOM WEAR", to: "/collection/bottomwear" },
+    { name: "MEN", to: "/collection?gender=men" },
+    { name: "WOMEN", to: "/collection?gender=women" },
+    { name: "KIDS", to: "/collection?gender=kids" },
   ];
 
   const toggleSearch = () => setShowSearch(!showSearch);
@@ -56,11 +62,24 @@ const Navbar = () => {
       document.removeEventListener("mousedown", handleClickOutsideCartDrawer);
   }, [drawerOpen]);
 
-  // Dummy cart items - Replace with real logic
-  const cartItems = [
-    { name: "T-Shirt", quantity: 2, price: 19.99 },
-    { name: "Jeans", quantity: 1, price: 39.99 },
-  ];
+  // Get current path and query params for active link styling
+  const location = useLocation();
+
+  // Function to check if a nav link is active based on URL query params
+  const isLinkActive = (linkTo) => {
+    try {
+      const url = new URL(linkTo, window.location.origin);
+      const currentUrl = new URL(window.location.href);
+      // Compare pathname and each search param key+value
+      if (url.pathname !== currentUrl.pathname) return false;
+      for (const [key, val] of url.searchParams) {
+        if (currentUrl.searchParams.get(key) !== val) return false;
+      }
+      return true;
+    } catch {
+      return false;
+    }
+  };
 
   return (
     <nav className="w-full bg-white px-6 py-4 z-50 relative shadow">
@@ -77,7 +96,9 @@ const Navbar = () => {
               <li key={link.name}>
                 <Link
                   to={link.to}
-                  className="hover:text-gray-700 transition-colors"
+                  className={`hover:text-gray-700 transition-colors ${
+                    isLinkActive(link.to) ? "text-blue-600 font-semibold" : ""
+                  }`}
                 >
                   {link.name}
                 </Link>
@@ -121,9 +142,11 @@ const Navbar = () => {
             aria-label="Shopping Bag"
           >
             <FiShoppingBag className="cursor-pointer hover:text-black transition" />
-            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5">
-              {cartItems.length}
-            </span>
+            {totalQuantity > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5">
+                {totalQuantity}
+              </span>
+            )}
           </button>
 
           {/* Mobile Menu Button */}
@@ -157,7 +180,9 @@ const Navbar = () => {
               <Link
                 to={link.to}
                 onClick={toggleMobileMenu}
-                className="text-gray-800 hover:text-black"
+                className={`text-gray-800 hover:text-black ${
+                  isLinkActive(link.to) ? "text-blue-600 font-semibold" : ""
+                }`}
               >
                 {link.name}
               </Link>
@@ -168,7 +193,11 @@ const Navbar = () => {
 
       {/* Cart Drawer */}
       <div ref={cartDrawerRef}>
-        <CartDrawer drawerOpen={drawerOpen} toggleCartDrawer={toggleCartDrawer} />
+        <CartDrawer
+          drawerOpen={drawerOpen}
+          toggleCartDrawer={toggleCartDrawer}
+          cartItems={cartItems}  // Pass real cart items
+        />
       </div>
     </nav>
   );

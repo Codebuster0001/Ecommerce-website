@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import men from '../../assets/men.avif';
-import women from '../../assets/women.jpg';
-import kids from '../../assets/children.avif';
+import men from '../../assets/mens-collection.webp';
+import women from '../../assets/womens-collection.webp';
+import kids from '../../assets/kids.jpg';
 
 const collections = [
   {

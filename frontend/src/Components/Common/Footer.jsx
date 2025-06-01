@@ -26,7 +26,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-white text-gray-700 py-12 px-4 sm:px-6 lg:px-8 mt-10">
+    <footer className="bg-white border-t text-gray-700 py-12 px-4 sm:px-6 lg:px-8 mt-10">
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
         
         {/* Newsletter */}

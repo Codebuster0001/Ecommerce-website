@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const FeaturedCollection = () => {
   return (
-    <section className="py-16 px-4 lg:px-0">
+    <section className="py-16 px-4 lg:px-8">
       <div
         className="container mx-auto flex  flex-col-reverse lg:flex-row items-center bg-green-50
 rounded-3x1"

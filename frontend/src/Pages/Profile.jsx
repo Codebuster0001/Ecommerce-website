@@ -1,22 +1,33 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import MyOrders from './MyOrders';
 
 const Profile = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // You can also clear auth tokens or user data here before redirecting
+    navigate('/');  // navigate to homepage
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       <div className="flex-grow container mx-auto p-4 md:p-6">
         <div className="flex flex-col md:flex-row md:space-x-6">
-          
+
           {/* Profile Sidebar */}
           <div className="w-full md:w-1/3 lg:w-1/4 bg-white shadow-lg rounded-lg p-6">
             <div className="text-center">
-              <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-gray-200 flex items-center justify-center text-2xl font-bold text-white bg-blue-500">
+              <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-gray-200 flex items-center justify-center text-2xl font-bold text-white hover:bg-blue-400">
                 DK
               </div>
               <h1 className="text-xl font-semibold">Deepak Kushwaha</h1>
               <p className="text-gray-500 text-sm">your@gmail.com</p>
             </div>
-            <button className="mt-6 w-full bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-md transition">
+            <button
+              onClick={handleLogout}
+              className="mt-6 w-full bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-md transition"
+            >
               Log Out
             </button>
           </div>

@@ -1,133 +1,144 @@
-import React, { useState } from 'react';
-import { AiOutlineShoppingCart, AiOutlineTag, AiOutlineBgColors } from 'react-icons/ai';
-import { toast } from 'sonner';
-import { FiMinus, FiPlus } from 'react-icons/fi';
-import ProductGrid from './ProductGrid'; // You should define this if you want to show similar products
-
-const selectedProduct = {
-  name: 'UrbanEase Slim-Fit Shirt',
-  price: 42.50,
-  description:
-    'A comfortable and stylish slim-fit shirt, perfect for everyday wear. Crafted from a breathable fabric that stays crisp throughout the day. Features a modern collar, subtle button placket, and a tailored back yoke.',
-  color: ['#4A5568', '#EDF2F7', '#2B6CB0', '#805AD5'],
-  size: ['XS', 'S', 'M', 'L', 'XL'],
-  brand: 'UrbanEase Outfitters',
-  material: 'SoftBlend Cotton',
-  images: [
-    "https://picsum.photos/500/500?random=11",
-    "https://picsum.photos/500/500?random=12",
-  ],
-};
-
-const similarProducts = [
-  {
-    _id: 1,
-    name: 'Similar Product 1',
-    price: 35.00,
-    images: [{ url: "https://picsum.photos/500/500?random=13" }],
-  },
-  {
-    _id: 2,
-    name: 'Another Great Shirt',
-    price: 48.00,
-    images: [{ url: "https://picsum.photos/500/500?random=14" }],
-  },
-  {
-    _id: 3,
-    name: 'Casual Cotton Tee',
-    price: 22.75,
-    images: [{ url: "https://picsum.photos/500/500?random=15" }],
-  },
-  {
-    _id: 4,
-    name: 'Premium Denim Shirt',
-    price: 59.99,
-    images: [{ url: "https://picsum.photos/500/500?random=16" }],
-  },
-];
+import React, { useEffect, useState } from "react";
+import {
+  AiOutlineShoppingCart,
+  AiOutlineTag,
+  AiOutlineBgColors,
+} from "react-icons/ai";
+import { toast } from "sonner";
+import { FiMinus, FiPlus } from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProductById, clearProduct } from "../../features/productsSlice";
+import { addToCart } from "../../features/cartSlice";
+import { useParams } from "react-router-dom";
+import productsData from "../../data/products";
 
 const ProductDetails = () => {
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const { product, status, error } = useSelector((state) => state.product);
+
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const [mainImage, setMainImage] = useState(selectedProduct.images[0]);
+  const [mainImage, setMainImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    dispatch(fetchProductById(id));
+    return () => dispatch(clearProduct());
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    if (product?.images?.[0]) {
+      setMainImage(product.images[0].url);
+    }
+  }, [product]);
 
   const handleColorSelect = (color) => setSelectedColor(color);
   const handleSizeSelect = (size) => setSelectedSize(size);
   const handleQuantityChange = (action) => {
-    if (action === 'increase') {
-      setQuantity((prev) => prev + 1);
-    } else if (action === 'decrease' && quantity > 1) {
-      setQuantity((prev) => prev - 1);
-    }
+    setQuantity((prev) => {
+      if (action === "increase") return prev + 1;
+      if (action === "decrease") return prev > 1 ? prev - 1 : 1;
+      return prev;
+    });
   };
 
   const handleAddToCart = () => {
     if (!selectedColor || !selectedSize) {
-      toast.error('Please select both color and size.');
+      toast.error("Please select both color and size.");
       return;
     }
 
+    const cartItem = {
+      productId: product.id,
+      name: product.name,
+      price: product.discountPrice || product.price,
+      quantity,
+      image: product.images[0].url,
+      color: selectedColor,
+      size: selectedSize,
+      description: product.description,
+    };
+
     setIsLoading(true);
     setTimeout(() => {
-      setSelectedColor(null);
-      setSelectedSize(null);
+      dispatch(addToCart(cartItem));
       setIsLoading(false);
-      toast.success(`${quantity} item(s) added to your cart!`);
+      toast.success(`${quantity} item(s) added to cart.`);
     }, 1000);
   };
 
-  const handleImageSwitch = (image) => {
-    setMainImage(image);
-  };
+  const handleImageSwitch = (url) => setMainImage(url);
+
+  if (status === "loading") return <div className="p-10 text-center">Loading...</div>;
+  if (status === "failed") return <div className="p-10 text-red-500 text-center">Error: {error}</div>;
+  if (!product) return null;
+
+  const relatedProducts = productsData.filter(
+    (p) => p.category === product.category && p.id !== product.id
+  );
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-16">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Image Section */}
+        {/* Product Image */}
         <div>
           <img src={mainImage} alt="Main" className="w-full h-[500px] object-cover rounded-lg shadow" />
           <div className="flex gap-3 mt-4">
-            {selectedProduct.images.map((img, index) => (
+            {product.images.map((img, index) => (
               <img
                 key={index}
-                src={img}
-                alt={`Thumb ${index}`}
-                onClick={() => handleImageSwitch(img)}
-                className={`w-20 h-20 object-cover rounded-md cursor-pointer border ${mainImage === img ? 'border-black' : 'border-gray-300'}`}
+                src={img.url}
+                alt={img.altText || `Thumb ${index}`}
+                onClick={() => handleImageSwitch(img.url)}
+                className={`w-20 h-20 object-cover rounded-md cursor-pointer border ${
+                  mainImage === img.url ? "border-black" : "border-gray-300"
+                }`}
               />
             ))}
           </div>
         </div>
 
-        {/* Info Section */}
+        {/* Product Info */}
         <div>
-          <h1 className="text-3xl font-semibold mb-2">{selectedProduct.name}</h1>
-          <p className="text-xl text-slate-700 mb-4">${selectedProduct.price.toFixed(2)}</p>
-          <p className="text-gray-600 mb-6">{selectedProduct.description}</p>
+          <h1 className="text-3xl font-semibold mb-2">{product.name}</h1>
+          <p className="text-xl text-slate-700 mb-4">${product.discountPrice || product.price}</p>
+          <p className="text-gray-600 mb-6">{product.description}</p>
 
+          {/* Color Picker */}
           <div className="mb-4">
-            <h4 className="font-medium flex items-center gap-2 mb-2"><AiOutlineBgColors /> Color</h4>
+            <h4 className="font-medium flex items-center gap-2 mb-2">
+              <AiOutlineBgColors /> Color
+            </h4>
             <div className="flex gap-3">
-              {selectedProduct.color.map((clr, i) => (
+              {product.colors.map((clr, i) => (
                 <button
                   key={i}
-                  style={{ backgroundColor: clr }}
-                  className={`w-8 h-8 rounded-full border-2 ${selectedColor === clr ? 'border-black' : 'border-gray-300'}`}
+                  className={`w-8 h-8 rounded-full border-2 ${
+                    selectedColor === clr ? "border-black" : "border-gray-300"
+                  }`}
+                  style={{ backgroundColor: clr.toLowerCase() }}
                   onClick={() => handleColorSelect(clr)}
                 />
               ))}
             </div>
           </div>
 
+          {/* Size Picker */}
           <div className="mb-4">
-            <h4 className="font-medium flex items-center gap-2 mb-2"><AiOutlineTag /> Size</h4>
+            <h4 className="font-medium flex items-center gap-2 mb-2">
+              <AiOutlineTag /> Size
+            </h4>
             <div className="flex gap-3">
-              {selectedProduct.size.map((sz, i) => (
+              {product.sizes.map((sz, i) => (
                 <button
                   key={i}
-                  className={`px-4 py-2 border rounded-md text-sm font-medium transition ${selectedSize === sz ? 'bg-black text-white' : 'bg-white text-black border-gray-300 hover:bg-gray-100'}`}
+                  className={`px-4 py-2 border rounded-md text-sm font-medium transition ${
+                    selectedSize === sz
+                      ? "bg-black text-white"
+                      : "bg-white text-black border-gray-300 hover:bg-gray-100"
+                  }`}
                   onClick={() => handleSizeSelect(sz)}
                 >
                   {sz}
@@ -140,34 +151,58 @@ const ProductDetails = () => {
           <div className="flex items-center gap-4 mb-6">
             <span className="font-medium">Quantity:</span>
             <div className="flex items-center border rounded-md">
-              <button className="p-2" onClick={() => handleQuantityChange('decrease')}><FiMinus /></button>
+              <button className="p-2" onClick={() => handleQuantityChange("decrease")}>
+                <FiMinus />
+              </button>
               <span className="px-4">{quantity}</span>
-              <button className="p-2" onClick={() => handleQuantityChange('increase')}><FiPlus /></button>
+              <button className="p-2" onClick={() => handleQuantityChange("increase")}>
+                <FiPlus />
+              </button>
             </div>
           </div>
 
-          {/* Add to Cart */}
+          {/* Add to Cart Button */}
           <button
             disabled={isLoading}
             onClick={handleAddToCart}
             className="bg-black text-white px-6 py-3 rounded-md hover:bg-gray-800 transition"
           >
             <AiOutlineShoppingCart className="inline-block mr-2" />
-            {isLoading ? 'Adding...' : 'Add to Cart'}
+            {isLoading ? "Adding..." : "Add to Cart"}
           </button>
 
-          {/* Extra Details */}
+          {/* Additional Info */}
           <div className="mt-6 text-sm text-slate-500">
-            <p><strong>Brand:</strong> {selectedProduct.brand}</p>
-            <p><strong>Material:</strong> {selectedProduct.material}</p>
+            <p><strong>Brand:</strong> {product.brand}</p>
+            <p><strong>Material:</strong> {product.material}</p>
           </div>
         </div>
       </div>
 
-      {/* Similar Products */}
+      {/* Related Products */}
       <div className="mt-16">
-        <h2 className="text-2xl font-semibold mb-6">You May Also Like</h2>
-        <ProductGrid products={similarProducts} />
+        <h2 className="text-2xl font-semibold mb-6">Related Products</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+          {relatedProducts.length > 0 ? (
+            relatedProducts.map((relProd) => (
+              <div
+                key={relProd.id}
+                className="border rounded-md p-4 cursor-pointer hover:shadow-lg transition"
+                onClick={() => window.location.assign(`/product/${relProd.id}`)}
+              >
+                <img
+                  src={relProd.images[0]?.url}
+                  alt={relProd.name}
+                  className="w-full h-40 object-cover rounded-md mb-3"
+                />
+                <h3 className="font-medium text-lg">{relProd.name}</h3>
+                <p className="text-gray-700">${relProd.discountPrice || relProd.price}</p>
+              </div>
+            ))
+          ) : (
+            <p>No related products found.</p>
+          )}
+        </div>
       </div>
     </div>
   );

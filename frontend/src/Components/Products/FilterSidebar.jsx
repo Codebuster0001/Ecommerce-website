@@ -1,11 +1,12 @@
+// src/components/Products/FilterSidebar.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-const FilterSidebar = () => {
+const FilterSidebar = ({ isOpen, onClose }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const [filters, setFilters] = useState({
+  const defaultFilters = {
     category: "",
     gender: "",
     color: "",
@@ -14,15 +15,13 @@ const FilterSidebar = () => {
     brand: [],
     minPrice: 0,
     maxPrice: 1000,
-  });
+  };
 
+  const [filters, setFilters] = useState(defaultFilters);
   const [priceRange, setPriceRange] = useState([0, 1000]);
 
   const categories = ["Top Wear", "Bottom Wear"];
-  const colors = [
-    "Red", "Blue", "Green", "Black", "White", "Yellow",
-    "Pink", "Navy", "Beige", "Gray",
-  ];
+  const colors = ["Red", "Blue", "Green", "Black", "White", "Yellow", "Pink", "Navy", "Beige", "Gray"];
   const sizes = ["S", "M", "L", "XL", "XXL"];
   const materials = ["Cotton", "Polyester", "Wool", "Silk", "Denim"];
   const genders = ["Men", "Women"];
@@ -43,10 +42,7 @@ const FilterSidebar = () => {
       maxPrice: params.maxPrice ? parseFloat(params.maxPrice) : 1000,
     });
 
-    setPriceRange([
-      0,
-      params.maxPrice ? parseFloat(params.maxPrice) : 1000,
-    ]);
+    setPriceRange([0, params.maxPrice ? parseFloat(params.maxPrice) : 1000]);
   }, [searchParams]);
 
   const handleFilterChange = (e) => {
@@ -98,11 +94,26 @@ const FilterSidebar = () => {
     updateURLParams(newFilters);
   };
 
+  const handleResetFilters = () => {
+    setFilters(defaultFilters);
+    setPriceRange([0, 1000]);
+    setSearchParams({});
+    navigate(window.location.pathname);
+  };
+
   return (
-    <div className="p-4 border-r">
+    <div className={`p-4 border-r bg-white h-full transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'} lg:static lg:w-64`}>
+      <div className="lg:hidden flex justify-end mb-4">
+        <button onClick={onClose} className="p-2 rounded-md text-gray-600 hover:text-gray-800 focus:outline-none">
+          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
       <h3 className="text-xl font-medium text-gray-800 mb-4">Filter</h3>
 
-      {/* Category Filter */}
+      {/* Category */}
       <div className="mb-6">
         <label className="block text-gray-800 font-medium mb-2">Category</label>
         {categories.map((category) => (
@@ -120,7 +131,7 @@ const FilterSidebar = () => {
         ))}
       </div>
 
-      {/* Gender Filter */}
+      {/* Gender */}
       <div className="mb-6">
         <label className="block text-gray-800 font-medium mb-2">Gender</label>
         {genders.map((gender) => (
@@ -138,7 +149,7 @@ const FilterSidebar = () => {
         ))}
       </div>
 
-      {/* Color Filter */}
+      {/* Color */}
       <div className="mb-6">
         <label className="block text-gray-800 font-medium mb-2">Color</label>
         <div className="flex flex-wrap gap-2">
@@ -146,7 +157,7 @@ const FilterSidebar = () => {
             <button
               key={color}
               type="button"
-              className={`w-8 h-8 rounded-full border border-gray-300 transition hover:scale-105 ${
+              className={`w-8 h-8 rounded-full border border-gray-300 transition hover:scale-105 focus:outline-none ${
                 filters.color === color ? "ring-2 ring-blue-500" : ""
               }`}
               style={{ backgroundColor: color.toLowerCase() }}
@@ -166,7 +177,7 @@ const FilterSidebar = () => {
         </div>
       </div>
 
-      {/* Size Filter */}
+      {/* Size */}
       <div className="mb-6">
         <label className="block text-gray-800 font-medium mb-2">Size</label>
         {sizes.map((size) => (
@@ -184,7 +195,7 @@ const FilterSidebar = () => {
         ))}
       </div>
 
-      {/* Material Filter */}
+      {/* Material */}
       <div className="mb-6">
         <label className="block text-gray-800 font-medium mb-2">Material</label>
         {materials.map((material) => (
@@ -202,7 +213,7 @@ const FilterSidebar = () => {
         ))}
       </div>
 
-      {/* Brand Filter */}
+      {/* Brand */}
       <div className="mb-6">
         <label className="block text-gray-800 font-medium mb-2">Brand</label>
         {brands.map((brand) => (
@@ -220,9 +231,11 @@ const FilterSidebar = () => {
         ))}
       </div>
 
-      {/* Price Range Filter */}
+      {/* Price Range */}
       <div className="mb-8">
-        <label className="block text-gray-600 font-medium mb-2">Price</label>
+        <label className="block text-gray-600 font-medium mb-2">
+          Price (Max: ${priceRange[1]})
+        </label>
         <input
           type="range"
           name="priceRange"
@@ -234,9 +247,19 @@ const FilterSidebar = () => {
           className="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer"
         />
         <div className="flex justify-between text-sm text-gray-600 mt-2">
-          <span className="text-gray-700">Min: ${priceRange[0]}</span>
+          <span className="text-gray-700">Min: $0</span>
           <span className="text-gray-700">Max: ${priceRange[1]}</span>
         </div>
+      </div>
+
+      {/* Reset Button */}
+      <div className="mt-4">
+        <button
+          onClick={handleResetFilters}
+          className="w-full px-4 py-2 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-md"
+        >
+          Reset Filters
+        </button>
       </div>
     </div>
   );

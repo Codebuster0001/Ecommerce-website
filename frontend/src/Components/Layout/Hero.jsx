@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { motion, useInView, useAnimation } from 'framer-motion';
-import heroImage from '../../assets/p3.webp';
+import heroImage from '../../assets/rabbit-hero.webp';
 import { Link } from 'react-router-dom';
 
 const Hero = () => {
