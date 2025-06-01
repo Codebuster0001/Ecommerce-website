@@ -1,18 +1,22 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { addToCart, decreaseQuantity, removeFromCart } from '../../features/cartSlice';
-import { FiMinus, FiPlus, FiTrash2 } from 'react-icons/fi';
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addToCart,
+  decreaseQuantity,
+  removeFromCart,
+} from "../../features/cartSlice";
+import { FiMinus, FiPlus, FiTrash2 } from "react-icons/fi";
 
 const CartContent = () => {
-  const cartItems = useSelector(state => state.cart.cartItems || []);
+  const cartItems = useSelector((state) => state.cart.cartItems || []);
   const dispatch = useDispatch();
 
   const handleQuantityChange = (id, action) => {
-    if (action === 'increase') {
+    if (action === "increase") {
       // Dispatch addToCart with quantity 1 for that item
-      const item = cartItems.find(item => item.id === id);
+      const item = cartItems.find((item) => item.id === id);
       if (item) dispatch(addToCart({ ...item, quantity: 1 }));
-    } else if (action === 'decrease') {
+    } else if (action === "decrease") {
       dispatch(decreaseQuantity(id));
     }
   };
@@ -27,9 +31,9 @@ const CartContent = () => {
         <p className="text-gray-500 text-center">Your cart is empty.</p>
       ) : (
         <div className="space-y-4">
-          {cartItems.map(item => (
+          {cartItems.map((item, index) => (
             <div
-              key={item.id}
+              key={`${item.id}-${item.size}-${item.color}-${index}`}
               className="flex items-center gap-4 p-3 shadow-sm border rounded-md relative"
             >
               <img
@@ -46,13 +50,13 @@ const CartContent = () => {
                 </div>
 
                 <div className="text-gray-500 text-xs mt-1">
-                  Size: {item.size || 'N/A'} | Color: {item.color || 'N/A'}
+                  Size: {item.size || "N/A"} | Color: {item.color || "N/A"}
                 </div>
 
                 {/* Quantity Controls */}
                 <div className="flex items-center gap-2 mt-2">
                   <button
-                    onClick={() => handleQuantityChange(item.id, 'decrease')}
+                    onClick={() => handleQuantityChange(item.id, "decrease")}
                     className="p-1 border rounded hover:bg-gray-100"
                     aria-label="Decrease quantity"
                   >
@@ -60,7 +64,7 @@ const CartContent = () => {
                   </button>
                   <span className="px-2 text-sm">{item.quantity}</span>
                   <button
-                    onClick={() => handleQuantityChange(item.id, 'increase')}
+                    onClick={() => handleQuantityChange(item.id, "increase")}
                     className="p-1 border rounded hover:bg-gray-100"
                     aria-label="Increase quantity"
                   >

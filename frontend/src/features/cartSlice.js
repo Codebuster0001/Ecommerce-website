@@ -4,7 +4,6 @@ const initialState = {
   cartItems: [],
   totalQuantity: 0,
   totalPrice: 0,
-  isCartOpen: false,
 };
 
 const cartSlice = createSlice({
@@ -12,53 +11,56 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action) => {
-      const item = action.payload;
-      const existingItem = state.cartItems.find((i) => i.id === item.id);
+      const newItem = action.payload;
+
+      // Always clone object to avoid shared reference bugs
+      const existingItem = state.cartItems.find(
+        item =>
+          item.id === newItem.id &&
+          item.size === newItem.size &&
+          item.color === newItem.color
+      );
 
       if (existingItem) {
-        existingItem.quantity += item.quantity || 1;
+        existingItem.quantity += newItem.quantity || 1;
       } else {
-        state.cartItems.push({ ...item, quantity: item.quantity || 1 });
+        state.cartItems.push({ ...newItem, quantity: newItem.quantity || 1 });
       }
-      state.totalQuantity += item.quantity || 1;
-      state.totalPrice += (item.price || 0) * (item.quantity || 1);
-      state.isCartOpen = true; // Automatically open cart when item is added
+
+      // Recalculate totals
+      updateTotals(state);
     },
+
     decreaseQuantity: (state, action) => {
-      const id = action.payload;
-      const existingItem = state.cartItems.find((i) => i.id === id);
-      if (existingItem) {
-        if (existingItem.quantity > 1) {
-          existingItem.quantity -= 1;
-          state.totalQuantity -= 1;
-          state.totalPrice -= existingItem.price;
+      const { id, size, color } = action.payload;
+      const item = state.cartItems.find(
+        item => item.id === id && item.size === size && item.color === color
+      );
+
+      if (item) {
+        if (item.quantity > 1) {
+          item.quantity -= 1;
         } else {
-          // Remove item if quantity reaches 0
-          state.cartItems = state.cartItems.filter((i) => i.id !== id);
-          state.totalQuantity -= 1;
-          state.totalPrice -= existingItem.price;
+          state.cartItems = state.cartItems.filter(
+            item => !(item.id === id && item.size === size && item.color === color)
+          );
         }
       }
+
+      // Recalculate totals
+      updateTotals(state);
     },
 
     removeFromCart: (state, action) => {
-      const id = action.payload;
-      const item = state.cartItems.find((i) => i.id === id);
-      if (item) {
-        state.totalQuantity -= item.quantity;
-        state.totalPrice -= item.price * item.quantity;
-        state.cartItems = state.cartItems.filter((i) => i.id !== id);
-      }
+      const { id, size, color } = action.payload;
+      state.cartItems = state.cartItems.filter(
+        item => !(item.id === id && item.size === size && item.color === color)
+      );
+
+      // Recalculate totals
+      updateTotals(state);
     },
-    toggleCart: (state) => {
-      state.isCartOpen = !state.isCartOpen;
-    },
-    openCart: (state) => {
-      state.isCartOpen = true;
-    },
-    closeCart: (state) => {
-      state.isCartOpen = false;
-    },
+
     clearCart: (state) => {
       state.cartItems = [];
       state.totalQuantity = 0;
@@ -67,13 +69,20 @@ const cartSlice = createSlice({
   },
 });
 
+// Helper to update totals
+const updateTotals = (state) => {
+  state.totalQuantity = state.cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  state.totalPrice = state.cartItems.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
+};
+
 export const {
   addToCart,
   decreaseQuantity,
   removeFromCart,
-  toggleCart,
-  openCart,
-  closeCart,
   clearCart,
 } = cartSlice.actions;
+
 export default cartSlice.reducer;
