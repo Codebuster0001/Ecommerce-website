@@ -11,18 +11,19 @@ const CartContent = () => {
   const cartItems = useSelector((state) => state.cart.cartItems || []);
   const dispatch = useDispatch();
 
-  const handleQuantityChange = (id, action) => {
+  const getUniqueKey = (item) => `${item.id}-${item.size}-${item.color}`;
+
+  const handleQuantityChange = (item, action) => {
+    const key = getUniqueKey(item);
     if (action === "increase") {
-      // Dispatch addToCart with quantity 1 for that item
-      const item = cartItems.find((item) => item.id === id);
-      if (item) dispatch(addToCart({ ...item, quantity: 1 }));
+      dispatch(addToCart({ ...item, quantity: 1 }));
     } else if (action === "decrease") {
-      dispatch(decreaseQuantity(id));
+      dispatch(decreaseQuantity(key));
     }
   };
 
-  const handleRemoveItem = (id) => {
-    dispatch(removeFromCart(id));
+  const handleRemoveItem = (item) => {
+    dispatch(removeFromCart(getUniqueKey(item)));
   };
 
   return (
@@ -53,10 +54,9 @@ const CartContent = () => {
                   Size: {item.size || "N/A"} | Color: {item.color || "N/A"}
                 </div>
 
-                {/* Quantity Controls */}
                 <div className="flex items-center gap-2 mt-2">
                   <button
-                    onClick={() => handleQuantityChange(item.id, "decrease")}
+                    onClick={() => handleQuantityChange(item, "decrease")}
                     className="p-1 border rounded hover:bg-gray-100"
                     aria-label="Decrease quantity"
                   >
@@ -64,7 +64,7 @@ const CartContent = () => {
                   </button>
                   <span className="px-2 text-sm">{item.quantity}</span>
                   <button
-                    onClick={() => handleQuantityChange(item.id, "increase")}
+                    onClick={() => handleQuantityChange(item, "increase")}
                     className="p-1 border rounded hover:bg-gray-100"
                     aria-label="Increase quantity"
                   >
@@ -73,9 +73,8 @@ const CartContent = () => {
                 </div>
               </div>
 
-              {/* Remove Button */}
               <button
-                onClick={() => handleRemoveItem(item.id)}
+                onClick={() => handleRemoveItem(item)}
                 className="absolute top-12 right-6 text-red-500 hover:text-red-700"
                 aria-label="Remove item"
               >

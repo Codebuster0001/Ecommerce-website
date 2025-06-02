@@ -1,5 +1,5 @@
-const products = [
-  {
+const productsData = {
+  products: [{
     _id: "PROD-001",
     name: "Classic Oxford Button-Down Shirt",
     description:
@@ -473,5 +473,31 @@ const products = [
     rating: 4.5,
     numReviews: 22,
   },
-];
-export default products;
+],
+ placeholderProducts : [
+  {
+    _id: "1",
+    name: "Sample Product",
+    price: 49.99,
+    discountPrice: 39.99,
+    category: "Shoes",
+    brand: "Sample Brand",
+    material: "Leather",
+    description: "This is a sample product description.",
+    colors: ["Red", "Blue"],
+    sizes: ["S", "M", "L"],
+    images: [
+      { url: "/assets/sample1.jpg", altText: "Sample Image 1" },
+      { url: "/assets/sample2.jpg", altText: "Sample Image 2" }
+    ]
+  },
+  // Add more sample products as needed
+ ]
+
+};
+// src/data/placeholderProducts.js
+
+
+
+
+export default productsData;

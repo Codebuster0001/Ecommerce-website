@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from "react";
-import {
-  AiOutlineShoppingCart,
-  AiOutlineTag,
-  AiOutlineBgColors,
-} from "react-icons/ai";
-import { toast } from "sonner";
+import { AiOutlineShoppingCart, AiOutlineTag, AiOutlineBgColors } from "react-icons/ai";
 import { FiMinus, FiPlus } from "react-icons/fi";
+import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams, useNavigate } from "react-router-dom";
 import { fetchProductById, clearProduct } from "../../features/productsSlice";
 import { addToCart } from "../../features/cartSlice";
-import { useParams } from "react-router-dom";
-import productsData from "../../data/products";
+import productsData from "../../data/products"; // This imports the whole object with .products array
 
 const ProductDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { product, status, error } = useSelector((state) => state.product);
 
@@ -23,6 +20,9 @@ const ProductDetails = () => {
   const [mainImage, setMainImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  // Use the products array inside productsData
+  const localProduct = productsData.products.find((p) => p._id?.toString() === id);
+
   useEffect(() => {
     dispatch(fetchProductById(id));
     return () => dispatch(clearProduct());
@@ -31,8 +31,12 @@ const ProductDetails = () => {
   useEffect(() => {
     if (product?.images?.[0]) {
       setMainImage(product.images[0].url);
+    } else if (localProduct?.images?.[0]) {
+      setMainImage(localProduct.images[0].url);
     }
-  }, [product]);
+  }, [product, localProduct]);
+
+  const currentProduct = product || localProduct;
 
   const handleColorSelect = (color) => setSelectedColor(color);
   const handleSizeSelect = (size) => setSelectedSize(size);
@@ -51,14 +55,14 @@ const ProductDetails = () => {
     }
 
     const cartItem = {
-      productId: product.id,
-      name: product.name,
-      price: product.discountPrice || product.price,
+      productId: currentProduct.id || currentProduct._id,
+      name: currentProduct.name,
+      price: currentProduct.discountPrice || currentProduct.price,
       quantity,
-      image: product.images[0].url,
+      image: currentProduct.images[0]?.url,
       color: selectedColor,
       size: selectedSize,
-      description: product.description,
+      description: currentProduct.description,
     };
 
     setIsLoading(true);
@@ -72,11 +76,13 @@ const ProductDetails = () => {
   const handleImageSwitch = (url) => setMainImage(url);
 
   if (status === "loading") return <div className="p-10 text-center">Loading...</div>;
-  if (status === "failed") return <div className="p-10 text-red-500 text-center">Error: {error}</div>;
-  if (!product) return null;
+  if (status === "failed" && !localProduct)
+    return <div className="p-10 text-red-500 text-center">Error: {error}</div>;
+  if (!currentProduct) return <p className="text-center text-red-500">Error: Product not found</p>;
 
-  const relatedProducts = productsData.filter(
-    (p) => p.category === product.category && p.id !== product.id
+  // relatedProducts from the products array inside productsData
+  const relatedProducts = productsData.products.filter(
+    (p) => p.category === currentProduct.category && p.id !== currentProduct.id
   );
 
   return (
@@ -86,7 +92,7 @@ const ProductDetails = () => {
         <div>
           <img src={mainImage} alt="Main" className="w-full h-[500px] object-cover rounded-lg shadow" />
           <div className="flex gap-3 mt-4">
-            {product.images.map((img, index) => (
+            {currentProduct.images?.map((img, index) => (
               <img
                 key={index}
                 src={img.url}
@@ -102,50 +108,56 @@ const ProductDetails = () => {
 
         {/* Product Info */}
         <div>
-          <h1 className="text-3xl font-semibold mb-2">{product.name}</h1>
-          <p className="text-xl text-slate-700 mb-4">${product.discountPrice || product.price}</p>
-          <p className="text-gray-600 mb-6">{product.description}</p>
+          <h1 className="text-3xl font-semibold mb-2">{currentProduct.name}</h1>
+          <p className="text-xl text-slate-700 mb-4">
+            ${currentProduct.discountPrice || currentProduct.price}
+          </p>
+          <p className="text-gray-600 mb-6">{currentProduct.description}</p>
 
           {/* Color Picker */}
-          <div className="mb-4">
-            <h4 className="font-medium flex items-center gap-2 mb-2">
-              <AiOutlineBgColors /> Color
-            </h4>
-            <div className="flex gap-3">
-              {product.colors.map((clr, i) => (
-                <button
-                  key={i}
-                  className={`w-8 h-8 rounded-full border-2 ${
-                    selectedColor === clr ? "border-black" : "border-gray-300"
-                  }`}
-                  style={{ backgroundColor: clr.toLowerCase() }}
-                  onClick={() => handleColorSelect(clr)}
-                />
-              ))}
+          {currentProduct.colors && (
+            <div className="mb-4">
+              <h4 className="font-medium flex items-center gap-2 mb-2">
+                <AiOutlineBgColors /> Color
+              </h4>
+              <div className="flex gap-3">
+                {currentProduct.colors.map((clr, i) => (
+                  <button
+                    key={i}
+                    className={`w-8 h-8 rounded-full border-2 ${
+                      selectedColor === clr ? "border-black" : "border-gray-300"
+                    }`}
+                    style={{ backgroundColor: clr.toLowerCase() }}
+                    onClick={() => handleColorSelect(clr)}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Size Picker */}
-          <div className="mb-4">
-            <h4 className="font-medium flex items-center gap-2 mb-2">
-              <AiOutlineTag /> Size
-            </h4>
-            <div className="flex gap-3">
-              {product.sizes.map((sz, i) => (
-                <button
-                  key={i}
-                  className={`px-4 py-2 border rounded-md text-sm font-medium transition ${
-                    selectedSize === sz
-                      ? "bg-black text-white"
-                      : "bg-white text-black border-gray-300 hover:bg-gray-100"
-                  }`}
-                  onClick={() => handleSizeSelect(sz)}
-                >
-                  {sz}
-                </button>
-              ))}
+          {currentProduct.sizes && (
+            <div className="mb-4">
+              <h4 className="font-medium flex items-center gap-2 mb-2">
+                <AiOutlineTag /> Size
+              </h4>
+              <div className="flex gap-3">
+                {currentProduct.sizes.map((sz, i) => (
+                  <button
+                    key={i}
+                    className={`px-4 py-2 border rounded-md text-sm font-medium transition ${
+                      selectedSize === sz
+                        ? "bg-black text-white"
+                        : "bg-white text-black border-gray-300 hover:bg-gray-100"
+                    }`}
+                    onClick={() => handleSizeSelect(sz)}
+                  >
+                    {sz}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Quantity Selector */}
           <div className="flex items-center gap-4 mb-6">
@@ -173,8 +185,8 @@ const ProductDetails = () => {
 
           {/* Additional Info */}
           <div className="mt-6 text-sm text-slate-500">
-            <p><strong>Brand:</strong> {product.brand}</p>
-            <p><strong>Material:</strong> {product.material}</p>
+            <p><strong>Brand:</strong> {currentProduct.brand}</p>
+            <p><strong>Material:</strong> {currentProduct.material}</p>
           </div>
         </div>
       </div>
@@ -188,7 +200,7 @@ const ProductDetails = () => {
               <div
                 key={relProd.id}
                 className="border rounded-md p-4 cursor-pointer hover:shadow-lg transition"
-                onClick={() => window.location.assign(`/product/${relProd.id}`)}
+                onClick={() => navigate(`/product/${relProd.id}`)}
               >
                 <img
                   src={relProd.images[0]?.url}

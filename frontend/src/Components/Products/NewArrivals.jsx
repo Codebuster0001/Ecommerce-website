@@ -1,12 +1,11 @@
 import React, { useRef, useState, useEffect } from "react";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import products from "../../data/products"; // Ensure this is the correct path
 
-const NewArrivals = () => {
+const NewArrivals = ({ products = [] }) => {
   const scrollRef = useRef(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [canScrollRight, setCanScrollRight] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
@@ -35,13 +34,11 @@ const NewArrivals = () => {
   const updateScrollButtons = () => {
     const container = scrollRef.current;
     if (container) {
-      const leftScroll = container.scrollLeft;
-      const rightScrollable = container.scrollWidth > container.clientWidth + leftScroll;
-      setCanScrollLeft(leftScroll > 0);
+      const left = container.scrollLeft;
+      const rightScrollable = container.scrollWidth > container.clientWidth + left;
+      setCanScrollLeft(left > 0);
       setCanScrollRight(rightScrollable);
       setShowScrollButtons(container.scrollWidth > container.clientWidth);
-    } else {
-      setShowScrollButtons(false);
     }
   };
 
@@ -59,12 +56,13 @@ const NewArrivals = () => {
       container.addEventListener("scroll", updateScrollButtons);
       window.addEventListener("resize", updateScrollButtons);
       updateScrollButtons();
+
       return () => {
         container.removeEventListener("scroll", updateScrollButtons);
         window.removeEventListener("resize", updateScrollButtons);
       };
     }
-  }, []);
+  }, [products]);
 
   return (
     <section className="py-16 px-4 mb-3">
@@ -72,7 +70,8 @@ const NewArrivals = () => {
         <div className="text-center mb-12">
           <h2 className="text-4xl font-semibold mb-3">Explore New Arrivals</h2>
           <p className="text-slate-600 text-lg max-w-3xl mx-auto">
-            Explore our newest collection of stylish items, carefully curated for you. Discover high-quality pieces designed for modern living.
+            Explore our newest collection of stylish items, carefully curated for you. Discover
+            high-quality pieces designed for modern living.
           </p>
         </div>
 
@@ -81,7 +80,9 @@ const NewArrivals = () => {
             <button
               onClick={() => scroll("left")}
               disabled={!canScrollLeft}
-              className={`p-3 border border-slate-300 text-slate-600 hover:bg-slate-200 transition rounded-md ${!canScrollLeft && "opacity-50 cursor-not-allowed"}`}
+              className={`p-3 border border-slate-300 text-slate-600 hover:bg-slate-200 transition rounded-md ${
+                !canScrollLeft ? "opacity-50 cursor-not-allowed" : ""
+              }`}
               aria-label="Scroll left"
             >
               <AiOutlineLeft size={24} />
@@ -89,7 +90,9 @@ const NewArrivals = () => {
             <button
               onClick={() => scroll("right")}
               disabled={!canScrollRight}
-              className={`p-3 border border-slate-300 text-slate-600 hover:bg-slate-200 transition rounded-md ${!canScrollRight && "opacity-50 cursor-not-allowed"}`}
+              className={`p-3 border border-slate-300 text-slate-600 hover:bg-slate-200 transition rounded-md ${
+                !canScrollRight ? "opacity-50 cursor-not-allowed" : ""
+              }`}
               aria-label="Scroll right"
             >
               <AiOutlineRight size={24} />
@@ -112,14 +115,16 @@ const NewArrivals = () => {
               style={{ scrollSnapAlign: "start" }}
             >
               <img
-                src={item.images[0].url}
-                alt={item.images[0].altText}
+                src={item.images?.[0]?.url || "https://via.placeholder.com/300x200"}
+                alt={item.images?.[0]?.altText || item.name}
                 className="w-full h-64 object-cover rounded-t-lg"
               />
               <Link to={`/products/${item._id}`} className="block">
                 <div className="p-4">
                   <h3 className="text-lg font-semibold text-slate-800 truncate">{item.name}</h3>
-                  <p className="text-slate-500 text-base">${item.discountPrice ?? item.price}</p>
+                  <p className="text-slate-500 text-base">
+                    ${item.discountPrice ?? item.price}
+                  </p>
                 </div>
               </Link>
             </div>
