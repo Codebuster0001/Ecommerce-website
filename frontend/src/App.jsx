@@ -34,7 +34,7 @@ function App() {
 
     {/* Route for "/collections/:type" */}
     <Route path="collections/:type" element={<CollectionPage />} />
-  <Route path="/cart" element={<CartContent />} />
+   <Route path="/cart" element={<CartContent />} />
     <Route path="products/:id" element={<ProductDetails />} />
     <Route path="checkout" element={<Checkout />} />
     <Route path="order-confirmation" element={<OrderConfirmationPage />} />

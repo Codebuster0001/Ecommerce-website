@@ -1,4 +1,3 @@
-// src/components/Products/FilterSidebar.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
@@ -21,13 +20,24 @@ const FilterSidebar = ({ isOpen, onClose }) => {
   const [priceRange, setPriceRange] = useState([0, 1000]);
 
   const categories = ["Top Wear", "Bottom Wear"];
-  const colors = ["Red", "Blue", "Green", "Black", "White", "Yellow", "Pink", "Navy", "Beige", "Gray"];
+  const colors = [
+    "Red",
+    "Blue",
+    "Green",
+    "Black",
+    "White",
+    "Yellow",
+    "Pink",
+    "Navy",
+    "Beige",
+    "Gray",
+  ];
   const sizes = ["S", "M", "L", "XL", "XXL"];
   const materials = ["Cotton", "Polyester", "Wool", "Silk", "Denim"];
   const genders = ["Men", "Women"];
   const brands = ["Nike", "Adidas", "Puma", "Zara", "H&M", "Levi's"];
 
-  // Load filters from URL
+  // Load filters from URL on mount and when URL changes
   useEffect(() => {
     const params = Object.fromEntries([...searchParams]);
 
@@ -71,13 +81,18 @@ const FilterSidebar = ({ isOpen, onClose }) => {
     Object.keys(newFilters).forEach((key) => {
       if (Array.isArray(newFilters[key]) && newFilters[key].length > 0) {
         params.set(key, newFilters[key].join(","));
-      } else if (newFilters[key] !== "" && newFilters[key] !== 0) {
+      } else if (
+        newFilters[key] !== "" &&
+        newFilters[key] !== 0 &&
+        newFilters[key] !== null &&
+        newFilters[key] !== undefined
+      ) {
         params.set(key, newFilters[key]);
       }
     });
 
     setSearchParams(params);
-    navigate(`?${params.toString()}`);
+    navigate(`?${params.toString()}`, { replace: true });
   };
 
   const handlePriceChange = (e) => {
@@ -98,15 +113,33 @@ const FilterSidebar = ({ isOpen, onClose }) => {
     setFilters(defaultFilters);
     setPriceRange([0, 1000]);
     setSearchParams({});
-    navigate(window.location.pathname);
+    navigate(window.location.pathname, { replace: true });
   };
 
   return (
-    <div className={`p-4 border-r bg-white h-full transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'} lg:static lg:w-64`}>
+    <div
+      className={`p-4 border-r bg-white h-full transition-transform duration-300 ease-in-out ${
+        isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+      } lg:static lg:w-64`}
+    >
       <div className="lg:hidden flex justify-end mb-4">
-        <button onClick={onClose} className="p-2 rounded-md text-gray-600 hover:text-gray-800 focus:outline-none">
-          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+        <button
+          onClick={onClose}
+          className="p-2 rounded-md text-gray-600 hover:text-gray-800 focus:outline-none"
+          aria-label="Close filter sidebar"
+        >
+          <svg
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
       </div>
@@ -172,6 +205,7 @@ const FilterSidebar = ({ isOpen, onClose }) => {
                   },
                 })
               }
+              aria-label={`Filter by color ${color}`}
             ></button>
           ))}
         </div>

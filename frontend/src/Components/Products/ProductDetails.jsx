@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { AiOutlineShoppingCart, AiOutlineTag, AiOutlineBgColors } from "react-icons/ai";
+import {
+  AiOutlineShoppingCart,
+  AiOutlineTag,
+  AiOutlineBgColors,
+} from "react-icons/ai";
 import { FiMinus, FiPlus } from "react-icons/fi";
 import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchProductById, clearProduct } from "../../features/productsSlice";
 import { addToCart } from "../../features/cartSlice";
-import productsData from "../../data/products"; // This imports the whole object with .products array
+import productsData from "../../data/products";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -20,11 +24,18 @@ const ProductDetails = () => {
   const [mainImage, setMainImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Use the products array inside productsData
-  const localProduct = productsData.products.find((p) => p._id?.toString() === id);
+  const localProduct = Array.isArray(productsData.products)
+    ? productsData.products.find((p) => p._id?.toString() === id)
+    : null;
 
   useEffect(() => {
+    // scroll to top and reset states on id change
+    window.scrollTo(0, 0);
     dispatch(fetchProductById(id));
+    setSelectedColor(null);
+    setSelectedSize(null);
+    setQuantity(1);
+    setMainImage(null);
     return () => dispatch(clearProduct());
   }, [dispatch, id]);
 
@@ -40,6 +51,7 @@ const ProductDetails = () => {
 
   const handleColorSelect = (color) => setSelectedColor(color);
   const handleSizeSelect = (size) => setSelectedSize(size);
+
   const handleQuantityChange = (action) => {
     setQuantity((prev) => {
       if (action === "increase") return prev + 1;
@@ -75,23 +87,28 @@ const ProductDetails = () => {
 
   const handleImageSwitch = (url) => setMainImage(url);
 
-  if (status === "loading") return <div className="p-10 text-center">Loading...</div>;
+  if (status === "loading")
+    return <div className="p-10 text-center">Loading...</div>;
   if (status === "failed" && !localProduct)
     return <div className="p-10 text-red-500 text-center">Error: {error}</div>;
-  if (!currentProduct) return <p className="text-center text-red-500">Error: Product not found</p>;
+  if (!currentProduct)
+    return <p className="text-center text-red-500">Error: Product not found</p>;
 
-  // relatedProducts from the products array inside productsData
-  const relatedProducts = productsData.products.filter(
-    (p) => p.category === currentProduct.category && p.id !== currentProduct.id
-  );
+  const relatedProducts = Array.isArray(productsData.products)
+    ? productsData.products.filter(
+        (p) =>
+          p.category === currentProduct.category &&
+          (p._id || p.id) !== (currentProduct._id || currentProduct.id)
+      )
+    : [];
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-16">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Product Image */}
-        <div>
-          <img src={mainImage} alt="Main" className="w-full h-[500px] object-cover rounded-lg shadow" />
-          <div className="flex gap-3 mt-4">
+        <div className=" flex gap-3">
+          
+          <div className="flex flex-col gap-3 ">
             {currentProduct.images?.map((img, index) => (
               <img
                 key={index}
@@ -104,6 +121,11 @@ const ProductDetails = () => {
               />
             ))}
           </div>
+          <img
+            src={mainImage}
+            alt="Main"
+            className="w-full h-[500px] object-cover rounded-lg shadow"
+          />
         </div>
 
         {/* Product Info */}
@@ -163,11 +185,17 @@ const ProductDetails = () => {
           <div className="flex items-center gap-4 mb-6">
             <span className="font-medium">Quantity:</span>
             <div className="flex items-center border rounded-md">
-              <button className="p-2" onClick={() => handleQuantityChange("decrease")}>
+              <button
+                className="p-2"
+                onClick={() => handleQuantityChange("decrease")}
+              >
                 <FiMinus />
               </button>
               <span className="px-4">{quantity}</span>
-              <button className="p-2" onClick={() => handleQuantityChange("increase")}>
+              <button
+                className="p-2"
+                onClick={() => handleQuantityChange("increase")}
+              >
                 <FiPlus />
               </button>
             </div>
@@ -185,8 +213,12 @@ const ProductDetails = () => {
 
           {/* Additional Info */}
           <div className="mt-6 text-sm text-slate-500">
-            <p><strong>Brand:</strong> {currentProduct.brand}</p>
-            <p><strong>Material:</strong> {currentProduct.material}</p>
+            <p>
+              <strong>Brand:</strong> {currentProduct.brand}
+            </p>
+            <p>
+              <strong>Material:</strong> {currentProduct.material}
+            </p>
           </div>
         </div>
       </div>
@@ -198,9 +230,11 @@ const ProductDetails = () => {
           {relatedProducts.length > 0 ? (
             relatedProducts.map((relProd) => (
               <div
-                key={relProd.id}
+                key={relProd._id || relProd.id}
                 className="border rounded-md p-4 cursor-pointer hover:shadow-lg transition"
-                onClick={() => navigate(`/product/${relProd.id}`)}
+                onClick={() =>
+                  navigate(`/products/${relProd._id || relProd.id}`)
+                }
               >
                 <img
                   src={relProd.images[0]?.url}
@@ -208,7 +242,9 @@ const ProductDetails = () => {
                   className="w-full h-40 object-cover rounded-md mb-3"
                 />
                 <h3 className="font-medium text-lg">{relProd.name}</h3>
-                <p className="text-gray-700">${relProd.discountPrice || relProd.price}</p>
+                <p className="text-gray-700">
+                  ${relProd.discountPrice || relProd.price}
+                </p>
               </div>
             ))
           ) : (

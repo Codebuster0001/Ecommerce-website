@@ -6,6 +6,7 @@ const SortOptions = ({ currentSort, onSortChange }) => {
       value={currentSort}
       onChange={(e) => onSortChange(e.target.value)}
       className="p-2 border rounded"
+      aria-label="Sort products"
     >
       <option value="">Sort By</option>
       <option value="price-asc">Price: Low to High</option>
