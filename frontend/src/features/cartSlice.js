@@ -1,7 +1,12 @@
+// src/features/cartSlice.js
 import { createSlice } from "@reduxjs/toolkit";
+import { loadState } from "../utils/localStorage";
 
-const initialState = {
+const persistedCart = loadState();
+
+const initialState = persistedCart || {
   cartItems: [],
+  totalQuantity: 0,
 };
 
 const getItemKey = (item) => `${item.id}-${item.size}-${item.color}`;
@@ -22,6 +27,12 @@ const cartSlice = createSlice({
       } else {
         state.cartItems.push({ ...newItem });
       }
+
+      // Recalculate totalQuantity after adding
+      state.totalQuantity = state.cartItems.reduce(
+        (sum, item) => sum + item.quantity,
+        0
+      );
     },
 
     decreaseQuantity: (state, action) => {
@@ -32,30 +43,48 @@ const cartSlice = createSlice({
         if (item.quantity > 1) {
           item.quantity -= 1;
         } else {
-          // Remove item if quantity is 1
           state.cartItems = state.cartItems.filter(
             (item) => getItemKey(item) !== keyToMatch
           );
         }
       }
+
+      // Recalculate totalQuantity after decreasing
+      state.totalQuantity = state.cartItems.reduce(
+        (sum, item) => sum + item.quantity,
+        0
+      );
     },
 
     removeFromCart: (state, action) => {
       const keyToRemove = action.payload;
-      state.cartItems = state.cartItems.filter(
-        (item) => getItemKey(item) !== keyToRemove
+      const itemToRemove = state.cartItems.find(
+        (item) => getItemKey(item) === keyToRemove
+      );
+
+      if (itemToRemove) {
+        state.cartItems = state.cartItems.filter(
+          (item) => getItemKey(item) !== keyToRemove
+        );
+      }
+
+      // Recalculate totalQuantity after removing
+      state.totalQuantity = state.cartItems.reduce(
+        (sum, item) => sum + item.quantity,
+        0
       );
     },
   },
 });
 
 export const { addToCart, decreaseQuantity, removeFromCart } = cartSlice.actions;
-export default cartSlice.reducer;
+
 export const selectCartItems = (state) => state.cart.cartItems;
-export const selectCartCount = (state) =>
-  state.cart.cartItems.reduce((total, item) => total + item.quantity, 0);
+export const selectCartCount = (state) => state.cart.totalQuantity;
 export const selectCartTotal = (state) =>
   state.cart.cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
   );
+
+export default cartSlice.reducer;

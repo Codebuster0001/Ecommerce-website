@@ -6,11 +6,12 @@ import { Link, useLocation } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import CartDrawer from "../Layout/CartDrawer";
 import { useSelector } from "react-redux";
+import { selectCartCount } from "../../features/cartSlice"; // Adjust path
 
 const Navbar = () => {
   // Use Redux state for cart
   const cartItems = useSelector((state) => state.cart.cartItems);
-  const totalQuantity = useSelector((state) => state.cart.totalQuantity);
+  const totalQuantity = useSelector(selectCartCount);
 
   const [showSearch, setShowSearch] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -115,12 +116,12 @@ const Navbar = () => {
               <FiSearch className="cursor-pointer hover:text-black transition" />
             </button>
             {showSearch && (
-              <div className="absolute right-8 w-64 -top-2 z-40">
-                <div className="relative bg-white shadow-md rounded p-2">
+              <div className="absolute right-7 w-64 -top-4 z-40">
+                <div className="relative rounded p-2">
                   <SearchBar onSearch={closeSearch} />
                   <button
                     onClick={closeSearch}
-                    className="absolute top-2 right-2 p-1 text-gray-600"
+                    className="absolute top-4 right-3 p-1 text-gray-600"
                     aria-label="Close Search"
                   >
                     <FiX />
@@ -196,7 +197,7 @@ const Navbar = () => {
         <CartDrawer
           drawerOpen={drawerOpen}
           toggleCartDrawer={toggleCartDrawer}
-          cartItems={cartItems}  // Pass real cart items
+          cartItems={cartItems} // Pass real cart items
         />
       </div>
     </nav>
