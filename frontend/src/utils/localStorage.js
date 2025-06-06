@@ -1,22 +1,19 @@
 // src/utils/localStorage.js
-export const loadState = () => {
+export const loadState = (key = "cart") => {
   try {
-    const serializedState = localStorage.getItem("cart");
-    if (serializedState === null) {
-      return undefined;
-    }
+    const serializedState = localStorage.getItem(key);
+    if (serializedState === null) return undefined;
     return JSON.parse(serializedState);
-  } catch (err) {
-    console.error("Failed to load state from localStorage", err);
+  } catch {
     return undefined;
   }
 };
 
-export const saveState = (state) => {
+export const saveState = (key = "cart", state) => {
   try {
     const serializedState = JSON.stringify(state);
-    localStorage.setItem("cart", serializedState);
-  } catch (err) {
-    console.error("Failed to save state to localStorage", err);
+    localStorage.setItem(key, serializedState);
+  } catch {
+    console.error("Could not save state to localStorage", state);
   }
 };

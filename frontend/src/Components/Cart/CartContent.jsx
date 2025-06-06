@@ -46,7 +46,7 @@ const CartContent = () => {
                 <div className="flex justify-between">
                   <h3 className="font-semibold text-base">{item.name}</h3>
                   <p className="font-medium text-gray-800">
-                    ${(item.price * item.quantity).toFixed(2)}
+                    ₹{(item.price * item.quantity).toFixed(2)}
                   </p>
                 </div>
 

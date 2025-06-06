@@ -6,7 +6,7 @@ import ProductGrid from "../Components/Products/ProductGrid";
 import SortOptions from "../Components/Products/SortOptions";
 import productsData from "../data/products";
 
-const PRODUCTS_PER_PAGE = 5;
+const PRODUCTS_PER_PAGE = 12;
 
 const CollectionPage = () => {
   const [products, setProducts] = useState([]);
@@ -46,7 +46,9 @@ const CollectionPage = () => {
       const productCategory = product.category?.toLowerCase() || "";
       const filterCategory = category.toLowerCase();
 
-      const categoryMatch = category ? productCategory === filterCategory : true;
+      const categoryMatch = category
+        ? productCategory === filterCategory
+        : true;
 
       const genderMatch = gender
         ? product.gender?.toLowerCase() === gender.toLowerCase()
@@ -94,7 +96,9 @@ const CollectionPage = () => {
         if (!product.material) return false;
         if (Array.isArray(product.material)) {
           return materialFilters.some((mf) =>
-            product.material.map((m) => m.toLowerCase()).includes(mf.toLowerCase())
+            product.material
+              .map((m) => m.toLowerCase())
+              .includes(mf.toLowerCase())
           );
         }
         return materialFilters.some(
@@ -192,16 +196,17 @@ const CollectionPage = () => {
   };
 
   return (
-    <div className="flex relative">
+    <div className="flex relative bg-gray-50">
+      {/* Sidebar */}
       <div
         ref={sidebarRef}
         className={`
-          fixed inset-y-0 left-0 z-50 w-64 bg-white
-          border-r border-gray-200 border-b-0
+          fixed inset-y-0 left-0 z-50 bg-white border-r border-gray-200 border-b-0
           overflow-y-auto max-h-screen
           transform transition-transform duration-300 ease-in-out
           lg:static lg:translate-x-0 lg:overflow-visible lg:max-h-full
           ${isFilterOpen ? "translate-x-0" : "-translate-x-full"}
+          w-56 sm:w-64
         `}
       >
         <FilterSidebar
@@ -220,6 +225,7 @@ const CollectionPage = () => {
         />
       </div>
 
+      {/* Overlay for mobile when sidebar open */}
       {isFilterOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-30 z-20 lg:hidden"
@@ -228,9 +234,10 @@ const CollectionPage = () => {
         />
       )}
 
-      <main className="flex-1 flex flex-col px-4 py-6">
+      {/* Main Content */}
+      <main className="flex-1 flex flex-col px-4 py-6 max-w-7xl mx-auto w-full">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-semibold px-8">All Products</h2>
+          <h2 className="text-2xl font-semibold">All Products</h2>
           <div className="flex items-center gap-4">
             <SortOptions currentSort={sort} onSortChange={handleSortChange} />
             <button
@@ -243,8 +250,13 @@ const CollectionPage = () => {
           </div>
         </div>
 
-        <ProductGrid products={paginatedProducts} />
+        {/* Product Grid */}
+        <div className="flex flex-col gap-4 w-full">
 
+        <ProductGrid products={paginatedProducts} />
+        </div>
+
+        {/* Pagination */}
         {totalPages > 1 && (
           <div className="flex justify-center items-center gap-2 mt-6">
             <button

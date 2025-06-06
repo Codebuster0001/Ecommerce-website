@@ -1,11 +1,19 @@
 import { IoMdClose } from "react-icons/io";
 import CartContent from "../Cart/CartContent";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { toast } from "sonner";  // Import toast from sonner
 
 const CartDrawer = ({ drawerOpen, toggleCartDrawer }) => {
   const navigate = useNavigate();
+  const cartItems = useSelector((state) => state.cart.cartItems);
 
   const handleCheckout = () => {
+    if (!cartItems || cartItems.length === 0) {
+      toast.error("Your cart is empty. Please add items before checkout.");
+      return;
+    }
+    localStorage.setItem("checkoutCart", JSON.stringify(cartItems));
     toggleCartDrawer();
     navigate("/checkout");
   };

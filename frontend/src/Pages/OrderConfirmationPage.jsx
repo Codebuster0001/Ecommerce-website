@@ -1,106 +1,141 @@
-import React from 'react';
-import { FiCheckCircle, FiShoppingBag, FiMapPin } from 'react-icons/fi';
-import { Link } from 'react-router-dom'; // Make sure react-router-dom is set up
-
-const checkout = {
-  _id: "12323",
-  createdAt: new Date(),
-  checkoutItems: [
-    {
-      productId: "1",
-      name: "Jacket",
-      color: "Red",
-      size: "M",
-      price: 150,
-      quantity: 1,
-      image: "https://picsum.photos/500/500?random=19"
-    },
-    {
-      productId: "2",
-      name: "T-shirt",
-      color: "black",
-      size: "M",
-      price: 200,
-      quantity: 5,
-      image: "https://picsum.photos/500/500?random=11"
-    },
-  ],
-  shippingAddress: {
-    address: "123 Fashion Street",
-    city: "New York",
-    country: "USA"
-  }
-};
+import React, { useEffect, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {  Link } from "react-router-dom";
+import { loadCheckoutFromStorage } from "../features/checkoutSlice";
+import { FaCheckCircle, FaDownload } from "react-icons/fa";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 const OrderConfirmationPage = () => {
-  const totalAmount = checkout.checkoutItems.reduce((total, item) => {
-    return total + item.price * item.quantity;
-  }, 0);
+  const dispatch = useDispatch();
+  
+  const checkoutData = useSelector((state) => state.checkout.checkoutInfo);
+  const pdfRef = useRef();
+
+  useEffect(() => {
+    dispatch(loadCheckoutFromStorage());
+    localStorage.removeItem("orderCompleted"); // ✅ clear order completion flag
+  }, [dispatch]);
+
+  const {
+    checkoutItems: orderItems = [],
+    shippingAddress = {},
+    orderId = "N/A",
+    createdAt = "",
+    totalPrice = 0,
+    isPaid = "Paid",
+  } = checkoutData || {};
+
+  const totalAmount =
+    totalPrice ||
+    orderItems.reduce((total, item) => total + item.price * item.quantity, 0);
+
+  const handleDownloadPDF = async () => {
+    if (!pdfRef.current) return;
+
+    const canvas = await html2canvas(pdfRef.current);
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF();
+    const imgProps = pdf.getImageProperties(imgData);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+    pdf.save(`Order_${orderId}.pdf`);
+  };
+
+  if (!checkoutData) {
+    return (
+      <div className="text-center py-10 text-gray-500">
+        No order data available.
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-10">
-      {/* Header */}
-      <div className="flex flex-col items-center text-center mb-8">
-        <FiCheckCircle className="text-green-500 text-5xl mb-2" />
-        <h1 className="text-3xl font-bold text-gray-800">Order Confirmed</h1>
-        <p className="text-gray-500 mt-2">Thank you for your purchase!</p>
+      <div className="flex flex-col items-center mb-6">
+        <FaCheckCircle className="text-green-500 text-6xl mb-2" />
+        <h1 className="text-3xl font-bold text-green-600">Order Confirmed</h1>
+        <p className="text-gray-600">Thank you for your purchase!</p>
       </div>
 
-      {/* Order Info */}
-      <div className="bg-gray-50 rounded-lg p-4 shadow-sm mb-6">
-        <p className="text-sm text-gray-600"><strong>Order ID:</strong> {checkout._id}</p>
-        <p className="text-sm text-gray-600"><strong>Order Date:</strong> {checkout.createdAt.toDateString()}</p>
-      </div>
+      <div ref={pdfRef} className="bg-white p-6 rounded shadow mt-4">
+        <p>
+          <strong>Order ID:</strong> #{orderId}
+        </p>
+        <p>
+          <strong>Status:</strong> {isPaid}
+        </p>
+        <p>
+          <strong>Date:</strong> {new Date(createdAt).toLocaleString()}
+        </p>
+        <p>
+          <strong>Shipping Address:</strong>{" "}
+          {shippingAddress.address}, {shippingAddress.city},{" "}
+          {shippingAddress.country}
+        </p>
 
-      {/* Shipping Address */}
-      <div className="bg-white rounded-lg p-4 shadow-sm mb-6">
-        <div className="flex items-center text-gray-800 font-semibold mb-2">
-          <FiMapPin className="mr-2" />
-          Shipping Address
-        </div>
-        <p className="text-sm text-gray-700">{checkout.shippingAddress.address}</p>
-        <p className="text-sm text-gray-700">{checkout.shippingAddress.city}, {checkout.shippingAddress.country}</p>
-      </div>
+        <hr className="my-4" />
 
-      {/* Items */}
-      <div className="bg-white rounded-lg p-4 shadow-sm mb-6">
-        <div className="flex items-center text-gray-800 font-semibold mb-4">
-          <FiShoppingBag className="mr-2" />
-          Items in Your Order
-        </div>
-
-        {checkout.checkoutItems.map(item => (
-          <div key={item.productId} className="flex items-center gap-4 border-b last:border-b-0 py-4">
-            <img src={item.image} alt={item.name} className="w-16 h-16 object-cover rounded" />
-            <div className="flex-1">
-              <h3 className="font-medium text-gray-900">{item.name}</h3>
-              <p className="text-sm text-gray-600">Color: {item.color} | Size: {item.size}</p>
-              <p className="text-sm text-gray-600">Qty: {item.quantity}</p>
+        <h2 className="text-lg font-semibold mb-2">Items:</h2>
+        {orderItems.length === 0 ? (
+          <p className="text-gray-500">No items in this order.</p>
+        ) : (
+          orderItems.map((item, index) => (
+            <div
+              key={index}
+              className="flex justify-between items-center border-b py-2"
+            >
+              <div className="flex items-center space-x-4">
+                <img
+                  src={item?.image || "https://placehold.co/80"}
+                  onError={(e) => {
+                    e.target.src = "https://placehold.co/80";
+                  }}
+                  alt={item.name}
+                  className="w-16 h-16 object-cover rounded"
+                />
+                <div>
+                  <p className="font-medium">{item.name}</p>
+                  <p className="text-sm text-gray-500">
+                    Qty: {item.quantity} | Size: {item.size || "-"} | Color:{" "}
+                    {item.color || "-"}
+                  </p>
+                </div>
+              </div>
+              <div className="font-semibold text-right">
+                ₹{item.price * item.quantity}
+              </div>
             </div>
-            <div className="text-gray-800 font-semibold">
-              ${item.price * item.quantity}
-            </div>
-          </div>
-        ))}
+          ))
+        )}
 
-        <div className="text-right mt-4 text-lg font-bold text-gray-900">
-          Total: ${totalAmount}
+        <div className="text-right mt-4 font-bold text-lg">
+          Total: ₹{totalAmount.toFixed(2)}
         </div>
       </div>
 
-      {/* Buttons */}
-      <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
+      {/* Action Buttons */}
+      <div className="flex flex-col md:flex-row justify-center items-center gap-4 mt-8">
+        <button
+          onClick={handleDownloadPDF}
+          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+        >
+          <FaDownload /> Download Invoice
+        </button>
+
         <Link
-          to="/"
-          className="px-6 py-2 text-center rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 transition"
+          to="/myorders"
+          className="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded"
+        >
+          View My Orders
+        </Link>
+
+        <Link
+          to="/collection"
+          className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
         >
           Continue Shopping
-        </Link>
-        <Link
-          to="/my-orders"
-          className="px-6 py-2 text-center rounded-md bg-gray-900 text-white hover:bg-gray-800 transition"
-        >
-          My Orders
         </Link>
       </div>
     </div>

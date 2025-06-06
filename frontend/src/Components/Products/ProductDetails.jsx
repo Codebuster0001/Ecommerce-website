@@ -81,8 +81,8 @@ const ProductDetails = () => {
     setTimeout(() => {
       dispatch(addToCart(cartItem));
       setIsLoading(false);
-      toast.success(`${quantity} item(s) added to cart.`);
-    }, 1000);
+      toast.success(`${quantity} item(s) added to cart.`, { duration: 3000 });
+    }, 100);
   };
 
   const handleImageSwitch = (url) => setMainImage(url);
@@ -107,7 +107,6 @@ const ProductDetails = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Product Image */}
         <div className=" flex gap-3">
-          
           <div className="flex flex-col gap-3 ">
             {currentProduct.images?.map((img, index) => (
               <img
@@ -132,7 +131,7 @@ const ProductDetails = () => {
         <div>
           <h1 className="text-3xl font-semibold mb-2">{currentProduct.name}</h1>
           <p className="text-xl text-slate-700 mb-4">
-            ${currentProduct.discountPrice || currentProduct.price}
+            ₹{currentProduct.discountPrice || currentProduct.price}
           </p>
           <p className="text-gray-600 mb-6">{currentProduct.description}</p>
 

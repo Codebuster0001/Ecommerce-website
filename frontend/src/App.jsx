@@ -8,40 +8,55 @@ import Register from "./Pages/Register";
 import Profile from "./Pages/Profile";
 import CollectionPage from "./Pages/CollectionPage";
 import ProductDetails from "./Components/Products/ProductDetails";
-import NewArrivals from './Components/Products/NewArrivals';
 import Checkout from "./Components/Cart/Checkout";
 import OrderConfirmationPage from "./Pages/OrderConfirmationPage";
 import MyOrders from "./Pages/MyOrders";
-import CartContent from './Components/Cart/CartContent';
+import CartContent from "./Components/Cart/CartContent";
+import PrivateRoute from "./Components/Common/PrivateRoute";
+import { AuthProvider } from "./Components/Common/AuthContext";
 
 function App() {
   return (
-    <>
+    <AuthProvider>
       <Toaster position="top-right" richColors />
-
       <Routes>
-  <Route path="/" element={<UserLayout />}>
-    <Route index element={<Home />} />
-    <Route path="login" element={<Login />} />
-    <Route path="register" element={<Register />} />
-    <Route path="profile" element={<Profile />} />
+        <Route path="/" element={<UserLayout />}>
+          <Route index element={<Home />} />
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
 
-    {/* Route for "/collection" with optional query params */}
-    <Route path="collection" element={<CollectionPage />} />
-    
-    {/* Route for "/collection/:collection" if you want to match with param */}
-    <Route path="collection/:collection" element={<CollectionPage />} />
+          {/* Protected routes */}
+          <Route
+            path="profile"
+            element={
+              <PrivateRoute>
+                <Profile />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="checkout"
+            element={
+              
+                <Checkout />
+           
+            }
+          />
 
-    {/* Route for "/collections/:type" */}
-    <Route path="collections/:type" element={<CollectionPage />} />
-   <Route path="/cart" element={<CartContent />} />
-    <Route path="products/:id" element={<ProductDetails />} />
-    <Route path="checkout" element={<Checkout />} />
-    <Route path="order-confirmation" element={<OrderConfirmationPage />} />
-    <Route path="my-orders" element={<MyOrders />} />
-  </Route>
-</Routes>
-    </>
+          {/* Public routes */}
+          <Route path="collection" element={<CollectionPage />} />
+          <Route path="collection/:collection" element={<CollectionPage />} />
+          <Route path="collections/:type" element={<CollectionPage />} />
+          <Route path="/cart" element={<CartContent />} />
+          <Route path="products/:id" element={<ProductDetails />} />
+          <Route path="order-confirmation" element={
+            <OrderConfirmationPage />
+            } />
+          <Route path="myorders" element={<MyOrders />} />
+          <Route path="/orders/:orderId" element={<OrderConfirmationPage />} />
+        </Route>
+      </Routes>
+    </AuthProvider>
   );
 }
 
