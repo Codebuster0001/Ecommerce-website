@@ -118,11 +118,13 @@ const FilterSidebar = ({ isOpen, onClose }) => {
 
   return (
     <div
-      className={`p-4 border-r bg-white h-full transition-transform duration-300 ease-in-out ${
-        isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
-      } lg:static lg:w-64`}
+      className={`fixed top-0 left-0 z-50 w-72 max-w-full bg-white h-full shadow-lg overflow-y-auto transform transition-transform duration-300 ease-in-out
+      ${
+        isOpen ? "translate-x-0" : "-translate-x-full"
+      } lg:translate-x-0 lg:static lg:w-64 lg:max-w-none`}
     >
-      <div className="lg:hidden flex justify-end mb-4">
+      {/* Close Button for Mobile */}
+      <div className="lg:hidden flex justify-end p-4 border-b">
         <button
           onClick={onClose}
           className="p-2 rounded-md text-gray-600 hover:text-gray-800 focus:outline-none"
@@ -144,156 +146,173 @@ const FilterSidebar = ({ isOpen, onClose }) => {
         </button>
       </div>
 
-      <h3 className="text-xl font-medium text-gray-800 mb-4">Filter</h3>
+      <div className="px-6 pb-8">
+        <h3 className="text-xl font-semibold text-gray-800 mb-6">Filter</h3>
 
-      {/* Category */}
-      <div className="mb-6">
-        <label className="block text-gray-800 font-medium mb-2">Category</label>
-        {categories.map((category) => (
-          <div key={category} className="mb-1">
-            <input
-              type="radio"
-              name="category"
-              value={category}
-              onChange={handleFilterChange}
-              checked={filters.category === category}
-              className="mr-2 h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
-            />
-            <span className="text-gray-700">{category}</span>
-          </div>
-        ))}
-      </div>
-
-      {/* Gender */}
-      <div className="mb-6">
-        <label className="block text-gray-800 font-medium mb-2">Gender</label>
-        {genders.map((gender) => (
-          <div key={gender} className="mb-1">
-            <input
-              type="radio"
-              name="gender"
-              value={gender}
-              onChange={handleFilterChange}
-              checked={filters.gender === gender}
-              className="mr-2 h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
-            />
-            <span className="text-gray-700">{gender}</span>
-          </div>
-        ))}
-      </div>
-
-      {/* Color */}
-      <div className="mb-6">
-        <label className="block text-gray-800 font-medium mb-2">Color</label>
-        <div className="flex flex-wrap gap-2">
-          {colors.map((color) => (
-            <button
-              key={color}
-              type="button"
-              className={`w-8 h-8 rounded-full border border-gray-300 transition hover:scale-105 focus:outline-none ${
-                filters.color === color ? "ring-2 ring-blue-500" : ""
-              }`}
-              style={{ backgroundColor: color.toLowerCase() }}
-              name="color"
-              value={color}
-              onClick={() =>
-                handleFilterChange({
-                  target: {
-                    name: "color",
-                    value: color,
-                    type: "button",
-                  },
-                })
-              }
-              aria-label={`Filter by color ${color}`}
-            ></button>
+        {/* Category */}
+        <div className="mb-6">
+          <label className="block text-gray-800 font-medium mb-2">Category</label>
+          {categories.map((category) => (
+            <div key={category} className="mb-1">
+              <input
+                type="radio"
+                name="category"
+                value={category}
+                onChange={handleFilterChange}
+                checked={filters.category === category}
+                className="mr-2 h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+              />
+              <span className="text-gray-700">{category}</span>
+            </div>
           ))}
         </div>
-      </div>
 
-      {/* Size */}
-      <div className="mb-6">
-        <label className="block text-gray-800 font-medium mb-2">Size</label>
-        {sizes.map((size) => (
-          <div className="flex items-center mb-1" key={size}>
-            <input
-              type="checkbox"
-              name="size"
-              value={size}
-              onChange={handleFilterChange}
-              checked={filters.size.includes(size)}
-              className="mr-2 h-4 w-4 text-blue-500 focus:ring-blue-400 border-gray-300"
-            />
-            <span className="text-gray-700">{size}</span>
-          </div>
-        ))}
-      </div>
-
-      {/* Material */}
-      <div className="mb-6">
-        <label className="block text-gray-800 font-medium mb-2">Material</label>
-        {materials.map((material) => (
-          <div className="flex items-center mb-1" key={material}>
-            <input
-              type="checkbox"
-              name="material"
-              value={material}
-              onChange={handleFilterChange}
-              checked={filters.material.includes(material)}
-              className="mr-2 h-4 w-4 text-blue-500 focus:ring-blue-400 border-gray-300"
-            />
-            <span className="text-gray-700">{material}</span>
-          </div>
-        ))}
-      </div>
-
-      {/* Brand */}
-      <div className="mb-6">
-        <label className="block text-gray-800 font-medium mb-2">Brand</label>
-        {brands.map((brand) => (
-          <div className="flex items-center mb-1" key={brand}>
-            <input
-              type="checkbox"
-              name="brand"
-              value={brand}
-              onChange={handleFilterChange}
-              checked={filters.brand.includes(brand)}
-              className="mr-2 h-4 w-4 text-blue-500 focus:ring-blue-400 border-gray-300"
-            />
-            <span className="text-gray-700">{brand}</span>
-          </div>
-        ))}
-      </div>
-
-      {/* Price Range */}
-      <div className="mb-8">
-        <label className="block text-gray-600 font-medium mb-2">
-          Price (Max: ${priceRange[1]})
-        </label>
-        <input
-          type="range"
-          name="priceRange"
-          min={0}
-          max={1000}
-          step={10}
-          value={priceRange[1]}
-          onChange={handlePriceChange}
-          className="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer"
-        />
-        <div className="flex justify-between text-sm text-gray-600 mt-2">
-          <span className="text-gray-700">Min: $0</span>
-          <span className="text-gray-700">Max: ${priceRange[1]}</span>
+        {/* Gender */}
+        <div className="mb-6">
+          <label className="block text-gray-800 font-medium mb-2">Gender</label>
+          {genders.map((gender) => (
+            <div key={gender} className="mb-1">
+              <input
+                type="radio"
+                name="gender"
+                value={gender}
+                onChange={handleFilterChange}
+                checked={filters.gender === gender}
+                className="mr-2 h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+              />
+              <span className="text-gray-700">{gender}</span>
+            </div>
+          ))}
         </div>
-      </div>
 
-      {/* Reset Button */}
-      <div className="mt-4">
-        <button
-          onClick={handleResetFilters}
-          className="w-full px-4 py-2 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-md"
-        >
-          Reset Filters
-        </button>
+        {/* Color */}
+        <div className="mb-6">
+          <label className="block text-gray-800 font-medium mb-2">Color</label>
+          <div className="flex flex-wrap gap-2">
+            {colors.map((color) => (
+              <button
+                key={color}
+                type="button"
+                className={`w-8 h-8 rounded-full border border-gray-300 transition hover:scale-105 focus:outline-none ${
+                  filters.color === color ? "ring-2 ring-blue-500" : ""
+                }`}
+                style={{ backgroundColor: color.toLowerCase() }}
+                name="color"
+                value={color}
+                onClick={() =>
+                  handleFilterChange({
+                    target: {
+                      name: "color",
+                      value: color,
+                      type: "button",
+                    },
+                  })
+                }
+                aria-label={`Filter by color ${color}`}
+              ></button>
+            ))}
+          </div>
+        </div>
+
+        {/* Size */}
+        <div className="mb-6">
+          <label className="block text-gray-800 font-medium mb-2">Size</label>
+          <div className="grid grid-cols-3 gap-2">
+            {sizes.map((size) => (
+              <label
+                key={size}
+                className="flex items-center space-x-2 cursor-pointer"
+              >
+                <input
+                  type="checkbox"
+                  name="size"
+                  value={size}
+                  onChange={handleFilterChange}
+                  checked={filters.size.includes(size)}
+                  className="h-4 w-4 text-blue-500 focus:ring-blue-400 border-gray-300"
+                />
+                <span className="text-gray-700">{size}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        {/* Material */}
+        <div className="mb-6">
+          <label className="block text-gray-800 font-medium mb-2">Material</label>
+          <div className="grid grid-cols-2 gap-2">
+            {materials.map((material) => (
+              <label
+                key={material}
+                className="flex items-center space-x-2 cursor-pointer"
+              >
+                <input
+                  type="checkbox"
+                  name="material"
+                  value={material}
+                  onChange={handleFilterChange}
+                  checked={filters.material.includes(material)}
+                  className="h-4 w-4 text-blue-500 focus:ring-blue-400 border-gray-300"
+                />
+                <span className="text-gray-700">{material}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        {/* Brand */}
+        <div className="mb-6">
+          <label className="block text-gray-800 font-medium mb-2">Brand</label>
+          <div className="grid grid-cols-2 gap-2">
+            {brands.map((brand) => (
+              <label
+                key={brand}
+                className="flex items-center space-x-2 cursor-pointer"
+              >
+                <input
+                  type="checkbox"
+                  name="brand"
+                  value={brand}
+                  onChange={handleFilterChange}
+                  checked={filters.brand.includes(brand)}
+                  className="h-4 w-4 text-blue-500 focus:ring-blue-400 border-gray-300"
+                />
+                <span className="text-gray-700">{brand}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        {/* Price Range */}
+        <div className="mb-8">
+          <label className="block text-gray-600 font-medium mb-2">
+            Price (Max: ${priceRange[1]})
+          </label>
+          <input
+            type="range"
+            name="priceRange"
+            min={0}
+            max={1000}
+            step={10}
+            value={priceRange[1]}
+            onChange={handlePriceChange}
+            className="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer"
+          />
+          <div className="flex justify-between text-sm text-gray-600 mt-2">
+            <span className="text-gray-700">Min: $0</span>
+            <span className="text-gray-700">Max: ${priceRange[1]}</span>
+          </div>
+        </div>
+
+        {/* Reset Button */}
+        <div className="mt-4 mb-5">
+          <button
+            onClick={handleResetFilters}
+            className="w-full px-4 py-2 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-md"
+          >
+            Reset Filters
+          </button>
+        </div>
       </div>
     </div>
   );

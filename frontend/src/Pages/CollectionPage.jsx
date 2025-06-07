@@ -20,6 +20,9 @@ const CollectionPage = () => {
     setProducts(
       Array.isArray(productsData) ? productsData : productsData.products
     );
+
+    // **Removed this line to prevent clearing filters on mount:**
+    // setSearchParams(new URLSearchParams());
   }, []);
 
   const filters = useMemo(
@@ -196,17 +199,17 @@ const CollectionPage = () => {
   };
 
   return (
-    <div className="flex relative bg-gray-50">
+    <div className="flex bg-gray-50 min-h-screen">
       {/* Sidebar */}
-      <div
+      <aside
         ref={sidebarRef}
         className={`
-          fixed inset-y-0 left-0 z-50 bg-white border-r border-gray-200 border-b-0
-          overflow-y-auto max-h-screen
+          fixed inset-y-0 left-0 pb-14 z-50 bg-white border-r border-gray-200 overflow-y-auto max-h-screen
           transform transition-transform duration-300 ease-in-out
-          lg:static lg:translate-x-0 lg:overflow-visible lg:max-h-full
-          ${isFilterOpen ? "translate-x-0" : "-translate-x-full"}
           w-56 sm:w-64
+          ${isFilterOpen ? "translate-x-0" : "-translate-x-full"}
+          lg:static lg:translate-x-0 lg:max-h-full lg:overflow-visible
+          flex-shrink-0
         `}
       >
         <FilterSidebar
@@ -223,7 +226,7 @@ const CollectionPage = () => {
           }}
           onFilterChange={handleFilterChange}
         />
-      </div>
+      </aside>
 
       {/* Overlay for mobile when sidebar open */}
       {isFilterOpen && (
@@ -235,10 +238,13 @@ const CollectionPage = () => {
       )}
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col px-4 py-6 max-w-7xl mx-auto w-full">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-semibold">All Products</h2>
-          <div className="flex items-center gap-4">
+      <main className="flex flex-col flex-1 mx-auto w-full">
+        {/* Header - Title + Sort + Filter Button */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
+          <h2 className="text-2xl px-8 py-6 font-semibold flex-shrink-0">
+            All Products
+          </h2>
+          <div className="flex px-8 items-center justify-between gap-4 flex-wrap">
             <SortOptions currentSort={sort} onSortChange={handleSortChange} />
             <button
               onClick={() => setIsFilterOpen(true)}
@@ -251,14 +257,16 @@ const CollectionPage = () => {
         </div>
 
         {/* Product Grid */}
-        <div className="flex flex-col gap-4 w-full">
-
-        <ProductGrid products={paginatedProducts} />
+        <div className="px-8 py-4">
+          <ProductGrid products={paginatedProducts} />
         </div>
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex justify-center items-center gap-2 mt-6">
+          <nav
+            aria-label="Pagination"
+            className="flex justify-center items-center gap-2 mt-6 flex-wrap"
+          >
             <button
               className="px-3 py-1 border rounded disabled:opacity-50"
               onClick={() => goToPage(currentPage - 1)}
@@ -289,7 +297,7 @@ const CollectionPage = () => {
             >
               Next
             </button>
-          </div>
+          </nav>
         )}
       </main>
     </div>

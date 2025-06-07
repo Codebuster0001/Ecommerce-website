@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   selectOrders,
   cleanOldDeliveredOrders,
   loadOrdersFromStorage,
 } from "../features/checkoutSlice";
 import { toast } from "sonner";
-import { addToCart } from "../features/cartSlice"; // Assuming you have a cartSlice with addToCart
+import { addToCart } from "../features/cartSlice";
+import debounce from "lodash.debounce";
 
 const PAGE_SIZE = 5;
 
@@ -16,23 +17,50 @@ const MyOrders = () => {
   const navigate = useNavigate();
   const allOrders = useSelector(selectOrders) || [];
 
-  const [search, setSearch] = useState("");
-  const [paymentTypeFilter, setPaymentTypeFilter] = useState("All");
-  const [page, setPage] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const [search, setSearch] = useState(searchParams.get("search") || "");
+  const [searchInput, setSearchInput] = useState(search);
+  const [paymentTypeFilter, setPaymentTypeFilter] = useState(searchParams.get("payment") || "All");
+  const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
 
   useEffect(() => {
     dispatch(loadOrdersFromStorage());
     dispatch(cleanOldDeliveredOrders());
   }, [dispatch]);
 
+  // Sync URL params
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (search) params.set("search", search);
+    if (paymentTypeFilter !== "All") params.set("payment", paymentTypeFilter);
+    if (page !== 1) params.set("page", page);
+    setSearchParams(params);
+  }, [search, paymentTypeFilter, page, setSearchParams]);
+
+  // Debounce search input
+  useEffect(() => {
+    const debounced = debounce(() => {
+      setSearch(searchInput);
+      setPage(1); // Reset page on new search
+    }, 500);
+
+    debounced();
+    return () => debounced.cancel();
+  }, [searchInput]);
+
+  useEffect(() => {
+    setPage(1); // Reset page when payment filter changes
+  }, [paymentTypeFilter]);
+
   const getStatusStyle = (status) => {
     switch (status) {
       case "Processing":
         return "text-yellow-600 bg-yellow-100";
-      case "Paid": // For Razorpay payments
+      case "Paid":
         return "text-green-600 bg-green-100";
-      case "Cash on Delivery": // For COD payments
-        return "text-blue-600 bg-blue-100"; // Distinct style for COD
+      case "Cash on Delivery":
+        return "text-blue-600 bg-blue-100";
       case "Cancelled":
         return "text-red-600 bg-red-100";
       default:
@@ -44,53 +72,35 @@ const MyOrders = () => {
     navigate(`/orders/${orderId}`);
   };
 
-  // Filter and Sort Logic: Only show 'Paid' and 'Cash on Delivery' orders,
-  // then sort by latest date, and finally apply search and payment type filters.
   const filteredAndSortedOrders = allOrders
     .filter((order) => {
-      // Only include orders that are 'Paid' (Razorpay) or 'Cash on Delivery'
       const isConfirmedPayment =
         order.isPaid === "Paid" || order.isPaid === "Cash on Delivery";
+      if (!isConfirmedPayment) return false;
 
-      if (!isConfirmedPayment) {
-        return false; // Exclude orders with other statuses like 'Processing', 'Cancelled'
-      }
-
-      // --- START: MODIFIED SEARCH LOGIC ---
       const searchTerm = search.toLowerCase();
-
-      // Check if order ID or city matches
       const matchesOrderIdOrCity =
         order.orderId?.toString().toLowerCase().includes(searchTerm) ||
         order.shippingAddress?.city?.toLowerCase().includes(searchTerm);
 
-      // Check if any product name in the order items matches
       const matchesProductName = order.checkoutItems?.some(item =>
         item.name?.toLowerCase().includes(searchTerm)
       );
 
       const matchesSearch = matchesOrderIdOrCity || matchesProductName;
-      // --- END: MODIFIED SEARCH LOGIC ---
-
-
       const matchesPaymentType =
         paymentTypeFilter === "All" || order.isPaid === paymentTypeFilter;
 
       return matchesSearch && matchesPaymentType;
     })
-    .sort((a, b) => {
-      // Sort by createdAt in descending order (latest first)
-      return new Date(b.createdAt) - new Date(a.createdAt);
-    });
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-  // Pagination
   const totalPages = Math.ceil(filteredAndSortedOrders.length / PAGE_SIZE);
   const paginatedOrders = filteredAndSortedOrders.slice(
     (page - 1) * PAGE_SIZE,
     page * PAGE_SIZE
   );
 
-  // Export CSV function
   const exportToCSV = () => {
     if (filteredAndSortedOrders.length === 0) {
       toast.error("No orders to export");
@@ -118,7 +128,6 @@ const MyOrders = () => {
     ]);
 
     const csvContent = [header, ...rows].map((e) => e.join(",")).join("\n");
-
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
 
@@ -130,7 +139,6 @@ const MyOrders = () => {
     document.body.removeChild(link);
   };
 
-  // Reorder: Add all items in the order back to cart
   const handleReorder = (orderItems) => {
     if (!orderItems || orderItems.length === 0) {
       toast.error("No items to reorder");
@@ -157,13 +165,12 @@ const MyOrders = () => {
       <h2 className="text-2xl font-bold mb-6 text-center">My Orders</h2>
 
       {/* Search and Filter */}
-      <div className="flex flex-col sm:flex-row gap-4 items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row gap-4 items-center justify-between mb-6 flex-wrap">
         <input
           type="text"
-          // Updated placeholder to reflect new search capabilities
           placeholder="Search by Order ID, City, or Product Name"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
           className="border px-3 py-2 rounded w-full sm:w-64"
         />
 
@@ -276,7 +283,7 @@ const MyOrders = () => {
         </table>
       </div>
 
-      {/* Pagination Controls */}
+      {/* Pagination */}
       <div className="flex justify-center items-center gap-4 mt-4">
         <button
           onClick={() => setPage((p) => Math.max(p - 1, 1))}

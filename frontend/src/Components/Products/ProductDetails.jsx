@@ -29,7 +29,6 @@ const ProductDetails = () => {
     : null;
 
   useEffect(() => {
-    // scroll to top and reset states on id change
     window.scrollTo(0, 0);
     dispatch(fetchProductById(id));
     setSelectedColor(null);
@@ -103,11 +102,11 @@ const ProductDetails = () => {
     : [];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-16">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Product Image */}
-        <div className=" flex gap-3">
-          <div className="flex flex-col gap-3 ">
+    <div className="min-h-screen bg-gray-50 px-4 py-10 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10">
+        {/* Left - Images */}
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex sm:flex-col gap-3 overflow-x-auto sm:overflow-y-auto sm:h-[500px]">
             {currentProduct.images?.map((img, index) => (
               <img
                 key={index}
@@ -123,14 +122,14 @@ const ProductDetails = () => {
           <img
             src={mainImage}
             alt="Main"
-            className="w-full h-[500px] object-cover rounded-lg shadow"
+            className="w-full h-[400px] sm:h-[500px] object-cover rounded-lg shadow"
           />
         </div>
 
-        {/* Product Info */}
+        {/* Right - Product Details */}
         <div>
-          <h1 className="text-3xl font-semibold mb-2">{currentProduct.name}</h1>
-          <p className="text-xl text-slate-700 mb-4">
+          <h1 className="text-2xl sm:text-3xl font-semibold mb-2">{currentProduct.name}</h1>
+          <p className="text-lg sm:text-xl text-slate-700 mb-4">
             ₹{currentProduct.discountPrice || currentProduct.price}
           </p>
           <p className="text-gray-600 mb-6">{currentProduct.description}</p>
@@ -141,7 +140,7 @@ const ProductDetails = () => {
               <h4 className="font-medium flex items-center gap-2 mb-2">
                 <AiOutlineBgColors /> Color
               </h4>
-              <div className="flex gap-3">
+              <div className="flex gap-3 flex-wrap">
                 {currentProduct.colors.map((clr, i) => (
                   <button
                     key={i}
@@ -162,7 +161,7 @@ const ProductDetails = () => {
               <h4 className="font-medium flex items-center gap-2 mb-2">
                 <AiOutlineTag /> Size
               </h4>
-              <div className="flex gap-3">
+              <div className="flex gap-3 flex-wrap">
                 {currentProduct.sizes.map((sz, i) => (
                   <button
                     key={i}
@@ -180,7 +179,7 @@ const ProductDetails = () => {
             </div>
           )}
 
-          {/* Quantity Selector */}
+          {/* Quantity */}
           <div className="flex items-center gap-4 mb-6">
             <span className="font-medium">Quantity:</span>
             <div className="flex items-center border rounded-md">
@@ -200,18 +199,18 @@ const ProductDetails = () => {
             </div>
           </div>
 
-          {/* Add to Cart Button */}
+          {/* Add to Cart */}
           <button
             disabled={isLoading}
             onClick={handleAddToCart}
-            className="bg-black text-white px-6 py-3 rounded-md hover:bg-gray-800 transition"
+            className="bg-black text-white px-6 py-3 rounded-md hover:bg-gray-800 transition w-full sm:w-auto"
           >
             <AiOutlineShoppingCart className="inline-block mr-2" />
             {isLoading ? "Adding..." : "Add to Cart"}
           </button>
 
-          {/* Additional Info */}
-          <div className="mt-6 text-sm text-slate-500">
+          {/* Brand & Material */}
+          <div className="mt-6 text-sm text-slate-500 space-y-1">
             <p>
               <strong>Brand:</strong> {currentProduct.brand}
             </p>
@@ -224,13 +223,13 @@ const ProductDetails = () => {
 
       {/* Related Products */}
       <div className="mt-16">
-        <h2 className="text-2xl font-semibold mb-6">Related Products</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+        <h2 className="text-xl sm:text-2xl font-semibold mb-6">Related Products</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
           {relatedProducts.length > 0 ? (
             relatedProducts.map((relProd) => (
               <div
                 key={relProd._id || relProd.id}
-                className="border rounded-md p-4 cursor-pointer hover:shadow-lg transition"
+                className="border rounded-md p-4 cursor-pointer hover:shadow-md transition"
                 onClick={() =>
                   navigate(`/products/${relProd._id || relProd.id}`)
                 }
@@ -240,9 +239,9 @@ const ProductDetails = () => {
                   alt={relProd.name}
                   className="w-full h-40 object-cover rounded-md mb-3"
                 />
-                <h3 className="font-medium text-lg">{relProd.name}</h3>
-                <p className="text-gray-700">
-                  ${relProd.discountPrice || relProd.price}
+                <h3 className="font-medium text-base sm:text-lg">{relProd.name}</h3>
+                <p className="text-gray-700 text-sm sm:text-base">
+                  ₹{relProd.discountPrice || relProd.price}
                 </p>
               </div>
             ))
