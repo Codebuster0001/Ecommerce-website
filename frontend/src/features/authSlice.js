@@ -1,52 +1,71 @@
 // src/features/authSlice.js
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { nanoid } from "nanoid";
 
-// Thunks
+// Load users from localStorage
+const loadUsers = () => JSON.parse(localStorage.getItem("users")) || [];
+
+// Save users to localStorage
+const saveUsers = (users) =>
+  localStorage.setItem("users", JSON.stringify(users));
+
+// Load current user from localStorage
+const loadCurrentUser = () =>
+  JSON.parse(localStorage.getItem("currentUser")) || null;
+
+// Save current user to localStorage
+const saveCurrentUser = (user) =>
+  localStorage.setItem("currentUser", JSON.stringify(user));
+
+// Remove current user from localStorage
+const removeCurrentUser = () => localStorage.removeItem("currentUser");
+
+// Async thunk for user registration
 export const registerUser = createAsyncThunk(
-  'auth/registerUser',
-  async ({ name, email, password }, { getState, rejectWithValue }) => {
-    const { auth } = getState();
-    const existingUser = auth.users.find((user) => user.email === email);
+  "auth/registerUser",
+  async ({ name, email, password }, { rejectWithValue }) => {
+    const users = loadUsers();
+    const existingUser = users.find((user) => user.email === email);
     if (existingUser) {
-      return rejectWithValue('User already exists');
+      return rejectWithValue("User already exists");
     }
-
-    const newUser = { name, email, password };
-    const updatedUsers = [...auth.users, newUser];
-    localStorage.setItem('users', JSON.stringify(updatedUsers));
+    const newUser = { id: nanoid(), name, email, password };
+    users.push(newUser);
+    saveUsers(users);
     return newUser;
   }
 );
 
+// Async thunk for user login
 export const loginUser = createAsyncThunk(
-  'auth/loginUser',
-  async ({ email, password }, { getState, rejectWithValue }) => {
-    const { auth } = getState();
-    const user = auth.users.find((u) => u.email === email && u.password === password);
+  "auth/loginUser",
+  async ({ email, password }, { rejectWithValue }) => {
+    const users = loadUsers();
+    const user = users.find(
+      (u) => u.email === email && u.password === password
+    );
     if (!user) {
-      return rejectWithValue('Invalid email or password');
+      return rejectWithValue("Invalid email or password");
     }
-
-    localStorage.setItem('currentUser', JSON.stringify(user));
+    saveCurrentUser(user);
     return user;
   }
 );
 
-export const logoutUser = createAsyncThunk('auth/logoutUser', async () => {
-  localStorage.removeItem('currentUser');
+// Async thunk for user logout
+export const logoutUser = createAsyncThunk("auth/logoutUser", async () => {
+  removeCurrentUser();
   return null;
 });
 
-const initialState = {
-  users: JSON.parse(localStorage.getItem('users')) || [],
-  currentUser: JSON.parse(localStorage.getItem('currentUser')) || null,
-  loading: false,
-  error: null,
-};
-
 const authSlice = createSlice({
-  name: 'auth',
-  initialState,
+  name: "auth",
+  initialState: {
+    users: loadUsers(),
+    currentUser: loadCurrentUser(),
+    loading: false,
+    error: null,
+  },
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -88,4 +107,3 @@ const authSlice = createSlice({
 });
 
 export default authSlice.reducer;
- 

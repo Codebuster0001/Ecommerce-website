@@ -1,27 +1,63 @@
-// ✅ Register.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import RegisterImage from '../assets/register.webp';
-import { useDispatch } from 'react-redux';
-import { registerUser } from '../features/authSlice';
+import { useAuth } from '../Components/Common/AuthContext';
 import { toast } from 'sonner';
 
 const Register = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const dispatch = useDispatch();
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const { register, isLoggedIn } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const handleSubmit = (e) => {
+  const redirectPath = new URLSearchParams(location.search).get("redirect") || "/profile";
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate(redirectPath, { replace: true });
+    }
+  }, [isLoggedIn, navigate, redirectPath]);
+
+  const isPasswordValid = (pwd) =>
+    /^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/.test(pwd);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+
+    if (!isPasswordValid(password)) {
+      setError("Password must be at least 8 characters and include a number and a special character.");
+      toast.error("Invalid password format");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      toast.error("Passwords do not match");
+      return;
+    }
+
     try {
-      dispatch(registerUser({ name, email, password }));
-      toast.success('Account created successfully!');
-      navigate('/login');
-    } catch (error) {
-      toast.error(error.message);
+      setLoading(true);
+      const success = await register(name, email, password);
+      if (success) {
+        toast.success('Registration successful!');
+        navigate("/login");
+      } else {
+        setError("Registration failed");
+        toast.error("Registration failed");
+      }
+    } catch {
+      setError("Something went wrong");
+      toast.error("Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -62,6 +98,7 @@ const Register = () => {
             <motion.p className="text-gray-600 mb-8 text-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.6 }}>
               Join us and start exploring amazing products tailored just for you.
             </motion.p>
+
             <form onSubmit={handleSubmit} className="space-y-6">
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.8 }}>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
@@ -75,10 +112,28 @@ const Register = () => {
                 <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">Password</label>
                 <input type="password" id="password" placeholder="••••••••" className="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-purple-500 focus:outline-none" value={password} onChange={(e) => setPassword(e.target.value)} required />
               </motion.div>
-              <motion.button type="submit" className="w-full py-3 px-4 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-md shadow-md focus:ring-2 focus:ring-purple-500 focus:outline-none transition duration-300" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} transition={{ type: 'spring', stiffness: 200, delay: 2.4 }}>
-                Create Account
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 2.3 }}>
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+                <input type="password" id="confirmPassword" placeholder="••••••••" className="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-purple-500 focus:outline-none" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+              </motion.div>
+
+              {error && (
+                <motion.p className="text-red-600 text-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.4 }}>
+                  {error}
+                </motion.p>
+              )}
+
+              <motion.button type="submit" className="w-full py-3 px-4 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-md shadow-md focus:ring-2 focus:ring-purple-500 focus:outline-none transition duration-300 flex items-center justify-center" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} transition={{ type: 'spring', stiffness: 200, delay: 2.5 }} disabled={loading}>
+                {loading ? (
+                  <svg className="animate-spin h-5 w-5 mr-2 text-white" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                  </svg>
+                ) : null}
+                {loading ? "Creating..." : "Create Account"}
               </motion.button>
             </form>
+
             <motion.p className="mt-8 text-sm text-center text-gray-600" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.6 }}>
               Already have an account?{' '}
               <Link to="/login" className="text-purple-600 hover:underline font-medium">Sign In</Link>

@@ -26,7 +26,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const success = await login(email, password); // support async
+      const success = await login(email, password);
       if (success) {
         toast.success("Logged in successfully!");
         navigate(redirectPath, { replace: true });
