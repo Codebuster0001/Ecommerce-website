@@ -34,7 +34,8 @@ const productsArray = Array.isArray(productsData.products)
   ? productsData.products
   : Object.values(productsData.products || {});
 
-const validProducts = productsArray.length > 0 ? productsArray : placeholderProducts;
+const validProducts =
+  productsArray.length > 0 ? productsArray : placeholderProducts;
 
 const Home = () => {
   // List of best sellers, you can customize this list
@@ -70,11 +71,11 @@ const Home = () => {
       <h2 className="text-3xl font-bold text-center text-gray-900 mb-14">
         Best Seller
       </h2>
-    {currentBestSeller ? (
-  <BestSellerCard product={currentBestSeller} />
-) : (
-  <p className="text-center text-gray-600">No best seller available</p>
-)}
+      {currentBestSeller ? (
+        <BestSellerCard product={currentBestSeller} />
+      ) : (
+        <p className="text-center text-gray-600">No best seller available</p>
+      )}
 
       {/* Women’s Top Wear - Show 12 */}
       <div className="container mx-auto px-4">

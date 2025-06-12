@@ -2,19 +2,26 @@ import React from "react";
 
 const RazorpayButton = ({ amount, userDetails, onSuccess, onError }) => {
   const handleRazorpay = () => {
+    // Ensure Razorpay SDK is loaded
+    if (!window.Razorpay) {
+      onError && onError({ description: "Razorpay SDK not loaded." });
+      return;
+    }
+
     const options = {
-      key: import.meta.env.VITE_RAZORPAY_KEY, // ✅ Correct usage
-      amount: amount * 100,
+      key: import.meta.env.VITE_RAZORPAY_KEY, // ✅ Public Key from .env
+      amount: amount * 100, // amount in paise
       currency: "INR",
       name: "Shopy",
       description: "Order Payment",
-      image: "https://yourstore.com/logo.png",
+      image: "https://yourstore.com/logo.png", // optional
       handler: function (response) {
+        // Trigger onSuccess callback from parent
         onSuccess && onSuccess(response);
       },
       prefill: {
         name: `${userDetails.firstName} ${userDetails.lastName}`,
-        email: "test@example.com",
+        email: "test@example.com", // optional - replace with actual if available
         contact: userDetails.phone,
       },
       notes: {
@@ -26,6 +33,7 @@ const RazorpayButton = ({ amount, userDetails, onSuccess, onError }) => {
     };
 
     const rzp = new window.Razorpay(options);
+
     rzp.open();
 
     rzp.on("payment.failed", function (response) {
