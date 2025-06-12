@@ -1,5 +1,5 @@
 import React from "react";
-
+import logo from "../../../public/logo-shopyes.png"; // Adjust the path as necessary
 const RazorpayButton = ({ amount, userDetails, onSuccess, onError }) => {
   const handleRazorpay = () => {
     // Ensure Razorpay SDK is loaded
@@ -14,7 +14,7 @@ const RazorpayButton = ({ amount, userDetails, onSuccess, onError }) => {
       currency: "INR",
       name: "Shopy",
       description: "Order Payment",
-      image: "https://yourstore.com/logo.png", // optional
+      image: { logo }, // optional
       handler: function (response) {
         // Trigger onSuccess callback from parent
         onSuccess && onSuccess(response);

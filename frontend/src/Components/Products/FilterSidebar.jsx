@@ -118,9 +118,9 @@ const FilterSidebar = ({ isOpen, onClose }) => {
 
   return (
     <div
-      className={`fixed top-0 left-0 z-50 w-72 max-w-full bg-white h-full shadow-lg overflow-y-auto transform transition-transform duration-300 ease-in-out
+      className={`fixed mt-4 left-0 z-50 w-72 max-w-full h-full  overflow-y-auto transform transition-transform duration-300 ease-in-out
       ${
-        isOpen ? "translate-x-0" : "-translate-x-full"
+        isOpen ? "translate-x-0" : "-translate-x-full  "
       } lg:translate-x-0 lg:static lg:w-64 lg:max-w-none`}
     >
       {/* Close Button for Mobile */}

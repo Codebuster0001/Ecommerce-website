@@ -204,7 +204,7 @@ const CollectionPage = () => {
       <aside
         ref={sidebarRef}
         className={`
-          fixed inset-y-0 left-0 pb-14 z-50 bg-white border-r border-gray-200 overflow-y-auto max-h-screen
+          fixed inset-y-0 left-0 pb-14 z-50 bg-white border-r border-gray-200  max-h-screen
           transform transition-transform duration-300 ease-in-out
           w-56 sm:w-64
           ${isFilterOpen ? "translate-x-0" : "-translate-x-full"}
