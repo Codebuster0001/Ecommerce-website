@@ -1,8 +1,7 @@
 import React from "react";
-import logo from "../../assets/logo-shopyes.png";
 
 const RazorpayButton = ({ amount, userDetails, onSuccess, onError }) => {
-  const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY; // Load from .env at component load time
+  const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY;
 
   const handleRazorpay = () => {
     if (!window.Razorpay) {
@@ -16,7 +15,7 @@ const RazorpayButton = ({ amount, userDetails, onSuccess, onError }) => {
       currency: "INR",
       name: "Shopy",
       description: "Order Payment",
-      image: logo,
+      image: `${window.location.origin}/logo-shopyes.png`, // ✅ HTTPS-safe
       handler: function (response) {
         onSuccess && onSuccess(response);
       },
