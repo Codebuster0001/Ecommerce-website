@@ -47,11 +47,11 @@ const productsData = {
       gender: "Men",
       images: [
         {
-          url: "https://i.ibb.co/k2c53w2/hanes-mens-tee-front.webp",
+          url: "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcS_Zez6lBxfRRN2qNBmxfQoLYRrJl-JxQUuQjZmrtsVtmGsbzTRJZybJ57BiBdn6EeYxxJseVyuxdlfZLbLjURxaYXRewoXehUhoI7uYn_slMOsvCnIfZ6K",
           altText: "Hanes Men's Crew Neck T-Shirt Front",
         },
         {
-          url: "https://i.ibb.co/S073r7r/hanes-mens-tee-back.webp",
+          url: "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRn-jg3ZzGotc76JJ1Y374k0glcbOixqhtghUqMYc-kT_iD_b10wvEoTToXETRdiQwCo_IBpS_0PEqrAX57d7NdLM-jcVlBoDcz7mIqwx3P",
           altText: "Hanes Men's Crew Neck T-Shirt Back",
         },
       ],
@@ -76,11 +76,11 @@ const productsData = {
       gender: "Women",
       images: [
         {
-          url: "https://i.ibb.co/y4L2q4Y/zara-floral-maxi-dress-front.webp",
+          url: "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcS162qF6BJiS3HAwevN3jOJreuHxGiwv8TnlhkVcd_T2XpLzqgJSXKJ6lLqqUda7P0jUXVx6Uruh01g9a4yzD5Kqmjsz5IsFlIkKNfCcI04r9taqnfMXJvf",
           altText: "Zara Floral Print Maxi Dress Front",
         },
         {
-          url: "https://i.ibb.co/h7y7n72/zara-floral-maxi-dress-back.webp",
+          url: "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQwKw6YUqJsLArqvZRbzuGe9JyM-MBLpRNp5_oYMzcqG9Bd3LTPHm6psD_AkfwdaICo5bq9MoO81e4BQdna4Smo7Fio-2f74J-Ry2bdUY4j",
           altText: "Zara Floral Print Maxi Dress Back",
         },
       ],
@@ -105,11 +105,11 @@ const productsData = {
       gender: "Men",
       images: [
         {
-          url: "https://i.ibb.co/K2s51p1/dockers-mens-chinos-front.webp",
+          url: "https://m.media-amazon.com/images/I/71Vxtmhx-gL._SX569_.jpg",
           altText: "Dockers Men's Slim Fit Chinos Front",
         },
         {
-          url: "https://i.ibb.co/b34X2r2/dockers-mens-chinos-back.webp",
+          url: "https://m.media-amazon.com/images/I/51rt7u2gKsL.jpg",
           altText: "Dockers Men's Slim Fit Chinos Back",
         },
       ],
@@ -134,11 +134,11 @@ const productsData = {
       gender: "Unisex",
       images: [
         {
-          url: "https://i.ibb.co/Q8F7j8s/champion-hoodie-front.webp",
+          url: "https://m.media-amazon.com/images/I/41miRd79k9L.jpg",
           altText: "Champion Classic Hoodie Front",
         },
         {
-          url: "https://i.ibb.co/3s4K5m6/champion-hoodie-back.webp",
+          url: "https://m.media-amazon.com/images/I/41CNinxpWNL.jpg",
           altText: "Champion Classic Hoodie Back",
         },
       ],
@@ -163,11 +163,11 @@ const productsData = {
       gender: "Women",
       images: [
         {
-          url: "https://i.ibb.co/W2r5t78/hm-blouse-front.webp",
+          url: "https://m.media-amazon.com/images/I/51dZRgExTbL._SX679_.jpg",
           altText: "H&M Women's V-Neck Blouse Front",
         },
         {
-          url: "https://i.ibb.co/D9p2s3G/hm-blouse-back.webp",
+          url: "https://m.media-amazon.com/images/I/51omgdRhnvL._SY741_.jpg",
           altText: "H&M Women's V-Neck Blouse Back",
         },
       ],
@@ -192,11 +192,11 @@ const productsData = {
       gender: "Men",
       images: [
         {
-          url: "https://i.ibb.co/Z1c7x2V/nike-polo-front.webp",
+          url: "https://m.media-amazon.com/images/I/713n+TxyfCL._SY879_.jpg",
           altText: "Nike Men's Performance Polo Shirt Front",
         },
         {
-          url: "https://i.ibb.co/P4q6s7R/nike-polo-back.webp",
+          url: "https://m.media-amazon.com/images/I/61X+Yx14SEL._SX569_.jpg",
           altText: "Nike Men's Performance Polo Shirt Back",
         },
       ],
@@ -221,11 +221,11 @@ const productsData = {
       gender: "Women",
       images: [
         {
-          url: "https://i.ibb.co/3s7x8z9/asos-skirt-front.webp",
+          url: "https://m.media-amazon.com/images/I/41noLbx+5gL.jpg",
           altText: "ASOS Women's A-Line Midi Skirt Front",
         },
         {
-          url: "https://i.ibb.co/F1k2j3L/asos-skirt-back.webp",
+          url: "https://m.media-amazon.com/images/I/618IRYjDUaL._SY741_.jpg",
           altText: "ASOS Women's A-Line Midi Skirt Back",
         },
       ],
@@ -244,17 +244,17 @@ const productsData = {
       category: "Outerwear",
       brand: "Lee",
       sizes: ["S", "M", "L", "XL"],
-      colors: ["Medium Wash", "Dark Wash"],
+      colors: ["Blue", "Black"],
       collections: "Heritage Denim",
       material: "100% Cotton Denim",
       gender: "Men",
       images: [
         {
-          url: "https://i.ibb.co/R4m5n6P/lee-denim-jacket-front.webp",
+          url: "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQk7oHBABImTVcinhfOmFzBkmEOaGhKQrBzBRqXOnWy7Y0umMoy9d3iLxEQBIkMw1QKyALIhr3DR-30D2eWjbVCRN_rvmAFcMWxKrTFJP0",
           altText: "Lee Men's Denim Jacket Front",
         },
         {
-          url: "https://i.ibb.co/G7h8i9J/lee-denim-jacket-back.webp",
+          url: "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQrdIPf2C_nxr2T43iq1a3fkipXOnF9YVf9eMQQ26m5G5sNJKWL7SYk0YkAXMVephPzXeev8EF8PyGTeEqbDTu3Lse_ri9SlLBhgGSjZI6-",
           altText: "Lee Men's Denim Jacket Back",
         },
       ],
@@ -279,11 +279,11 @@ const productsData = {
       gender: "Women",
       images: [
         {
-          url: "https://i.ibb.co/T1u2v3W/lululemon-sports-bra-front.webp",
+          url: "https://m.media-amazon.com/images/I/41obwyhw+7L.jpg",
           altText: "Lululemon Women's Sports Bra Front",
         },
         {
-          url: "https://i.ibb.co/V4w5x6Y/lululemon-sports-bra-back.webp",
+          url: "https://m.media-amazon.com/images/I/71J3UUi8fVL._SY741_.jpg",
           altText: "Lululemon Women's Sports Bra Back",
         },
       ],
@@ -308,11 +308,11 @@ const productsData = {
       gender: "Men",
       images: [
         {
-          url: "https://i.ibb.co/C9d0e1F/under-armour-shorts-front.webp",
+          url: "https://m.media-amazon.com/images/I/71X6fSgMNKL._AC_UL480_FMwebp_QL65_.jpg",
           altText: "Under Armour Men's Athletic Shorts Front",
         },
         {
-          url: "https://i.ibb.co/H2i3j4K/under-armour-shorts-back.webp",
+          url: "https://m.media-amazon.com/images/I/513R2m39cEL._AC_UL480_FMwebp_QL65_.jpg",
           altText: "Under Armour Men's Athletic Shorts Back",
         },
       ],
@@ -337,11 +337,11 @@ const productsData = {
       gender: "Women",
       images: [
         {
-          url: "https://i.ibb.co/N6o7p8Q/madewell-cardigan-front.webp",
+          url: "https://m.media-amazon.com/images/I/61wQMfWUyKL._AC_UL480_FMwebp_QL65_.jpg",
           altText: "Madewell Women's Knit Cardigan Front",
         },
         {
-          url: "https://i.ibb.co/S9t0u1V/madewell-cardigan-back.webp",
+          url: "https://m.media-amazon.com/images/I/61xquNGLL1L._AC_UL480_FMwebp_QL65_.jpg",
           altText: "Madewell Women's Knit Cardigan Back",
         },
       ],
@@ -360,17 +360,17 @@ const productsData = {
       category: "Outerwear",
       brand: "Carhartt",
       sizes: ["S", "M", "L", "XL", "XXL"],
-      colors: ["Brown", "Black"],
+      colors: ["Brown", "Black", "Navy"],
       collections: "Rugged Apparel",
       material: "100% Cotton Duck",
       gender: "Men",
       images: [
         {
-          url: "https://i.ibb.co/Q3r4s5T/carhartt-jacket-front.webp",
+          url: "https://m.media-amazon.com/images/I/31xfX-fu9nL._SY445_SX342_QL70_FMwebp_.jpg",
           altText: "Carhartt Men's Workwear Jacket Front",
         },
         {
-          url: "https://i.ibb.co/V6w7x8Y/carhartt-jacket-back.webp",
+          url: "https://m.media-amazon.com/images/I/31UBXfZZdHL._SX342_SY445_QL70_FMwebp_.jpg",
           altText: "Carhartt Men's Workwear Jacket Back",
         },
       ],
@@ -395,11 +395,11 @@ const productsData = {
       gender: "Women",
       images: [
         {
-          url: "https://i.ibb.co/Z1a2b3C/alo-yoga-leggings-front.webp",
+          url: "https://m.media-amazon.com/images/I/51Ir4Q0wTeL._AC_UL480_FMwebp_QL65_.jpg",
           altText: "Alo Yoga Women's Leggings Front",
         },
         {
-          url: "https://i.ibb.co/D4e5f6G/alo-yoga-leggings-back.webp",
+          url: "https://m.media-amazon.com/images/I/511Lg71-DvL._AC_UL480_FMwebp_QL65_.jpg",
           altText: "Alo Yoga Women's Leggings Back",
         },
       ],
@@ -424,11 +424,11 @@ const productsData = {
       gender: "Men",
       images: [
         {
-          url: "https://i.ibb.co/K7l8m9N/llbean-flannel-shirt-front.webp",
+          url: "https://m.media-amazon.com/images/I/71sxOkwHXUL._AC_UL480_FMwebp_QL65_.jpg",
           altText: "L.L.Bean Men's Flannel Shirt Front",
         },
         {
-          url: "https://i.ibb.co/P0q1r2S/llbean-flannel-shirt-back.webp",
+          url: "https://m.media-amazon.com/images/I/710V-HHw1fL._AC_UL480_FMwebp_QL65_.jpg",
           altText: "L.L.Bean Men's Flannel Shirt Back",
         },
       ],
@@ -453,11 +453,11 @@ const productsData = {
       gender: "Women",
       images: [
         {
-          url: "https://i.ibb.co/X7y8z9A/free-people-jumpsuit-front.webp",
+          url: "https://m.media-amazon.com/images/I/612JwpCWw+L._AC_UL480_FMwebp_QL65_.jpg",
           altText: "Free People Women's Jumpsuit Front",
         },
         {
-          url: "https://i.ibb.co/B0c1d2E/free-people-jumpsuit-back.webp",
+          url: "https://m.media-amazon.com/images/I/61j0YaR-FJL._AC_UL480_FMwebp_QL65_.jpg",
           altText: "Free People Women's Jumpsuit Back",
         },
       ],
@@ -482,11 +482,11 @@ const productsData = {
       gender: "Men",
       images: [
         {
-          url: "https://i.ibb.co/F3g4h5I/speedo-swim-trunks-front.webp",
+          url: "https://m.media-amazon.com/images/I/81c7JMNEhPL._AC_UL480_FMwebp_QL65_.jpg",
           altText: "Speedo Men's Swim Trunks Front",
         },
         {
-          url: "https://i.ibb.co/J6k7l8M/speedo-swim-trunks-back.webp",
+          url: "https://m.media-amazon.com/images/I/51AuhWjbhEL._AC_UL480_FMwebp_QL65_.jpg",
           altText: "Speedo Men's Swim Trunks Back",
         },
       ],
@@ -511,11 +511,11 @@ const productsData = {
       gender: "Women",
       images: [
         {
-          url: "https://i.ibb.co/M9n0o1P/roxy-swimsuit-front.webp",
+          url: "https://m.media-amazon.com/images/I/51qr0ACSg7L._AC_UL480_FMwebp_QL65_.jpg",
           altText: "Roxy Women's One-Piece Swimsuit Front",
         },
         {
-          url: "https://i.ibb.co/R2s3t4U/roxy-swimsuit-back.webp",
+          url: "https://m.media-amazon.com/images/I/51lev7qwamL._SY879_.jpg",
           altText: "Roxy Women's One-Piece Swimsuit Back",
         },
       ],
@@ -540,11 +540,11 @@ const productsData = {
       gender: "Unisex",
       images: [
         {
-          url: "https://i.ibb.co/V5w6x7Y/brooks-running-shoes-front.webp",
+          url: "https://m.media-amazon.com/images/I/61Z2KamJrHL._AC_UL480_FMwebp_QL65_.jpg",
           altText: "Brooks Unisex Running Shoes Front",
         },
         {
-          url: "https://i.ibb.co/Z8a9b0C/brooks-running-shoes-side.webp",
+          url: "https://m.media-amazon.com/images/I/71wu5YnmJXL._AC_UL480_FMwebp_QL65_.jpg",
           altText: "Brooks Unisex Running Shoes Side",
         },
       ],
@@ -569,11 +569,11 @@ const productsData = {
       gender: "Women",
       images: [
         {
-          url: "https://i.ibb.co/C1d2e3F/sam-edelman-boots-front.webp",
+          url: "https://m.media-amazon.com/images/I/51YanKNgSHL._AC_UL480_FMwebp_QL65_.jpg",
           altText: "Sam Edelman Women's Ankle Boots Front",
         },
         {
-          url: "https://i.ibb.co/H4i5j6K/sam-edelman-boots-side.webp",
+          url: "https://m.media-amazon.com/images/I/51r0NGJy9cL._AC_UL480_FMwebp_QL65_.jpg",
           altText: "Sam Edelman Women's Ankle Boots Side",
         },
       ],
@@ -598,11 +598,11 @@ const productsData = {
       gender: "Men",
       images: [
         {
-          url: "https://i.ibb.co/L7m8n9O/vans-sneakers-front.webp",
+          url: "https://m.media-amazon.com/images/I/71pBlGbCPPL._AC_UL480_FMwebp_QL65_.jpg",
           altText: "Vans Men's Casual Sneakers Front",
         },
         {
-          url: "https://i.ibb.co/P0q1r2S/vans-sneakers-side.webp",
+          url: "https://m.media-amazon.com/images/I/71dWOxDFlDL._AC_UL480_FMwebp_QL65_.jpg",
           altText: "Vans Men's Casual Sneakers Side",
         },
       ],
@@ -627,11 +627,11 @@ const productsData = {
       gender: "Women",
       images: [
         {
-          url: "https://i.ibb.co/S3t4u5V/coach-crossbody-front.webp",
+          url: "https://m.media-amazon.com/images/I/61v6FE5wlhL._AC_UL480_FMwebp_QL65_.jpg",
           altText: "Coach Women's Crossbody Bag Front",
         },
         {
-          url: "https://i.ibb.co/X6y7z8A/coach-crossbody-inside.webp",
+          url: "https://m.media-amazon.com/images/I/61gigszuMgL._AC_UL480_FMwebp_QL65_.jpg",
           altText: "Coach Women's Crossbody Bag Inside",
         },
       ],
@@ -656,11 +656,11 @@ const productsData = {
       gender: "Unisex",
       images: [
         {
-          url: "https://i.ibb.co/B9c0d1E/new-era-cap-front.webp",
+          url: "https://m.media-amazon.com/images/I/41oKoSpNMNL._AC_UL480_FMwebp_QL65_.jpg",
           altText: "New Era Unisex Baseball Cap Front",
         },
         {
-          url: "https://i.ibb.co/G2h3i4J/new-era-cap-side.webp",
+          url: "https://m.media-amazon.com/images/I/61yr1nKrtCL._AC_UL480_FMwebp_QL65_.jpg",
           altText: "New Era Unisex Baseball Cap Side",
         },
       ],
@@ -685,11 +685,11 @@ const productsData = {
       gender: "Women",
       images: [
         {
-          url: "https://i.ibb.co/J5k6l7M/kendra-scott-necklace-front.webp",
+          url: "https://m.media-amazon.com/images/I/61-TUr8cJiL._AC_UL480_FMwebp_QL65_.jpg",
           altText: "Kendra Scott Women's Statement Necklace Front",
         },
         {
-          url: "https://i.ibb.co/N8o9p0Q/kendra-scott-necklace-detail.webp",
+          url: "https://m.media-amazon.com/images/I/61V5jxsiTAL._AC_UL480_FMwebp_QL65_.jpg",
           altText: "Kendra Scott Women's Statement Necklace Detail",
         },
       ],
@@ -714,16 +714,533 @@ const productsData = {
       gender: "Men",
       images: [
         {
-          url: "https://i.ibb.co/Q1r2s3T/tommy-hilfiger-wallet-front.webp",
+          url: "https://m.media-amazon.com/images/I/71B39eES6WL._AC_UL480_FMwebp_QL65_.jpg",
           altText: "Tommy Hilfiger Men's Leather Wallet Front",
         },
         {
-          url: "https://i.ibb.co/U4v5w6X/tommy-hilfiger-wallet-inside.webp",
+          url: "https://m.media-amazon.com/images/I/71Lw6v5TNmL._AC_UL480_FMwebp_QL65_.jpg",
           altText: "Tommy Hilfiger Men's Leather Wallet Inside",
         },
       ],
       rating: 4.7,
       numReviews: 110,
+    },
+    {
+      _id: "PROD-026",
+      name: "Max Cotton Girl's Washed Crop Denim Jacket",
+      description: "Stylish cropped denim jacket for girls.",
+      price: 799,
+      discountPrice: 799,
+      countInStock: 15,
+      sku: "DENIM-KID-G-001",
+      category: "Outerwear",
+      brand: "Max Cotton",
+      sizes: ["6", "8", "10", "12"],
+      colors: ["Light Wash"],
+      collections: "Kids Denim",
+      material: "100% Cotton",
+      gender: "kids",
+      images: [
+        {
+          url: "https://m.media-amazon.com/images/I/81zlHc3gBqL._SY879_.jpg",
+          altText: "Max Cotton Girl Denim Jacket Front",
+        },
+        {
+          url: "https://m.media-amazon.com/images/I/81AjsjEJ+HL._SY741_.jpg",
+          altText: "Max Cotton Girl Denim Jacket Back",
+        },
+      ],
+      rating: 4.8,
+      numReviews: 4,
+    },
+    {
+      _id: "PROD-027",
+      name: "XForce Plaza Cute Waterproof Multi‑Pocket Backpack",
+      description: "Waterproof multi‑pocket backpack for school.",
+      price: 1299,
+      discountPrice: 1299,
+      countInStock: 25,
+      sku: "BACKPACK-XF-002",
+      category: "Bags",
+      brand: "XForce Plaza",
+      colors: ["Blue", "Pink"],
+      collections: "School Essentials",
+      material: "Polyester",
+      gender: "kids",
+      images: [
+        {
+          url: "https://m.media-amazon.com/images/I/61dgvG0ZY6L._AC_UY327_FMwebp_QL65_.jpg",
+          altText: "XForce Plaza Backpack Front",
+        },
+        {
+          url: "https://m.media-amazon.com/images/I/51vuvH2tXFL._AC_UY327_FMwebp_QL65_.jpg",
+          altText: "XForce Plaza Backpack Side",
+        },
+      ],
+      rating: 4.4,
+      numReviews: 20,
+    },
+    {
+      _id: "PROD-030",
+      name: "YJBQ Boys Jean Jacket 8‑14",
+      description: "Classic cotton jean jacket for boys.",
+      price: 2699,
+      discountPrice: 1999,
+      countInStock: 20,
+      sku: "DENIM-KID-B-007",
+      category: "Outerwear",
+      brand: "YJBQ",
+      sizes: ["8", "10", "12", "14"],
+      colors: ["Blue", "Black"],
+      collections: "Kids Denim",
+      material: "95% Cotton",
+      gender: "kids",
+      images: [
+        {
+          url: "https://m.media-amazon.com/images/I/81sGffgZ3+L._AC_UL480_FMwebp_QL65_.jpg",
+          altText: "YJBQ Boys Jean Jacket Front",
+        },
+        {
+          url: "https://m.media-amazon.com/images/I/61-MSOIJNVL._AC_UL480_FMwebp_QL65_.jpg",
+          altText: "YJBQ Boys Jean Jacket Back",
+        },
+      ],
+      rating: 4.6,
+      numReviews: 388,
+    },
+    {
+      id: "PROD-031",
+      name: "Dino Adventure Kids' Cotton Tee",
+      category: "T-Shirt",
+      description:
+        "Soft cotton tee with a fun dinosaur graphic for active kids.",
+      price: 1299,
+      discountPrice: 999,
+      countInStock: 150,
+      sku: "TEE-KID-DINO-001",
+      brand: "Little Explorers",
+      sizes: ["2T", "3T", "4T", "5", "6"],
+      colors: ["Green", "Blue"],
+      collections: "Kids' Graphic Tees",
+      material: "100% Cotton",
+      gender: "kids",
+      images: [
+        {
+          url: "https://m.media-amazon.com/images/I/71PBgR57yxL._AC_UL480_FMwebp_QL65_.jpg",
+          altText: "Dino Adventure Kids' Cotton Tee - Front",
+        },
+        {
+          url: "https://m.media-amazon.com/images/I/71Izuj77sUL._AC_UL480_FMwebp_QL65_.jpg",
+          altText: "Dino Adventure Kids' Cotton Tee - Front",
+        },
+      ],
+      rating: 4.7,
+      numReviews: 520,
+    },
+    {
+      id: "PROD-032",
+      name: "Galaxy Explorer Graphic Tee",
+      category: "T-Shirt",
+      description:
+        "Inspiring space-themed tee for aspiring astronauts. Glow-in-the-dark print.",
+      price: 1499,
+      discountPrice: 1199,
+      countInStock: 120,
+      sku: "TEE-KID-GALAXY-002",
+      brand: "Star Kids Apparel",
+      sizes: ["4", "6", "8", "10", "12"],
+      colors: ["Navy", "Black"],
+      collections: "Kids' Graphic Tees",
+      material: "90% Cotton, 10% Polyester",
+      gender: "kids",
+      images: [
+        {
+          url: "https://m.media-amazon.com/images/I/61j46HJNrWL._AC_UL480_FMwebp_QL65_.jpg",
+          altText: "Galaxy Explorer Graphic Tee - Front",
+        },
+        {
+          url: "https://m.media-amazon.com/images/I/615Byalw-lL._AC_UL480_FMwebp_QL65_.jpg",
+          altText: "Galaxy Explorer Graphic Tee - Front",
+        },
+      ],
+      rating: 4.5,
+      numReviews: 480,
+    },
+    {
+      id: "PROD-033",
+      name: "Super Hero Squad Tee",
+      category: "T-Shirt",
+      description:
+        "Bold and colorful tee featuring a team of cartoon superheroes.",
+      price: 1399,
+      discountPrice: 1099,
+      countInStock: 180,
+      sku: "TEE-KID-HERO-003",
+      brand: "Heroic Gear",
+      sizes: ["3T", "4T", "5", "6", "7"],
+      colors: ["Red", "Royal Blue"],
+      collections: "Kids' Character Wear",
+      material: "100% Cotton",
+      gender: "kids",
+      images: [
+        {
+          url: "https://m.media-amazon.com/images/I/615QSDwWxVL._AC_UL480_FMwebp_QL65_.jpg",
+          altText: "Super Hero Squad Tee - Front",
+        },
+        {
+          url: "https://m.media-amazon.com/images/I/71D3Iel8bBL._AC_UL480_FMwebp_QL65_.jpg",
+          altText: "Super Hero Squad Tee - Front",
+        },
+      ],
+      rating: 4.6,
+      numReviews: 610,
+    },
+    {
+      id: "PROD-034",
+      name: "Little Gentleman Oxford Shirt",
+      category: "Shirt",
+      description: "Classic long-sleeve oxford shirt for a smart casual look.",
+      price: 2499,
+      discountPrice: 1899,
+      countInStock: 90,
+      sku: "SHIRT-KID-OXFORD-001",
+      brand: "Dapper Tots",
+      sizes: ["4", "6", "8", "10", "12"],
+      colors: ["White", "Light Blue"],
+      collections: "Kids' Formal & Casual",
+      material: "60% Cotton, 40% Polyester",
+      gender: "kids",
+      images: [
+        {
+          url: "https://m.media-amazon.com/images/I/619VUGVUHfL._AC_UL480_FMwebp_QL65_.jpg",
+          altText: "Little Gentleman Oxford Shirt - Front",
+        },
+        {
+          url: "https://m.media-amazon.com/images/I/51NCJaHC9CL._AC_UL480_FMwebp_QL65_.jpg",
+          altText: "Little Gentleman Oxford Shirt - Back",
+        },
+      ],
+      rating: 4.7,
+      numReviews: 350,
+    },
+    {
+      id: "PROD-035",
+      name: "Plaid Fun Flannel Shirt",
+      category: "Shirt",
+      description:
+        "Cozy and stylish flannel shirt, perfect for cooler weather.",
+      price: 2299,
+      discountPrice: 1799,
+      countInStock: 100,
+      sku: "SHIRT-KID-FLANNEL-002",
+      brand: "Outdoor Kids",
+      sizes: ["5", "6", "7", "8", "10"],
+      colors: ["Red Plaid", "Blue Plaid"],
+      collections: "Kids' Casual Wear",
+      material: "100% Cotton Flannel",
+      gender: "kids",
+      images: [
+        {
+          url: "https://m.media-amazon.com/images/I/61OZq-JkXEL._AC_UL480_FMwebp_QL65_.jpg",
+          altText: "Plaid Fun Flannel Shirt - Front",
+        },
+        {
+          url: "https://m.media-amazon.com/images/I/51Tr+MRXjRL._SX679_.jpg",
+          altText: "Plaid Fun Flannel Shirt - Back",
+        },
+      ],
+      rating: 4.5,
+      numReviews: 290,
+    },
+    {
+      id: "PROD-036",
+      name: "Safari Explorer Button-Up",
+      category: "Shirt",
+      description:
+        "Lightweight, breathable button-up shirt with a fun safari print.",
+      price: 1999,
+      discountPrice: 1599,
+      countInStock: 80,
+      sku: "SHIRT-KID-SAFARI-003",
+      brand: "Jungle Jumps",
+      sizes: ["2T", "3T", "4T", "5", "6"],
+      colors: ["Khaki", "Olive Green"],
+      collections: "Kids' Adventure Wear",
+      material: "65% Cotton, 35% Linen",
+      gender: "kids",
+      images: [
+        {
+          url: "https://m.media-amazon.com/images/I/515OuvpW48L.jpg",
+          altText: "Safari Explorer Button-Up - Front",
+        },
+        {
+          url: "https://m.media-amazon.com/images/I/61iVsceKnpL._AC_UL480_FMwebp_QL65_.jpg",
+          altText: "Safari Explorer Button-Up - Back",
+        },
+      ],
+      rating: 4.4,
+      numReviews: 210,
+    },
+    {
+      id: "PROD-037",
+      name: "Rugged Explorer Cargo Pants",
+      category: "Pant",
+      description:
+        "Durable cargo pants with multiple pockets, ideal for outdoor play.",
+      price: 2899,
+      discountPrice: 2199,
+      countInStock: 110,
+      sku: "PANT-KID-CARGO-001",
+      brand: "Tough Trails",
+      sizes: ["6", "8", "10", "12", "14"],
+      colors: ["Brown", "Grey"],
+      collections: "Kids' Outdoor Gear",
+      material: "100% Cotton Twill",
+      gender: "kids",
+      images: [
+        {
+          url: "https://m.media-amazon.com/images/I/71vyiR-ffAL._AC_UL480_FMwebp_QL65_.jpg",
+          altText: "Rugged Explorer Cargo Pants - Front",
+        },
+        {
+          url: "https://m.media-amazon.com/images/I/31gupoek7yL._AC_UL480_FMwebp_QL65_.jpg",
+          altText: "Rugged Explorer Cargo Pants - Back",
+        },
+      ],
+      rating: 4.6,
+      numReviews: 450,
+    },
+    {
+      id: "PROD-038",
+      name: "Comfy Play Denim Jeans",
+      category: "Pant",
+      description:
+        "Soft and flexible denim jeans for all-day comfort and play.",
+      price: 2599,
+      discountPrice: 1999,
+      countInStock: 160,
+      sku: "PANT-KID-DENIM-002",
+      brand: "Denim Delights",
+      sizes: ["2T", "3T", "4T", "5", "6", "7"],
+      colors: ["Light Wash", "Dark Wash"],
+      collections: "Kids' Everyday Wear",
+      material: "98% Cotton, 2% Spandex",
+      gender: "kids",
+      images: [
+        {
+          url: "https://m.media-amazon.com/images/I/71GNjIlzh5L._AC_UL480_FMwebp_QL65_.jpg",
+          altText: "Comfy Play Denim Jeans - Front",
+        },
+        {
+          url: "https://m.media-amazon.com/images/I/616xchp1ECL._AC_UL480_FMwebp_QL65_.jpg",
+          altText: "Comfy Play Denim Jeans - Back",
+        },
+      ],
+      rating: 4.8,
+      numReviews: 700,
+    },
+    {
+      id: "PROD-039",
+      name: "Adventure Ready Twill Pants",
+      category: "Pant",
+      description:
+        "Versatile twill pants for school or play, with an adjustable waist.",
+      price: 2399,
+      discountPrice: 1899,
+      countInStock: 130,
+      sku: "PANT-KID-TWILL-003",
+      brand: "Active Youth",
+      sizes: ["4", "6", "8", "10", "12"],
+      colors: ["Navy", "Khaki"],
+      collections: "Kids' Basics",
+      material: "95% Cotton, 5% Spandex",
+      gender: "kids",
+      images: [
+        {
+          url: "https://m.media-amazon.com/images/I/51yYbRxkhaL._AC_UL480_FMwebp_QL65_.jpg",
+          altText: "Adventure Ready Twill Pants - Front",
+        },
+        {
+          url: "https://m.media-amazon.com/images/I/7143HBldW6L._AC_UL480_FMwebp_QL65_.jpg",
+          altText: "Adventure Ready Twill Pants - Back",
+        },
+      ],
+      rating: 4.5,
+      numReviews: 380,
+    },
+    {
+      id: "PROD-040",
+      name: "Sporty Stripe Kids' Joggers",
+      category: "Jogger",
+      description:
+        "Comfortable joggers with stylish side stripes, perfect for active kids.",
+      price: 1999,
+      discountPrice: 1599,
+      countInStock: 140,
+      sku: "JOGGER-KID-STRIPE-001",
+      brand: "Athleisure Kids",
+      sizes: ["4", "6", "8", "10", "12"],
+      colors: ["Grey", "Black"],
+      collections: "Kids' Activewear",
+      material: "60% Cotton, 40% Polyester Fleece",
+      gender: "kids",
+      images: [
+        {
+          url: "https://m.media-amazon.com/images/I/61IuK0ppZfL._AC_UL480_FMwebp_QL65_.jpg",
+          altText: "Sporty Stripe Kids' Joggers - Front",
+        },
+        {
+          url: "https://m.media-amazon.com/images/I/51A-wKJS3OL._AC_UL480_FMwebp_QL65_.jpg",
+          altText: "Sporty Stripe Kids' Joggers - Back",
+        },
+      ],
+      rating: 4.6,
+      numReviews: 410,
+    },
+    {
+      id: "PROD-041",
+      name: "Cozy Fleece Play Joggers",
+      category: "Jogger",
+      description:
+        "Ultra-soft fleece joggers for maximum comfort during playtime or relaxation.",
+      price: 1799,
+      discountPrice: 1399,
+      countInStock: 170,
+      sku: "JOGGER-KID-FLEECE-002",
+      brand: "Comfy Kids Co.",
+      sizes: ["2T", "3T", "4T", "5", "6"],
+      colors: ["Navy", "Burgundy"],
+      collections: "Kids' Loungewear",
+      material: "80% Cotton, 20% Polyester Fleece",
+      gender: "kids",
+      images: [
+        {
+          url: "https://m.media-amazon.com/images/I/51bVEw0pfTL._AC_UL480_FMwebp_QL65_.jpg",
+          altText: "Cozy Fleece Play Joggers - Front",
+        },
+        {
+          url: "https://m.media-amazon.com/images/I/51oBqpW7rJL._AC_UL480_FMwebp_QL65_.jpg",
+          altText: "Cozy Fleece Play Joggers - Back",
+        },
+      ],
+      rating: 4.7,
+      numReviews: 550,
+    },
+    {
+      id: "PROD-042",
+      name: "Urban Explorer Knit Joggers",
+      category: "Jogger",
+      description:
+        "Modern knit joggers with a relaxed fit, perfect for urban adventures.",
+      price: 2199,
+      discountPrice: 1699,
+      countInStock: 100,
+      sku: "JOGGER-KID-KNIT-003",
+      brand: "City Kids Gear",
+      sizes: ["6", "8", "10", "12", "14"],
+      colors: ["Charcoal Grey", "Olive Green"],
+      collections: "Kids' Street Style",
+      material: "70% Cotton, 30% Rayon",
+      gender: "kids",
+      images: [
+        {
+          url: "https://m.media-amazon.com/images/I/31zPzGOAkhL._AC_UL480_FMwebp_QL65_.jpg",
+          altText: "Urban Explorer Knit Joggers - Front",
+        },
+        {
+          url: "https://m.media-amazon.com/images/I/71eKfZZCNUL._AC_UL480_FMwebp_QL65_.jpg",
+          altText: "Urban Explorer Knit Joggers - Back",
+        },
+      ],
+      rating: 4.5,
+      numReviews: 320,
+    },
+    {
+      id: "PROD-042",
+      name: "Sun & Sand Swim Trunks",
+      category: "Swimwear",
+      description:
+        "Quick-drying swim trunks with a fun beach print, perfect for summer fun.",
+      price: 1699,
+      discountPrice: 1299,
+      countInStock: 90,
+      sku: "SWIM-KID-TRUNK-001",
+      brand: "Beach Bum Kids",
+      sizes: ["2T", "3T", "4T", "5", "6"],
+      colors: ["Blue with Sharks", "Orange with Palms"],
+      collections: "Kids' Summer Essentials",
+      material: "100% Polyester",
+      gender: "kids",
+      images: [
+        {
+          url: "https://m.media-amazon.com/images/I/61SfMoYxCZL._AC_UL480_FMwebp_QL65_.jpg",
+          altText: "Sun & Sand Swim Trunks - Front",
+        },
+        {
+          url: "https://m.media-amazon.com/images/I/311Vtyfir4L._AC_UL480_FMwebp_QL65_.jpg",
+          altText: "Sun & Sand Swim Trunks - Back",
+        },
+      ],
+      rating: 4.7,
+      numReviews: 280,
+    },
+    {
+      id: "PROD-043",
+      name: "Sweet Dreams Pajama Set",
+      category: "Sleepwear",
+      description:
+        "Soft and comfortable cotton pajama set for a restful night's sleep.",
+      price: 1899,
+      discountPrice: 1499,
+      countInStock: 110,
+      sku: "PAJAMA-KID-SET-001",
+      brand: "Dreamland Apparel",
+      sizes: ["2T", "3T", "4T", "5", "6"],
+      colors: ["Unicorns", "Dinosaurs"],
+      collections: "Kids' Sleep Essentials",
+      material: "100% Cotton",
+      gender: "kids",
+      images: [
+        {
+          url: "https://m.media-amazon.com/images/I/61Smek-KV2L._AC_UL480_FMwebp_QL65_.jpg",
+          altText: "Sweet Dreams Pajama Set - Front",
+        },
+        {
+          url: "https://m.media-amazon.com/images/I/61b1d2k4JFL._AC_UL480_FMwebp_QL65_.jpg",
+          altText: "Sweet Dreams Pajama Set - Back",
+        },
+      ],
+      rating: 4.8,
+      numReviews: 600,
+    },
+    {
+      id: "PROD-044",
+      name: "Rainy Day Dino Raincoat",
+      category: "Outerwear",
+      description:
+        "Fun dinosaur-themed raincoat to keep kids dry on rainy days.",
+      price: 2999,
+      discountPrice: 2299,
+      countInStock: 70,
+      sku: "COAT-KID-RAIN-001",
+      brand: "Splash Guard Kids",
+      sizes: ["2T", "3T", "4T", "5", "6"],
+      colors: ["Green with Spikes", "Blue with Scales"],
+      collections: "Kids' Rain Gear",
+      material: "100% Waterproof Polyester",
+      gender: "kids",
+      images: [
+        {
+          url: "https://m.media-amazon.com/images/I/61s3Y0uun9L._AC_UL480_FMwebp_QL65_.jpg",
+          altText: "Rainy Day Dino Raincoat - Front",
+        },
+        {
+          url: "https://m.media-amazon.com/images/I/41HDEoKmGrL._AC_UL480_FMwebp_QL65_.jpg",
+          altText: "Rainy Day Dino Raincoat - Back",
+        },
+      ],
+      rating: 4.5,
+      numReviews: 250,
     },
   ],
 };

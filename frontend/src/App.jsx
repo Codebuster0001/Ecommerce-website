@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom"; // ✅ Navigate added
 import UserLayout from "./Components/Layout/UserLayout";
 import Home from "./Pages/Home";
 import { Toaster } from "sonner";
@@ -15,11 +15,14 @@ import CartContent from "./Components/Cart/CartContent";
 import PrivateRoute from "./Components/Common/PrivateRoute";
 import { AuthProvider } from "./Components/Common/AuthContext";
 
+
 function App() {
   return (
     <AuthProvider>
       <Toaster position="top-right" richColors />
       <Routes>
+           <Route path="/" element={<Navigate to="/collection" replace />} />
+           
         <Route path="/" element={<UserLayout />}>
           <Route index element={<Home />} />
           <Route path="login" element={<Login />} />

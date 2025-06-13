@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../../../public/logo-shopyes.png"; // Adjust the path as necessary
+import logo from "../../assets/logo-shopyes.png"; // Adjust the path as necessary
 const RazorpayButton = ({ amount, userDetails, onSuccess, onError }) => {
   const handleRazorpay = () => {
     // Ensure Razorpay SDK is loaded

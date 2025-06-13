@@ -1,15 +1,13 @@
-// Navbar.jsx
 import React, { useState, useEffect, useRef } from "react";
 import { FiUser, FiShoppingBag, FiSearch, FiX } from "react-icons/fi";
 import { HiBars3BottomRight } from "react-icons/hi2";
 import { Link, useLocation } from "react-router-dom";
 import SearchBar from "./SearchBar";
-import CartDrawer from "../Layout/CartDrawer";
+import CartDrawer from "../Layout/CartDrawer"; // Assuming this path is correct
 import { useSelector } from "react-redux";
-import { selectCartCount } from "../../features/cartSlice"; // Adjust path
+import { selectCartCount } from "../../features/cartSlice"; // Assuming this path is correct
 
 const Navbar = () => {
-  // Use Redux state for cart
   const cartItems = useSelector((state) => state.cart.cartItems);
   const totalQuantity = useSelector(selectCartCount);
 
@@ -19,9 +17,12 @@ const Navbar = () => {
   const mobileMenuRef = useRef(null);
   const cartDrawerRef = useRef(null);
 
+  const location = useLocation(); // ✅ Used below
+
   const logo = "Shopy";
 
   const navLinks = [
+    { name: "ALL PRODUCTS", to: "/collection" },
     { name: "MEN", to: "/collection?gender=men" },
     { name: "WOMEN", to: "/collection?gender=women" },
     { name: "KIDS", to: "/collection?gender=kids" },
@@ -63,19 +64,39 @@ const Navbar = () => {
       document.removeEventListener("mousedown", handleClickOutsideCartDrawer);
   }, [drawerOpen]);
 
-  // Get current path and query params for active link styling
-  const location = useLocation();
-
-  // Function to check if a nav link is active based on URL query params
+  // ✅ Updated to use `location` instead of window.location
   const isLinkActive = (linkTo) => {
     try {
       const url = new URL(linkTo, window.location.origin);
-      const currentUrl = new URL(window.location.href);
-      // Compare pathname and each search param key+value
+      const currentUrl = new URL(
+        location.pathname + location.search,
+        window.location.origin
+      );
+
+      if (linkTo === "/collection" && currentUrl.pathname === "/collection") {
+        if (currentUrl.search === "" || currentUrl.searchParams.has("query")) {
+          return true;
+        }
+        let hasOnlyQuery = true;
+        for (const [key] of currentUrl.searchParams) {
+          if (key !== "query") {
+            hasOnlyQuery = false;
+            break;
+          }
+        }
+        return hasOnlyQuery;
+      }
+
       if (url.pathname !== currentUrl.pathname) return false;
+
       for (const [key, val] of url.searchParams) {
         if (currentUrl.searchParams.get(key) !== val) return false;
       }
+
+      for (const [key] of currentUrl.searchParams) {
+        if (!url.searchParams.has(key)) return false;
+      }
+
       return true;
     } catch {
       return false;
@@ -117,11 +138,11 @@ const Navbar = () => {
             </button>
             {showSearch && (
               <div className="absolute right-7 w-64 -top-4 z-40">
-                <div className="relative rounded p-2">
+                <div className="relative rounded p-2 ">
                   <SearchBar onSearch={closeSearch} />
                   <button
                     onClick={closeSearch}
-                    className="absolute top-4 right-3 p-1 text-gray-600"
+                    className="absolute top-[0.90rem] right-3 p-1 text-gray-600 hover:text-gray-900"
                     aria-label="Close Search"
                   >
                     <FiX />
@@ -144,7 +165,7 @@ const Navbar = () => {
           >
             <FiShoppingBag className="cursor-pointer hover:text-black transition" />
             {totalQuantity > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5">
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 min-w-[1.2rem] text-center flex items-center justify-center">
                 {totalQuantity}
               </span>
             )}
@@ -170,7 +191,7 @@ const Navbar = () => {
       >
         <button
           onClick={toggleMobileMenu}
-          className="absolute top-5 right-7 text-2xl text-gray-800"
+          className="absolute top-5 right-7 text-2xl text-gray-800 hover:text-black"
           aria-label="Close Menu"
         >
           <FiX />
@@ -189,6 +210,16 @@ const Navbar = () => {
               </Link>
             </li>
           ))}
+          <li className="mt-4 md:hidden">
+            <div className="w-full px-4">
+              <SearchBar
+                onSearch={() => {
+                  closeSearch();
+                  toggleMobileMenu();
+                }}
+              />
+            </div>
+          </li>
         </ul>
       </div>
 
@@ -197,7 +228,7 @@ const Navbar = () => {
         <CartDrawer
           drawerOpen={drawerOpen}
           toggleCartDrawer={toggleCartDrawer}
-          cartItems={cartItems} // Pass real cart items
+          cartItems={cartItems}
         />
       </div>
     </nav>
