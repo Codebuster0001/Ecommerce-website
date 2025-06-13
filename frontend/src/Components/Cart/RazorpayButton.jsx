@@ -1,27 +1,28 @@
 import React from "react";
-import logo from "../../assets/logo-shopyes.png"; // Adjust the path as necessary
+import logo from "../../assets/logo-shopyes.png";
+
 const RazorpayButton = ({ amount, userDetails, onSuccess, onError }) => {
+  const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY; // Load from .env at component load time
+
   const handleRazorpay = () => {
-    // Ensure Razorpay SDK is loaded
     if (!window.Razorpay) {
       onError && onError({ description: "Razorpay SDK not loaded." });
       return;
     }
 
     const options = {
-      key: import.meta.env.VITE_RAZORPAY_KEY, // ✅ Public Key from .env
-      amount: amount * 100, // amount in paise
+      key: razorpayKey,
+      amount: amount * 100,
       currency: "INR",
       name: "Shopy",
       description: "Order Payment",
-      image: { logo }, // optional
+      image: logo,
       handler: function (response) {
-        // Trigger onSuccess callback from parent
         onSuccess && onSuccess(response);
       },
       prefill: {
         name: `${userDetails.firstName} ${userDetails.lastName}`,
-        email: "test@example.com", // optional - replace with actual if available
+        email: "test@example.com",
         contact: userDetails.phone,
       },
       notes: {
@@ -33,7 +34,6 @@ const RazorpayButton = ({ amount, userDetails, onSuccess, onError }) => {
     };
 
     const rzp = new window.Razorpay(options);
-
     rzp.open();
 
     rzp.on("payment.failed", function (response) {

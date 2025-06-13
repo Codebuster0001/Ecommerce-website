@@ -22,7 +22,7 @@ const productsData = {
           altText: "Levi's Women's High-Waisted Jeans Front",
         },
         {
-          url: "https://i.ibb.co/h7j96P2/levis-womens-jeans-back.webp",
+          url: "https://assets.sheinindia.in/medias/shein_sys_master/root/20250211/1DcW/67aaf04f2960820c497428f9/-473Wx593H-443319694-midblue-MODEL.jpg",
           altText: "Levi's Women's High-Waisted Jeans Back",
         },
       ],
