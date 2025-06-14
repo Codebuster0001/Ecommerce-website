@@ -8,12 +8,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+
 const razorpay = new Razorpay({
-  key_id: process.env.VITE_RAZORPAY_KEY,
+  key_id: process.env.RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_SECRET_KEY,
 });
 
-// Create order
 app.post("/api/create-order", async (req, res) => {
   const { amount } = req.body;
 
@@ -21,7 +21,7 @@ app.post("/api/create-order", async (req, res) => {
 
   try {
     const order = await razorpay.orders.create({
-      amount: amount * 100, // in paise
+      amount: amount * 100,
       currency: "INR",
       receipt: `receipt_order_${Date.now()}`,
     });
@@ -33,7 +33,6 @@ app.post("/api/create-order", async (req, res) => {
   }
 });
 
-// Verify payment
 app.post("/api/verify-payment", (req, res) => {
   const { order_id, razorpay_payment_id, razorpay_signature } = req.body;
 
