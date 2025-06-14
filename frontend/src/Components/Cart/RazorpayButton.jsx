@@ -6,7 +6,14 @@ const RazorpayButton = ({ amount, userDetails, onSuccess, onError }) => {
     import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 
   const handleRazorpay = async () => {
+    if (!razorpayKey) {
+      console.error("❌ Razorpay key is missing.");
+      onError?.({ description: "Razorpay key is not configured." });
+      return;
+    }
+
     try {
+      // 1. Create order from backend
       const res = await fetch(`${backendUrl}/api/create-order`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -17,6 +24,7 @@ const RazorpayButton = ({ amount, userDetails, onSuccess, onError }) => {
 
       const orderData = await res.json();
 
+      // 2. Configure Razorpay options
       const options = {
         key: razorpayKey,
         amount: orderData.amount,
@@ -26,6 +34,7 @@ const RazorpayButton = ({ amount, userDetails, onSuccess, onError }) => {
         order_id: orderData.id,
         handler: async function (response) {
           try {
+            // 3. Verify payment on backend
             const verifyRes = await fetch(`${backendUrl}/api/verify-payment`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -43,29 +52,41 @@ const RazorpayButton = ({ amount, userDetails, onSuccess, onError }) => {
             } else {
               onError?.({ description: "Payment verification failed." });
             }
-          } catch {
+          } catch (error) {
+            console.error("Verification error:", error);
             onError?.({ description: "Verification request failed." });
           }
         },
         prefill: {
           name: `${userDetails.firstName} ${userDetails.lastName}`,
-          email: "test@example.com", // Optional: use dynamic email
+          email: "test@example.com",
           contact: userDetails.phone,
         },
         theme: { color: "#000000" },
       };
 
+      // 4. Open Razorpay modal
       const rzp = new window.Razorpay(options);
       rzp.open();
-      rzp.on("payment.failed", (event) => onError?.(event.error));
-    } catch {
+      rzp.on("payment.failed", (errorResponse) => {
+        console.error("Payment failed:", errorResponse);
+        onError?.(errorResponse.error);
+      });
+    } catch (err) {
+      console.error("Payment initiation error:", err);
       onError?.({ description: "Error initiating payment" });
     }
   };
 
   if (!razorpayKey) {
-    console.error("Razorpay key is not set");
-    return null;
+    return (
+      <button
+        disabled
+        className="w-full bg-gray-400 text-white py-3 rounded-md cursor-not-allowed"
+      >
+        Razorpay Key Not Configured
+      </button>
+    );
   }
 
   return (
