@@ -2,7 +2,8 @@ import React from "react";
 
 const RazorpayButton = ({ amount, userDetails, onSuccess, onError }) => {
   const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY;
-  const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+  const backendUrl =
+    import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 
   const handleRazorpay = async () => {
     if (!window.Razorpay || !razorpayKey) {
@@ -44,14 +45,18 @@ const RazorpayButton = ({ amount, userDetails, onSuccess, onError }) => {
             });
 
             const verifyData = await verifyRes.json();
-            verifyData.success ? onSuccess(response) : onError?.({ description: "Payment verification failed." });
+            verifyData.success
+              ? onSuccess(response)
+              : onError?.({ description: "Payment verification failed." });
           } catch (error) {
             console.error("Verification error:", error);
             onError?.({ description: "Verification request failed." });
           }
         },
         prefill: {
-          name: `${userDetails?.firstName || ""} ${userDetails?.lastName || ""}`,
+          name: `${userDetails?.firstName || ""} ${
+            userDetails?.lastName || ""
+          }`,
           email: userDetails?.email || "test@example.com",
           contact: userDetails?.phone || "9999999999",
         },
