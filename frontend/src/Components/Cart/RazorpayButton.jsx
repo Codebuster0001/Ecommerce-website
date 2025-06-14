@@ -41,16 +41,15 @@ const RazorpayButton = ({ amount, userDetails, onSuccess, onError }) => {
             if (verifyData.success) {
               onSuccess(response);
             } else {
-              onError &&
-                onError({ description: "Payment verification failed." });
+              onError?.({ description: "Payment verification failed." });
             }
-          } catch (error) {
-            onError && onError({ description: "Verification request failed." });
+          } catch {
+            onError?.({ description: "Verification request failed." });
           }
         },
         prefill: {
           name: `${userDetails.firstName} ${userDetails.lastName}`,
-          email: "test@example.com", // Optional: add dynamic email
+          email: "test@example.com", // Optional: use dynamic email
           contact: userDetails.phone,
         },
         theme: { color: "#000000" },
@@ -58,9 +57,9 @@ const RazorpayButton = ({ amount, userDetails, onSuccess, onError }) => {
 
       const rzp = new window.Razorpay(options);
       rzp.open();
-      rzp.on("payment.failed", ({ error }) => onError && onError(error));
-    } catch (err) {
-      onError && onError({ description: "Error initiating payment" });
+      rzp.on("payment.failed", (event) => onError?.(event.error));
+    } catch {
+      onError?.({ description: "Error initiating payment" });
     }
   };
 
