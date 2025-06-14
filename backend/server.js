@@ -5,15 +5,18 @@ const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
+
+// Middlewares
 app.use(cors());
 app.use(express.json());
 
+// Razorpay Instance
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_SECRET_KEY,
 });
 
-// Create Razorpay Order
+// ✅ Create Razorpay Order
 app.post("/api/create-order", async (req, res) => {
   const { amount } = req.body;
 
@@ -31,11 +34,14 @@ app.post("/api/create-order", async (req, res) => {
     res.json(order);
   } catch (error) {
     console.error("Order creation error:", error);
-    res.status(500).json({ error: "Failed to create Razorpay order" });
+    res.status(500).json({
+      error: "Failed to create Razorpay order",
+      message: error?.error?.description || "Unknown error",
+    });
   }
 });
 
-// Verify Payment
+// ✅ Verify Razorpay Payment
 app.post("/api/verify-payment", (req, res) => {
   const { order_id, razorpay_payment_id, razorpay_signature } = req.body;
 
@@ -50,9 +56,11 @@ app.post("/api/verify-payment", (req, res) => {
   }
 });
 
+// ✅ Root Route
 app.get("/", (req, res) => {
   res.send("✅ Razorpay backend is running.");
 });
 
+// ✅ Start Server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Server is running on port ${PORT}`));
