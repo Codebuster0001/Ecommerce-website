@@ -16,7 +16,7 @@
 ## 📁 Project Structure
 
 ```bash
-Ecommerce-website-1/
+Ecommerce-website/
 ├── backend/     # Node.js + Express backend API
 └── frontend/    # React + Redux + TailwindCSS frontend
 ```
@@ -52,7 +52,7 @@ Ecommerce-website-1/
 
 ```bash
 git clone https://github.com/yourusername/Ecommerce-website-1.git
-cd Ecommerce-website-1
+cd Ecommerce-website
 ```
 
 ### 🛠 2. Setup Backend
