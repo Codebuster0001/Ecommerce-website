@@ -1,14 +1,24 @@
-# 🛍️ Shopy – Modern E-commerce Frontend
+# 🛍️ Shopy – Modern E-commerce Platform (Monorepo)
 
-> A sleek, scalable, and real-world-ready frontend for an e-commerce platform – built with React, Redux Toolkit, TailwindCSS, Razorpay, and more.
+> A sleek, scalable, and real-world-ready e-commerce platform – featuring a modern React frontend and Node.js/Express backend. Built with React, Redux Toolkit, TailwindCSS, Razorpay, and more.
 
 [🌐 Live Demo](https://shopyfrontend.vercel.app) &nbsp;•&nbsp; [📦 Install](#install) &nbsp;•&nbsp; [📷 Screenshots](#screenshots) &nbsp;•&nbsp; [🚀 Features](#features)
 
 ---
 
+## 🗂️ Project Structure
+
+```
+Ecommerce-website-1/
+  ├── backend/      # Node.js/Express backend API
+  └── frontend/     # React + Redux + TailwindCSS frontend
+```
+
+---
+
 ## 🔥 Overview
 
-Shopy is a performant, modern frontend e-commerce solution with:
+Shopy is a performant, modern e-commerce solution with:
 - 🔐 Authentication (Login / Signup)
 - 🧾 Invoices in PDF
 - 💳 Razorpay payments
@@ -23,23 +33,47 @@ Shopy is a performant, modern frontend e-commerce solution with:
 
 ---
 
-## 📦 Install
+## 📦 Install & Setup
+
+### 1. Clone the Repo
 
 ```bash
-# Clone the repo
-$ git clone https://github.com/yourusername/shopy-frontend.git
+$ git clone https://github.com/yourusername/Ecommerce-website-1.git
+$ cd Ecommerce-website-1
+```
 
-# Navigate to project
-$ cd shopy-frontend
+### 2. Setup Backend
 
-# Install dependencies
+```bash
+$ cd backend
 $ npm install
+```
 
-# Start dev server
+- Create a `.env` file in `backend/` (see `.env.example` if available) and set up your environment variables (e.g., database URI, JWT secret, Razorpay keys, etc).
+- Start the backend server:
+
+```bash
+$ npm start
+# or for development with auto-reload
 $ npm run dev
 ```
 
-> 💡 Make sure your backend is running on port `5000`
+> By default, backend runs on port `5000`.
+
+### 3. Setup Frontend
+
+```bash
+$ cd ../frontend
+$ npm install
+```
+
+- Start the frontend dev server:
+
+```bash
+$ npm run dev
+```
+
+> The frontend will run on port `5173` (or as configured in `vite.config.js`).
 
 ---
 
@@ -90,6 +124,8 @@ $ npm run dev
 - 💳 Razorpay
 - 📄 jsPDF, html2canvas
 - 🎞 Framer Motion
+- 🖥️ Node.js, Express (Backend)
+- 🗄️ MongoDB (or your DB of choice)
 
 ---
 
@@ -115,7 +151,19 @@ $ npm run dev
 
 ## 🧑‍💻 Role
 
-**Frontend Developer** — Responsible for all UI, state logic, third-party integration (Razorpay), data export, responsiveness, and performance.
+**Full Stack Developer** — Responsible for all UI, state logic, backend API, third-party integration (Razorpay), data export, responsiveness, and performance.
+
+---
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome!
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/YourFeature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin feature/YourFeature`)
+5. Open a Pull Request
 
 ---
 
