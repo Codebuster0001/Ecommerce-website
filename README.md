@@ -1,5 +1,5 @@
 
-# 🛍️ Shopy – Modern E-commerce Platform (Monorepo)
+# 🛍️ Shopy – Modern E-commerce Platform 
 
 > A sleek, scalable, and real-world-ready e-commerce solution featuring a modern **React frontend** and **Node.js/Express backend**. Built with **Redux Toolkit**, **Tailwind CSS**, **Razorpay**, and more.
 
